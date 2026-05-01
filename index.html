@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日本株 投資ポータル</title>
+  <meta name="description" content="スマホで使いやすい日本株投資用の個人ポータルサイト" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Japan Stock Portal</p>
+      <h1>日本株 投資司令室</h1>
+      <p class="lead">市況・銘柄検索・テーマ監視・投資メモを1画面に集約します。</p>
+    </div>
+    <div class="header-actions">
+      <a class="pill-link" href="#stock-search">銘柄検索</a>
+      <a class="pill-link secondary" href="#watchlist">監視リスト</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="market-grid" aria-label="市況ショートカット">
+      <article class="card market-card highlight">
+        <span class="card-label">市況</span>
+        <h2>今日見るリンク</h2>
+        <p>日経平均、TOPIX、為替、米国株、半導体指数などをすぐ確認できます。</p>
+      </article>
+
+      <a class="card shortcut-card" href="https://finance.yahoo.co.jp/quote/998407.O" target="_blank" rel="noopener noreferrer">
+        <span>日経平均</span>
+        <strong>Yahoo!ファイナンス</strong>
+      </a>
+      <a class="card shortcut-card" href="https://finance.yahoo.co.jp/quote/998405.T" target="_blank" rel="noopener noreferrer">
+        <span>TOPIX</span>
+        <strong>Yahoo!ファイナンス</strong>
+      </a>
+      <a class="card shortcut-card" href="https://finance.yahoo.co.jp/quote/USDJPY=X" target="_blank" rel="noopener noreferrer">
+        <span>ドル円</span>
+        <strong>為替確認</strong>
+      </a>
+      <a class="card shortcut-card" href="https://jp.tradingview.com/markets/indices/quotes-major/" target="_blank" rel="noopener noreferrer">
+        <span>世界指数</span>
+        <strong>TradingView</strong>
+      </a>
+    </section>
+
+    <section id="stock-search" class="card search-card">
+      <div class="section-heading">
+        <span class="card-label">Search</span>
+        <h2>銘柄コード検索</h2>
+        <p>4桁の銘柄コードを入力すると、主要サイトへのリンクを自動生成します。</p>
+      </div>
+
+      <form id="stockForm" class="search-form">
+        <label for="stockCode">銘柄コード</label>
+        <div class="input-row">
+          <input id="stockCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="例：7011" autocomplete="off" />
+          <button type="submit">リンク生成</button>
+        </div>
+        <p class="hint">例：7011 三菱重工、5803 フジクラ、1605 INPEX</p>
+      </form>
+
+      <div id="generatedLinks" class="generated-links" aria-live="polite"></div>
+    </section>
+
+    <section id="watchlist" class="card">
+      <div class="section-heading">
+        <span class="card-label">Watchlist</span>
+        <h2>テーマ別ウォッチリスト</h2>
+        <p>気になるテーマを選ぶと、該当銘柄だけに絞り込めます。</p>
+      </div>
+
+      <div id="themeFilters" class="filter-row" aria-label="テーマフィルター"></div>
+      <div id="watchlistGrid" class="watchlist-grid"></div>
+    </section>
+
+    <section class="memo-layout">
+      <article class="card">
+        <div class="section-heading">
+          <span class="card-label">Memo</span>
+          <h2>投資メモ</h2>
+          <p>入力内容はこのスマホ・ブラウザ内に保存されます。</p>
+        </div>
+        <div id="memoGrid" class="memo-grid"></div>
+      </article>
+
+      <article class="card tradingview-card">
+        <div class="section-heading">
+          <span class="card-label">Chart</span>
+          <h2>TradingViewウィジェット枠</h2>
+          <p>あとからTradingViewの無料ウィジェットコードをここへ貼り付けます。</p>
+        </div>
+        <div class="widget-placeholder">
+          <strong>TradingView Widget Area</strong>
+          <p>今は空枠です。第2段階でチャート・ティッカー・ヒートマップなどを追加できます。</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>個人用の投資情報ポータルです。投資判断は必ず公式情報・証券会社画面で確認してください。</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
