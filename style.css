@@ -40,7 +40,8 @@ a {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -97,7 +98,8 @@ button,
 }
 
 .pill-link.secondary,
-.filter-button {
+.filter-button,
+.button-muted {
   border-color: rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.06);
 }
@@ -164,31 +166,36 @@ button,
 }
 
 .search-card,
+.manager-card,
 #watchlist,
 .memo-layout > .card {
   padding: 18px;
   margin-bottom: 14px;
 }
 
-.search-form {
+.search-form,
+.stock-editor-form {
   margin-top: 16px;
 }
 
 .search-form label,
-.memo-item label {
+.memo-item label,
+.form-field label {
   display: block;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
-.input-row {
+.input-row,
+.form-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   color: var(--text);
   background: rgba(255, 255, 255, 0.06);
@@ -198,8 +205,13 @@ textarea {
   outline: none;
 }
 
+select {
+  appearance: none;
+}
+
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   border-color: rgba(56, 189, 248, 0.8);
   box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.14);
 }
@@ -228,6 +240,53 @@ button {
   border-color: rgba(34, 197, 94, 0.34);
 }
 
+.editor-actions,
+.card-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.small-button {
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.small-button.danger {
+  border-color: rgba(251, 113, 133, 0.45);
+  background: rgba(251, 113, 133, 0.12);
+  color: #fecdd3;
+}
+
+.portfolio-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.summary-card {
+  padding: 12px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.summary-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.summary-card strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 1.35rem;
+}
+
 .filter-row {
   display: flex;
   gap: 8px;
@@ -254,6 +313,14 @@ button {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
+}
+
+.empty-message {
+  color: var(--muted);
+  margin: 0;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .stock-card {
@@ -309,8 +376,38 @@ button {
 }
 
 .stock-card p {
-  margin: 0;
+  margin: 12px 0 0;
   color: var(--muted);
+}
+
+.trade-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.trade-grid div {
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.trade-grid .wide {
+  grid-column: 1 / -1;
+}
+
+.trade-grid span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.trade-grid strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.98rem;
 }
 
 .stock-links {
@@ -347,6 +444,10 @@ textarea {
   resize: vertical;
 }
 
+.full-width textarea {
+  min-height: 120px;
+}
+
 .widget-placeholder {
   margin-top: 16px;
   border: 1px dashed rgba(56, 189, 248, 0.5);
@@ -381,6 +482,19 @@ textarea {
 
   .input-row {
     grid-template-columns: 1fr auto;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .editor-actions,
+  .card-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .portfolio-summary {
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .watchlist-grid {
