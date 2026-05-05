@@ -37,119 +37,28 @@
     </section>
 
     <section id="stock-search" class="card search-card">
-      <div class="section-heading">
-        <span class="card-label">Search</span>
-        <h2>銘柄コード検索</h2>
-        <p>4桁の銘柄コードを入力すると、主要サイトへのリンクを自動生成します。</p>
-      </div>
-      <form id="stockForm" class="search-form">
-        <label for="stockCode">銘柄コード</label>
-        <div class="input-row">
-          <input id="stockCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="例：7011" autocomplete="off" />
-          <button type="submit">リンク生成</button>
-        </div>
-        <p class="hint">例：7011 三菱重工、5803 フジクラ、1605 INPEX</p>
-      </form>
+      <div class="section-heading"><span class="card-label">Search</span><h2>銘柄コード検索</h2><p>4桁の銘柄コードを入力すると、主要サイトへのリンクを自動生成します。</p></div>
+      <form id="stockForm" class="search-form"><label for="stockCode">銘柄コード</label><div class="input-row"><input id="stockCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="例：7011" autocomplete="off" /><button type="submit">リンク生成</button></div><p class="hint">例：7011 三菱重工、5803 フジクラ、1605 INPEX</p></form>
       <div id="generatedLinks" class="generated-links" aria-live="polite"></div>
     </section>
 
     <section id="stock-manager" class="card manager-card">
-      <div class="section-heading">
-        <span class="card-label">Editor</span>
-        <h2>銘柄追加・編集</h2>
-        <p>銘柄、リスク管理、SEPA分析用データをスマホ内に保存します。</p>
-      </div>
-
-      <form id="stockEditorForm" class="stock-editor-form">
-        <input type="hidden" id="editStockId" />
-
-        <details class="editor-section" open>
-          <summary>基本情報・リスク管理</summary>
-          <div class="form-grid">
-            <div class="form-field"><label for="editorCode">銘柄コード</label><input id="editorCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="例：7011" required /></div>
-            <div class="form-field"><label for="editorName">銘柄名</label><input id="editorName" type="text" placeholder="例：三菱重工業" required /></div>
-            <div class="form-field"><label for="editorTheme">テーマ</label><input id="editorTheme" type="text" list="themeOptions" placeholder="例：防衛" required /><datalist id="themeOptions"></datalist></div>
-            <div class="form-field"><label for="editorStatus">ステータス</label><select id="editorStatus"><option value="保有">保有</option><option value="監視" selected>監視</option><option value="候補">候補</option></select></div>
-            <div class="form-field"><label for="editorEntryPrice">エントリー価格</label><input id="editorEntryPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1500" /></div>
-            <div class="form-field"><label for="editorStopLoss">損切りライン</label><input id="editorStopLoss" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1425" /></div>
-            <div class="form-field"><label for="editorTargetPrice">利確ライン</label><input id="editorTargetPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1800" /></div>
-            <div class="form-field"><label for="editorEarningsDate">決算日</label><input id="editorEarningsDate" type="date" /></div>
-          </div>
-        </details>
-
-        <details class="editor-section" open>
-          <summary>SEPAテクニカル入力</summary>
-          <div class="form-grid">
-            <div class="form-field"><label for="editorCurrentPrice">現在株価</label><input id="editorCurrentPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1600" /></div>
-            <div class="form-field"><label for="editorMa50">50日移動平均</label><input id="editorMa50" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1500" /></div>
-            <div class="form-field"><label for="editorMa150">150日移動平均</label><input id="editorMa150" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1350" /></div>
-            <div class="form-field"><label for="editorMa200">200日移動平均</label><input id="editorMa200" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1250" /></div>
-            <div class="form-field"><label for="editorWeek52High">52週高値</label><input id="editorWeek52High" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1700" /></div>
-            <div class="form-field"><label for="editorWeek52Low">52週安値</label><input id="editorWeek52Low" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：900" /></div>
-            <div class="form-field"><label for="editorRsScore">RS評価 1〜100</label><input id="editorRsScore" type="number" inputmode="numeric" min="0" max="100" step="1" placeholder="例：85" /></div>
-            <div class="form-field"><label for="editorVolumeRating">出来高評価 1〜5</label><input id="editorVolumeRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div>
-            <div class="form-field"><label for="editorBaseRating">ベース形成評価 1〜5</label><input id="editorBaseRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div>
-            <div class="form-field"><label for="editorVcpRating">VCP収縮評価 1〜5</label><input id="editorVcpRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：5" /></div>
-            <div class="form-field"><label for="editorPivotPrice">ピボット価格</label><input id="editorPivotPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1650" /></div>
-            <div class="form-field checkbox-field"><label for="editorIsBreakout">ブレイク済み</label><input id="editorIsBreakout" type="checkbox" /></div>
-          </div>
-        </details>
-
-        <details class="editor-section">
-          <summary>業績・テーマ評価</summary>
-          <div class="form-grid">
-            <div class="form-field"><label for="editorEpsGrowth">EPS成長率 %</label><input id="editorEpsGrowth" type="number" inputmode="decimal" step="0.1" placeholder="例：30" /></div>
-            <div class="form-field"><label for="editorSalesGrowth">売上成長率 %</label><input id="editorSalesGrowth" type="number" inputmode="decimal" step="0.1" placeholder="例：15" /></div>
-            <div class="form-field"><label for="editorOpProfitGrowth">営業利益成長率 %</label><input id="editorOpProfitGrowth" type="number" inputmode="decimal" step="0.1" placeholder="例：25" /></div>
-            <div class="form-field"><label for="editorEarningsRating">決算評価 1〜5</label><input id="editorEarningsRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div>
-            <div class="form-field"><label for="editorThemeRating">テーマ性 1〜5</label><input id="editorThemeRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：5" /></div>
-            <div class="form-field"><label for="editorSupplyRating">需給評価 1〜5</label><input id="editorSupplyRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div>
-          </div>
-        </details>
-
-        <div class="form-field full-width"><label for="editorMemo">銘柄メモ</label><textarea id="editorMemo" placeholder="買い仮説、需給、決算跨ぎ判断、損切り理由など"></textarea></div>
-        <div class="editor-actions sticky-actions"><button type="submit" id="saveStockButton">銘柄を保存</button><button type="button" id="resetEditorButton" class="button-muted">入力をクリア</button></div>
+      <div class="section-heading"><span class="card-label">Editor</span><h2>銘柄追加・編集</h2><p>銘柄、リスク管理、SEPA分析用データをスマホ内に保存します。</p></div>
+      <form id="stockEditorForm" class="stock-editor-form"><input type="hidden" id="editStockId" />
+        <details class="editor-section" open><summary>基本情報・リスク管理</summary><div class="form-grid"><div class="form-field"><label for="editorCode">銘柄コード</label><input id="editorCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="例：7011" required /></div><div class="form-field"><label for="editorName">銘柄名</label><input id="editorName" type="text" placeholder="例：三菱重工業" required /></div><div class="form-field"><label for="editorTheme">テーマ</label><input id="editorTheme" type="text" list="themeOptions" placeholder="例：防衛" required /><datalist id="themeOptions"></datalist></div><div class="form-field"><label for="editorStatus">ステータス</label><select id="editorStatus"><option value="保有">保有</option><option value="監視" selected>監視</option><option value="候補">候補</option></select></div><div class="form-field"><label for="editorEntryPrice">エントリー価格</label><input id="editorEntryPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1500" /></div><div class="form-field"><label for="editorStopLoss">損切りライン</label><input id="editorStopLoss" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1425" /></div><div class="form-field"><label for="editorTargetPrice">利確ライン</label><input id="editorTargetPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1800" /></div><div class="form-field"><label for="editorEarningsDate">決算日</label><input id="editorEarningsDate" type="date" /></div></div></details>
+        <details class="editor-section" open><summary>SEPAテクニカル入力</summary><div class="form-grid"><div class="form-field"><label for="editorCurrentPrice">現在株価</label><input id="editorCurrentPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1600" /></div><div class="form-field"><label for="editorMa50">50日移動平均</label><input id="editorMa50" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1500" /></div><div class="form-field"><label for="editorMa150">150日移動平均</label><input id="editorMa150" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1350" /></div><div class="form-field"><label for="editorMa200">200日移動平均</label><input id="editorMa200" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1250" /></div><div class="form-field"><label for="editorWeek52High">52週高値</label><input id="editorWeek52High" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1700" /></div><div class="form-field"><label for="editorWeek52Low">52週安値</label><input id="editorWeek52Low" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：900" /></div><div class="form-field"><label for="editorRsScore">RS評価 1〜100</label><input id="editorRsScore" type="number" inputmode="numeric" min="0" max="100" step="1" placeholder="例：85" /></div><div class="form-field"><label for="editorVolumeRating">出来高評価 1〜5</label><input id="editorVolumeRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div><div class="form-field"><label for="editorBaseRating">ベース形成評価 1〜5</label><input id="editorBaseRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div><div class="form-field"><label for="editorVcpRating">VCP収縮評価 1〜5</label><input id="editorVcpRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：5" /></div><div class="form-field"><label for="editorPivotPrice">ピボット価格</label><input id="editorPivotPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1650" /></div><div class="form-field checkbox-field"><label for="editorIsBreakout">ブレイク済み</label><input id="editorIsBreakout" type="checkbox" /></div></div></details>
+        <details class="editor-section"><summary>業績・テーマ評価</summary><div class="form-grid"><div class="form-field"><label for="editorEpsGrowth">EPS成長率 %</label><input id="editorEpsGrowth" type="number" inputmode="decimal" step="0.1" placeholder="例：30" /></div><div class="form-field"><label for="editorSalesGrowth">売上成長率 %</label><input id="editorSalesGrowth" type="number" inputmode="decimal" step="0.1" placeholder="例：15" /></div><div class="form-field"><label for="editorOpProfitGrowth">営業利益成長率 %</label><input id="editorOpProfitGrowth" type="number" inputmode="decimal" step="0.1" placeholder="例：25" /></div><div class="form-field"><label for="editorEarningsRating">決算評価 1〜5</label><input id="editorEarningsRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div><div class="form-field"><label for="editorThemeRating">テーマ性 1〜5</label><input id="editorThemeRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：5" /></div><div class="form-field"><label for="editorSupplyRating">需給評価 1〜5</label><input id="editorSupplyRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div></div></details>
+        <div class="form-field full-width"><label for="editorMemo">銘柄メモ</label><textarea id="editorMemo" placeholder="買い仮説、需給、決算跨ぎ判断、損切り理由など"></textarea></div><div class="editor-actions sticky-actions"><button type="submit" id="saveStockButton">銘柄を保存</button><button type="button" id="resetEditorButton" class="button-muted">入力をクリア</button></div>
       </form>
     </section>
 
-    <section id="sepa-screener" class="card sepa-section">
-      <div class="section-heading">
-        <span class="card-label">SEPA Screener</span>
-        <h2>ミネルヴィニSEPAスクリーナー</h2>
-        <p>手入力データをもとに、Trend Template、VCP、業績、需給、リスク管理を100点満点で採点します。</p>
-      </div>
-      <div id="sepaSummary" class="portfolio-summary"></div>
-      <div class="sepa-controls">
-        <div class="form-field"><label for="sepaThemeFilter">テーマで絞り込み</label><select id="sepaThemeFilter"></select></div>
-        <div id="sepaFilterButtons" class="filter-row" aria-label="SEPAフィルター"></div>
-      </div>
-      <div id="sepaRanking" class="sepa-ranking"></div>
-    </section>
-
-    <section id="watchlist" class="card">
-      <div class="section-heading">
-        <span class="card-label">Watchlist</span>
-        <h2>テーマ別ウォッチリスト</h2>
-        <p>気になるテーマを選ぶと、該当銘柄だけに絞り込めます。カード下部から編集・削除できます。</p>
-      </div>
-      <div id="portfolioSummary" class="portfolio-summary"></div>
-      <div id="themeFilters" class="filter-row" aria-label="テーマフィルター"></div>
-      <div id="watchlistGrid" class="watchlist-grid"></div>
-    </section>
-
-    <section class="memo-layout">
-      <article class="card">
-        <div class="section-heading"><span class="card-label">Memo</span><h2>投資メモ</h2><p>入力内容はこのスマホ・ブラウザ内に保存されます。</p></div>
-        <div id="memoGrid" class="memo-grid"></div>
-      </article>
-      <article class="card tradingview-card">
-        <div class="section-heading"><span class="card-label">Chart</span><h2>TradingViewウィジェット枠</h2><p>あとからTradingViewの無料ウィジェットコードをここへ貼り付けます。</p></div>
-        <div class="widget-placeholder"><strong>TradingView Widget Area</strong><p>今は空枠です。第3段階でチャート・ティッカー・ヒートマップなどを追加できます。</p></div>
-      </article>
-    </section>
+    <section id="sepa-screener" class="card sepa-section"><div class="section-heading"><span class="card-label">SEPA Screener</span><h2>ミネルヴィニSEPAスクリーナー</h2><p>手入力データをもとに、Trend Template、VCP、業績、需給、リスク管理を100点満点で採点します。</p></div><div id="sepaSummary" class="portfolio-summary"></div><div class="sepa-controls"><div class="form-field"><label for="sepaThemeFilter">テーマで絞り込み</label><select id="sepaThemeFilter"></select></div><div id="sepaFilterButtons" class="filter-row" aria-label="SEPAフィルター"></div></div><div id="sepaRanking" class="sepa-ranking"></div></section>
+    <section id="watchlist" class="card"><div class="section-heading"><span class="card-label">Watchlist</span><h2>テーマ別ウォッチリスト</h2><p>気になるテーマを選ぶと、該当銘柄だけに絞り込めます。カード下部から編集・削除できます。</p></div><div id="portfolioSummary" class="portfolio-summary"></div><div id="themeFilters" class="filter-row" aria-label="テーマフィルター"></div><div id="watchlistGrid" class="watchlist-grid"></div></section>
+    <section class="memo-layout"><article class="card"><div class="section-heading"><span class="card-label">Memo</span><h2>投資メモ</h2><p>入力内容はこのスマホ・ブラウザ内に保存されます。</p></div><div id="memoGrid" class="memo-grid"></div></article><article class="card tradingview-card"><div class="section-heading"><span class="card-label">Chart</span><h2>TradingViewウィジェット枠</h2><p>あとからTradingViewの無料ウィジェットコードをここへ貼り付けます。</p></div><div class="widget-placeholder"><strong>TradingView Widget Area</strong><p>今は空枠です。第3段階でチャート・ティッカー・ヒートマップなどを追加できます。</p></div></article></section>
   </main>
 
   <footer class="footer"><p>個人用の投資情報ポータルです。投資判断は必ず公式情報・証券会社画面で確認してください。</p></footer>
   <script src="script.js"></script>
+  <script src="sepa.js"></script>
 </body>
 </html>
