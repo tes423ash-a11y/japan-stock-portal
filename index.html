@@ -12,10 +12,11 @@
     <div>
       <p class="eyebrow">Japan Stock Portal</p>
       <h1>日本株 投資司令室</h1>
-      <p class="lead">市況・銘柄検索・テーマ監視・投資メモを1画面に集約します。</p>
+      <p class="lead">市況・銘柄検索・テーマ監視・損切り/利確ラインを1画面に集約します。</p>
     </div>
     <div class="header-actions">
       <a class="pill-link" href="#stock-search">銘柄検索</a>
+      <a class="pill-link secondary" href="#stock-manager">銘柄管理</a>
       <a class="pill-link secondary" href="#watchlist">監視リスト</a>
     </div>
   </header>
@@ -65,13 +66,83 @@
       <div id="generatedLinks" class="generated-links" aria-live="polite"></div>
     </section>
 
+    <section id="stock-manager" class="card manager-card">
+      <div class="section-heading">
+        <span class="card-label">Editor</span>
+        <h2>銘柄追加・編集</h2>
+        <p>銘柄、エントリー価格、損切り、利確、決算日、メモをスマホ内に保存します。</p>
+      </div>
+
+      <form id="stockEditorForm" class="stock-editor-form">
+        <input type="hidden" id="editStockId" />
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="editorCode">銘柄コード</label>
+            <input id="editorCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="例：7011" required />
+          </div>
+
+          <div class="form-field">
+            <label for="editorName">銘柄名</label>
+            <input id="editorName" type="text" placeholder="例：三菱重工業" required />
+          </div>
+
+          <div class="form-field">
+            <label for="editorTheme">テーマ</label>
+            <input id="editorTheme" type="text" list="themeOptions" placeholder="例：防衛" required />
+            <datalist id="themeOptions"></datalist>
+          </div>
+
+          <div class="form-field">
+            <label for="editorStatus">ステータス</label>
+            <select id="editorStatus">
+              <option value="保有">保有</option>
+              <option value="監視" selected>監視</option>
+              <option value="候補">候補</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="editorEntryPrice">エントリー価格</label>
+            <input id="editorEntryPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1500" />
+          </div>
+
+          <div class="form-field">
+            <label for="editorStopLoss">損切りライン</label>
+            <input id="editorStopLoss" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1425" />
+          </div>
+
+          <div class="form-field">
+            <label for="editorTargetPrice">利確ライン</label>
+            <input id="editorTargetPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1800" />
+          </div>
+
+          <div class="form-field">
+            <label for="editorEarningsDate">決算日</label>
+            <input id="editorEarningsDate" type="date" />
+          </div>
+        </div>
+
+        <div class="form-field full-width">
+          <label for="editorMemo">銘柄メモ</label>
+          <textarea id="editorMemo" placeholder="買い仮説、需給、決算跨ぎ判断、損切り理由など"></textarea>
+        </div>
+
+        <div class="editor-actions">
+          <button type="submit" id="saveStockButton">銘柄を保存</button>
+          <button type="button" id="resetEditorButton" class="button-muted">入力をクリア</button>
+        </div>
+      </form>
+    </section>
+
     <section id="watchlist" class="card">
       <div class="section-heading">
         <span class="card-label">Watchlist</span>
         <h2>テーマ別ウォッチリスト</h2>
-        <p>気になるテーマを選ぶと、該当銘柄だけに絞り込めます。</p>
+        <p>気になるテーマを選ぶと、該当銘柄だけに絞り込めます。カード下部から編集・削除できます。</p>
       </div>
 
+      <div id="portfolioSummary" class="portfolio-summary"></div>
       <div id="themeFilters" class="filter-row" aria-label="テーマフィルター"></div>
       <div id="watchlistGrid" class="watchlist-grid"></div>
     </section>
