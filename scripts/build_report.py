@@ -13,7 +13,7 @@ import yfinance as yf
 
 ROOT = Path(__file__).resolve().parents[1]
 WATCHLISTS = [ROOT / "watchlists" / "jp_candidates.csv", ROOT / "watchlists" / "us_candidates.csv"]
-UNIVERSE_FILES = [ROOT / "universes" / "jp_liquid.csv", ROOT / "universes" / "us_liquid.csv"]
+UNIVERSE_FILES = sorted((ROOT / "universes").glob("*.csv"))
 REPORT_DIR = ROOT / "reports"
 JQUANTS_BASE_URL = "https://api.jquants.com/v2"
 
@@ -59,7 +59,7 @@ def read_csv_files(paths: list[Path]) -> list[dict[str, str]]:
 
 def read_input_rows() -> tuple[list[dict[str, str]], str, int]:
     mode = os.getenv("SCREENING_MODE", "top_turnover").strip() or "top_turnover"
-    if mode in {"top_turnover", "all_universe"}:
+    if mode in {"top_turnover", "top_turnover_today", "all_universe"}:
         rows = read_csv_files(UNIVERSE_FILES)
         if rows:
             return rows, mode, len(rows)
@@ -293,7 +293,7 @@ def build_placeholder_candidate(row: dict[str, str], index: int, reason: str | N
         "action": action_for_setup(setup_type),
         "dataSource": "watchlist",
         "componentScores": {"trend": 0, "momentum": 0, "volume": 0, "risk": 0, "theme": theme_score(row.get("theme", ""), symbol, row.get("name", "")), "setup": 0, "liquidity": 0},
-        "metrics": {"avgTradingValue20": 0, "avgTradingValue20Usd": 0},
+        "metrics": {"avgTradingValue20": 0, "avgTradingValue20Usd": 0, "latestTradingValue": 0, "latestTradingValueUsd": 0},
         "reasons": reasons,
     }
 
@@ -311,6 +311,7 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
         return build_placeholder_candidate(row, index, f"{source} history was too short.")
 
     price = closes[-1]
+    latest_volume = volumes[-1] if volumes else None
     ma20 = sma(closes, 20)
     ma50 = sma(closes, 50)
     ma150 = sma(closes, 150)
@@ -322,6 +323,8 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
     volume_ratio = volume20 / volume50 if volume20 and volume50 and volume50 > 0 else None
     avg_trading_value20 = price * volume20 if price and volume20 else 0
     avg_trading_value20_usd = avg_trading_value20 / usd_jpy if market == "JP" else avg_trading_value20
+    latest_trading_value = price * latest_volume if price and latest_volume else 0
+    latest_trading_value_usd = latest_trading_value / usd_jpy if market == "JP" else latest_trading_value
     atr14 = atr(quotes, 14)
     atr_pct = (atr14 / price) * 100 if atr14 and price else None
     ret20 = pct_change(closes, 20)
@@ -467,8 +470,11 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
             "drawdownFromHighPct": round_or_none(drawdown),
             "volumeRatio20vs50": round_or_none(volume_ratio, 2),
             "avgVolume20": round_or_none(volume20, 0),
+            "latestVolume": round_or_none(latest_volume, 0),
             "avgTradingValue20": round_or_none(avg_trading_value20, 0),
             "avgTradingValue20Usd": round_or_none(avg_trading_value20_usd, 0),
+            "latestTradingValue": round_or_none(latest_trading_value, 0),
+            "latestTradingValueUsd": round_or_none(latest_trading_value_usd, 0),
         },
         "reasons": reasons or [row.get("note", "watchlist candidate")],
     }
@@ -498,8 +504,8 @@ def build_candidate(row: dict[str, str], index: int, api_key: str | None, diagno
     return build_placeholder_candidate(row, index, "All data providers failed.")
 
 
-def top_by_turnover(candidates: list[dict[str, object]], top_n: int) -> list[dict[str, object]]:
-    return sorted(candidates, key=lambda item: float(item.get("metrics", {}).get("avgTradingValue20Usd") or 0), reverse=True)[:top_n]
+def top_by_turnover(candidates: list[dict[str, object]], top_n: int, metric: str = "avgTradingValue20Usd") -> list[dict[str, object]]:
+    return sorted(candidates, key=lambda item: float(item.get("metrics", {}).get(metric) or 0), reverse=True)[:top_n]
 
 
 def build_themes(candidates: list[dict[str, object]]) -> list[dict[str, object]]:
@@ -542,6 +548,7 @@ def write_markdown(report: dict[str, object]) -> str:
     lines.append(f"- Mode: {report.get('screeningMode')}")
     lines.append(f"- Per-market turnover top N: {report.get('screeningTopNPerMarket')}")
     lines.append(f"- Per-market max symbols: {report.get('screeningMaxSymbolsPerMarket')}")
+    lines.append(f"- Turnover sort metric: {report.get('turnoverSortMetric')}")
     lines.append(f"- USDJPY used for turnover conversion: {report.get('usdJpyForTurnover')}")
     lines.append(f"- Universe: {report.get('universe')}")
     lines.extend(["", "## Market Summary", ""])
@@ -549,8 +556,8 @@ def write_markdown(report: dict[str, object]) -> str:
         lines.append(f"- {market}: selected {summary.get('selectedRows')} / input {summary.get('inputRows')} / S {summary.get('sRank')} / A {summary.get('aRank')}")
     lines.extend(["", "## Top Candidates", ""])
     for item in report.get("candidates", [])[:30]:
-        tv_usd = item.get("metrics", {}).get("avgTradingValue20Usd")
-        lines.append(f"- {item['rank']} / {item['score']} / {item['setup']} / {item['market']} / {item['symbol']} / {item['name']} / TV20USD={tv_usd}")
+        tv = item.get("metrics", {}).get(str(report.get("turnoverSortMetric") or "avgTradingValue20Usd"))
+        lines.append(f"- {item['rank']} / {item['score']} / {item['setup']} / {item['market']} / {item['symbol']} / {item['name']} / TV={tv}")
     return "\n".join(lines) + "\n"
 
 
@@ -560,10 +567,11 @@ def main() -> None:
     top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 100), 100, 300))
     max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 300), top_n_per_market, 300))
     usd_jpy = env_float("SCREENING_USDJPY", 150.0)
+    turnover_metric = "latestTradingValueUsd" if mode == "top_turnover_today" else "avgTradingValue20Usd"
 
     all_rows_by_market = split_rows_by_market(rows)
     universe_by_market = {market: len(items) for market, items in all_rows_by_market.items()}
-    if mode in {"top_turnover", "all_universe"}:
+    if mode in {"top_turnover", "top_turnover_today", "all_universe"}:
         rows_by_market = {market: items[:max_symbols_per_market] for market, items in all_rows_by_market.items()}
     else:
         rows_by_market = all_rows_by_market
@@ -576,11 +584,11 @@ def main() -> None:
     for market in ["JP", "US"]:
         built = [build_candidate(row, i, api_key, diagnostics, usd_jpy) for i, row in enumerate(rows_by_market.get(market, []))]
         built_by_market[market] = built
-        selected_by_market[market] = top_by_turnover(built, top_n_per_market) if mode == "top_turnover" else built[:top_n_per_market]
+        selected_by_market[market] = top_by_turnover(built, top_n_per_market, turnover_metric) if mode in {"top_turnover", "top_turnover_today"} else built[:top_n_per_market]
 
     selected_candidates = selected_by_market["JP"] + selected_by_market["US"]
     candidates_by_score = sorted(selected_candidates, key=lambda item: int(item.get("score", 0)), reverse=True)
-    top_turnover_by_market = {market: top_by_turnover(selected_by_market.get(market, []), top_n_per_market) for market in ["JP", "US"]}
+    top_turnover_by_market = {market: top_by_turnover(selected_by_market.get(market, []), top_n_per_market, turnover_metric) for market in ["JP", "US"]}
 
     jquants_candidates = sum(1 for item in selected_candidates if item.get("dataSource") == "jquants_v2")
     yfinance_candidates = sum(1 for item in selected_candidates if item.get("dataSource") == "yfinance")
@@ -606,7 +614,7 @@ def main() -> None:
         "inputRows": sum(len(items) for items in rows_by_market.values()),
         "inputRowsByMarket": {market: len(items) for market, items in rows_by_market.items()},
         "usdJpyForTurnover": usd_jpy,
-        "turnoverSortMetric": "avgTradingValue20Usd",
+        "turnoverSortMetric": turnover_metric,
         "universe": "+".join([f"{mode}_per_market", *data_sources]),
         "jquantsStatus": jquants_status,
         "jquantsQuoteDiagnostics": diagnostics,
@@ -630,7 +638,7 @@ def main() -> None:
         "themes": build_themes(selected_candidates),
         "tracking": [],
     }
-    print(json.dumps({"mode": mode, "topNPerMarket": top_n_per_market, "maxSymbolsPerMarket": max_symbols_per_market, "marketSummary": report["marketSummary"], "summary": report["summary"]}, ensure_ascii=False))
+    print(json.dumps({"mode": mode, "turnoverMetric": turnover_metric, "topNPerMarket": top_n_per_market, "maxSymbolsPerMarket": max_symbols_per_market, "marketSummary": report["marketSummary"], "summary": report["summary"]}, ensure_ascii=False))
     (REPORT_DIR / "latest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     (REPORT_DIR / "latest.md").write_text(write_markdown(report), encoding="utf-8")
 
