@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VCP/SEPA Daily Dashboard</title>
-  <meta name="description" content="VCP/SEPA候補、テーマ強弱、リスクライン、ブレイク後検証をスマホで確認する投資ダッシュボード" />
+  <title>SEPA/VCP 日次スクリーナー</title>
+  <meta name="description" content="日本株・米国株の売買代金上位からVCP/SEPA候補、押し目候補、高ボラ注意銘柄をスマホで確認する投資ダッシュボード" />
   <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
   <header class="hero">
-    <p class="eyebrow">VCP / SEPA Daily Screener</p>
-    <h1>投資ダッシュボード</h1>
-    <p class="lead">日次スクリーニング結果を、A級候補・テーマ強弱・リスクライン・ブレイク後検証の順に確認します。</p>
+    <p class="eyebrow">SEPA / VCP Daily Screener</p>
+    <h1>日次スクリーナー</h1>
+    <p class="lead">日本株と米国株を別々に売買代金上位で抽出し、ブレイク候補・押し目候補・高ボラ注意を絞り込みます。</p>
     <nav class="quick-nav" aria-label="主要セクション">
       <a href="#command-center">司令室</a>
-      <a href="#candidates">A級候補</a>
+      <a href="#candidates">候補</a>
       <a href="#themes">テーマ</a>
       <a href="#risk-plan">売買計画</a>
       <a href="#tracking">検証</a>
@@ -30,31 +30,60 @@
       </div>
       <div id="reportStatus" class="status-line">レポートを読み込み中...</div>
       <div id="summaryCards" class="summary-grid"></div>
+      <div id="marketSummary" class="market-summary"></div>
       <div class="decision-flow">
-        <article><strong>1. 地合い</strong><p>指数、半導体、金利、ドル円を確認。地合いが悪い日はA級だけに絞る。</p></article>
-        <article><strong>2. テーマ</strong><p>資金流入が継続しているテーマだけ見る。単発材料は優先度を落とす。</p></article>
-        <article><strong>3. 形</strong><p>高値圏、出来高収縮、移動平均、ピボット接近を優先。</p></article>
-        <article><strong>4. リスク</strong><p>損切り幅が深い銘柄は見送り。RR 1:2以上を基本にする。</p></article>
+        <article><strong>1. S/Aだけ確認</strong><p>まずS・Aランクだけ見て、地合いが悪い日はB以下を触らない。</p></article>
+        <article><strong>2. 型で絞る</strong><p>ブレイク、押し目、高ボラ注意を分ける。高ボラはサイズを落とす。</p></article>
+        <article><strong>3. テーマで確認</strong><p>半導体、AIインフラ、電力、防衛、メモリなど資金が残るテーマを優先。</p></article>
+        <article><strong>4. リスクを見る</strong><p>ATR、損切り幅、ピボット距離を見て、RR 1:2以上だけ残す。</p></article>
       </div>
     </section>
 
     <section id="candidates" class="panel">
       <div class="section-title">
-        <span>A-Rank Candidates</span>
-        <h2>A級候補ランキング</h2>
+        <span>Candidate Finder</span>
+        <h2>候補を絞り込む</h2>
       </div>
-      <div class="toolbar">
-        <label>表示フィルター
+      <div class="toolbar advanced-toolbar">
+        <label>検索
+          <input id="searchInput" type="search" placeholder="銘柄名・コード・テーマ" />
+        </label>
+        <label>市場
+          <select id="marketFilter">
+            <option value="all">日米すべて</option>
+            <option value="JP">日本株</option>
+            <option value="US">米国株</option>
+          </select>
+        </label>
+        <label>ランク
           <select id="rankFilter">
             <option value="all">すべて</option>
-            <option value="A">Aランクのみ</option>
-            <option value="B">B以上</option>
-            <option value="breakout">ブレイク候補</option>
-            <option value="pullback">押し目候補</option>
+            <option value="S">Sのみ</option>
+            <option value="A">S/A</option>
+            <option value="B">S/A/B</option>
+          </select>
+        </label>
+        <label>型
+          <select id="setupFilter">
+            <option value="all">すべて</option>
+            <option value="breakout">ブレイク</option>
+            <option value="pullback">押し目</option>
+            <option value="theme_leader">テーマ</option>
+            <option value="high_volatility">高ボラ</option>
+            <option value="avoid">除外寄り</option>
+          </select>
+        </label>
+        <label>並び替え
+          <select id="sortSelect">
+            <option value="score">スコア順</option>
+            <option value="turnover">売買代金順</option>
+            <option value="atr">低ATR順</option>
+            <option value="ret60">60日上昇順</option>
           </select>
         </label>
         <button id="reloadReport" type="button">再読み込み</button>
       </div>
+      <div id="resultCount" class="status-line compact-status"></div>
       <div id="candidateList" class="candidate-list"></div>
     </section>
 
