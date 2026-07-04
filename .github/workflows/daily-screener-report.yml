@@ -11,6 +11,10 @@ permissions:
 jobs:
   build-report:
     runs-on: ubuntu-latest
+    env:
+      JQUANTS_EMAIL: ${{ secrets.JQUANTS_EMAIL }}
+      JQUANTS_PASSWORD: ${{ secrets.JQUANTS_PASSWORD }}
+      JQUANTS_REFRESH_TOKEN: ${{ secrets.JQUANTS_REFRESH_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
