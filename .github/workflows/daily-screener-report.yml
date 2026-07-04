@@ -20,7 +20,10 @@ on:
         required: false
         default: "150"
   schedule:
+    # 18:00 JST on JP weekdays. Good for Japan after-close screening.
     - cron: "0 9 * * 1-5"
+    # 07:30 JST Tue-Sat. Good for US after-close screening.
+    - cron: "30 22 * * 1-5"
 
 concurrency:
   group: daily-screener-report-${{ github.ref }}
