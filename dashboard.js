@@ -1,204 +1,32 @@
-let currentReport = { candidates: [], themes: [], tracking: [], summary: {} };
-const nf = new Intl.NumberFormat('ja-JP', { maximumFractionDigits: 1 });
-const money = new Intl.NumberFormat('ja-JP', { notation: 'compact', maximumFractionDigits: 1 });
-
-function fmt(value, suffix = '') {
-  if (value === undefined || value === null || value === '') return '-';
-  return typeof value === 'number' ? `${nf.format(value)}${suffix}` : `${value}${suffix}`;
-}
-
-function fmtMoney(value) {
-  if (!value) return '-';
-  return `$${money.format(value)}`;
-}
-
-function rankClass(rank) {
-  if (rank === 'S') return 'rank-s';
-  if (rank === 'A') return 'rank-a';
-  if (rank === 'B') return 'rank-b';
-  if (rank === 'C') return 'rank-c';
-  return 'rank-d';
-}
-
-function setupLabel(type) {
-  return {
-    breakout: 'ブレイク候補',
-    pullback: '押し目候補',
-    theme_leader: 'テーマリーダー',
-    high_volatility: '高ボラ注意',
-    trend_watch: 'トレンド監視',
-    watch_only: '監視のみ',
-    avoid: '除外寄り'
-  }[type] || type || '未分類';
-}
-
-function marketLabel(market) {
-  return market === 'JP' ? '日本株' : market === 'US' ? '米国株' : market || '-';
-}
-
-function stockLinks(item) {
-  const code = item.code || String(item.symbol || '').replace('.T', '');
-  if (item.market === 'US') {
-    return `<a href="https://finance.yahoo.com/quote/${item.symbol}" target="_blank" rel="noopener noreferrer">Yahoo</a><a href="https://www.tradingview.com/symbols/${item.symbol}/" target="_blank" rel="noopener noreferrer">TradingView</a>`;
-  }
-  return `<a href="https://kabutan.jp/stock/?code=${code}" target="_blank" rel="noopener noreferrer">株探</a><a href="https://finance.yahoo.co.jp/quote/${code}.T" target="_blank" rel="noopener noreferrer">Yahoo</a><a href="https://jp.tradingview.com/symbols/TSE-${code}/" target="_blank" rel="noopener noreferrer">TradingView</a>`;
-}
-
-function renderSummary(report) {
-  const s = report.summary || {};
-  const cards = [
-    ['対象', s.total ?? report.candidates?.length ?? 0],
-    ['S', s.sRank ?? 0],
-    ['A', s.aRank ?? 0],
-    ['ブレイク', s.breakoutReady ?? 0],
-    ['押し目', s.pullbackReady ?? 0],
-    ['高ボラ', s.highVolatility ?? 0],
-    ['平均', s.averageScore ?? '-']
-  ];
-  document.getElementById('summaryCards').innerHTML = cards.map(([label, value]) => `<article class="summary-card"><span>${label}</span><strong>${value}</strong></article>`).join('');
-}
-
-function renderMarketSummary(report) {
-  const summary = report.marketSummary || {};
-  const html = ['JP', 'US'].map(market => {
-    const row = summary[market] || {};
-    return `<article class="market-card"><span>${marketLabel(market)}</span><strong>${row.selectedRows ?? 0}銘柄</strong><p>入力 ${row.inputRows ?? 0} / S ${row.sRank ?? 0} / A ${row.aRank ?? 0} / 平均 ${row.averageScore ?? '-'}</p></article>`;
-  }).join('');
-  const target = document.getElementById('marketSummary');
-  if (target) target.innerHTML = html;
-}
-
-function getFilters() {
-  return {
-    q: (document.getElementById('searchInput')?.value || '').trim().toLowerCase(),
-    market: document.getElementById('marketFilter')?.value || 'all',
-    rank: document.getElementById('rankFilter')?.value || 'all',
-    setup: document.getElementById('setupFilter')?.value || 'all',
-    sort: document.getElementById('sortSelect')?.value || 'score'
-  };
-}
-
-function rankPass(rank, filter) {
-  if (filter === 'S') return rank === 'S';
-  if (filter === 'A') return ['S', 'A'].includes(rank);
-  if (filter === 'B') return ['S', 'A', 'B'].includes(rank);
-  return true;
-}
-
-function filterCandidates(candidates) {
-  const f = getFilters();
-  return candidates.filter(item => {
-    const haystack = `${item.symbol || ''} ${item.code || ''} ${item.name || ''} ${item.theme || ''} ${item.market || ''}`.toLowerCase();
-    if (f.q && !haystack.includes(f.q)) return false;
-    if (f.market !== 'all' && item.market !== f.market) return false;
-    if (!rankPass(item.rank, f.rank)) return false;
-    if (f.setup !== 'all' && item.setupType !== f.setup) return false;
-    return true;
-  }).sort((a, b) => {
-    if (f.sort === 'turnover') return (b.metrics?.avgTradingValue20Usd || 0) - (a.metrics?.avgTradingValue20Usd || 0);
-    if (f.sort === 'atr') return (a.metrics?.atrPct ?? 999) - (b.metrics?.atrPct ?? 999);
-    if (f.sort === 'ret60') return (b.metrics?.ret60Pct ?? -999) - (a.metrics?.ret60Pct ?? -999);
-    return (b.score || 0) - (a.score || 0);
-  });
-}
-
-function scoreLine(item) {
-  const c = item.componentScores || {};
-  const parts = [['T', c.trend], ['M', c.momentum], ['V', c.volume], ['R', c.risk], ['Theme', c.theme], ['Setup', c.setup], ['Liq', c.liquidity]];
-  return `<div class="score-breakdown">${parts.map(([k, v]) => `<span>${k}: <strong>${fmt(v)}</strong></span>`).join('')}</div>`;
-}
-
-function metricsLine(item) {
-  const m = item.metrics || {};
-  const parts = [
-    ['20日', fmt(m.ret20Pct, '%')],
-    ['60日', fmt(m.ret60Pct, '%')],
-    ['ATR', fmt(m.atrPct, '%')],
-    ['高値比', fmt(m.drawdownFromHighPct, '%')],
-    ['売買代金', fmtMoney(m.avgTradingValue20Usd)]
-  ];
-  return `<div class="score-breakdown metrics-line">${parts.map(([k, v]) => `<span>${k}: <strong>${v}</strong></span>`).join('')}</div>`;
-}
-
-function priorityText(item) {
-  if (item.rank === 'S') return '最優先';
-  if (item.rank === 'A') return '優先監視';
-  if (item.setupType === 'high_volatility') return 'サイズ注意';
-  if (item.setupType === 'avoid') return '見送り寄り';
-  return '監視';
-}
-
-function renderCandidates(report) {
-  const all = report.candidates || [];
-  const list = filterCandidates(all);
-  const target = document.getElementById('candidateList');
-  const counter = document.getElementById('resultCount');
-  if (counter) counter.textContent = `${list.length} / ${all.length}件を表示中`;
-  if (!list.length) {
-    target.innerHTML = '<p class="empty">条件に合う候補がありません。</p>';
-    return;
-  }
-  target.innerHTML = list.map(item => {
-    const reasons = (item.reasons || []).slice(0, 7).map(x => `<li>${x}</li>`).join('');
-    return `<article class="candidate-card">
-      <div class="candidate-head">
-        <div><span class="candidate-code">${item.symbol || item.code} / ${marketLabel(item.market)} / ${item.dataSource || 'unknown'}</span><h3>${item.name}</h3><span class="theme-tag">#${item.theme || '未分類'} / ${item.setup || setupLabel(item.setupType)}</span></div>
-        <div class="rank-stack"><span class="rank-badge ${rankClass(item.rank)}">${item.rank || '-'}</span><small>${priorityText(item)}</small></div>
-      </div>
-      <div class="metric-grid"><div class="metric"><span class="metric-label">総合</span><strong>${fmt(item.score)}</strong></div><div class="metric"><span class="metric-label">型</span><strong>${setupLabel(item.setupType)}</strong></div><div class="metric"><span class="metric-label">現在値</span><strong>${fmt(item.price)}</strong></div><div class="metric"><span class="metric-label">損切り</span><strong>${fmt(item.stop)}</strong></div></div>
-      ${scoreLine(item)}${metricsLine(item)}
-      <p class="action-line"><strong>判断:</strong> ${item.action || '監視継続'}</p><ul class="reason-list">${reasons}</ul><div class="card-links">${stockLinks(item)}</div>
-    </article>`;
-  }).join('');
-}
-
-function renderThemes(report) {
-  const themes = report.themes || [];
-  document.getElementById('themeGrid').innerHTML = themes.map(theme => {
-    const note = typeof theme.note === 'object' ? Object.entries(theme.note).map(([k, v]) => `${setupLabel(k)} ${v}`).join(' / ') : (theme.note || '');
-    return `<article class="theme-card"><span>${(theme.leaders || []).join(' / ') || 'leaders未設定'}</span><strong>${theme.name}</strong><p>${note}</p><div class="theme-meter"><i style="width:${Math.max(0, Math.min(100, theme.strength || 0))}%"></i></div><span>Strength ${fmt(theme.strength)}</span></article>`;
-  }).join('') || '<p class="empty">テーマデータがありません。</p>';
-}
-
-function renderRiskTable(report) {
-  const rows = filterCandidates(report.candidates || []);
-  document.getElementById('riskTable').innerHTML = `<table><thead><tr><th>銘柄</th><th>市場</th><th>型</th><th>ランク</th><th>現在値</th><th>ピボット</th><th>損切り</th><th>利確1</th><th>売買代金</th><th>方針</th></tr></thead><tbody>${rows.map(item => `<tr><td>${item.symbol || item.code}<br>${item.name}</td><td>${marketLabel(item.market)}</td><td>${setupLabel(item.setupType)}</td><td>${item.rank || '-'}</td><td>${fmt(item.price)}</td><td>${fmt(item.pivot)}</td><td>${fmt(item.stop)}</td><td>${fmt(item.target1)}</td><td>${fmtMoney(item.metrics?.avgTradingValue20Usd)}</td><td>${item.action || '監視'}</td></tr>`).join('')}</tbody></table>`;
-}
-
-function renderTracking(report) {
-  const tracking = report.tracking || [];
-  document.getElementById('trackingList').innerHTML = tracking.map(item => `<article class="tracking-card"><strong>${item.symbol} ${item.name}</strong><span>検出: ${item.detectedAt} / 経過: ${fmt(item.days, '日')}</span><p>最大上昇 ${fmt(item.maxGain, '%')} / 最大下落 ${fmt(item.maxDrawdown, '%')}</p><p class="tracking-status warn">${item.status}</p></article>`).join('') || '<p class="empty">検証データがありません。</p>';
-}
-
-function renderReport(report) {
-  currentReport = report;
-  document.getElementById('reportStatus').textContent = `Report: ${report.generatedAt || 'unknown'} / Universe: ${report.universe || 'unknown'} / JP・US別トップ${report.screeningTopNPerMarket || '-'}`;
-  renderSummary(report); renderMarketSummary(report); renderCandidates(report); renderThemes(report); renderRiskTable(report); renderTracking(report);
-}
-
-async function loadReport() {
-  try {
-    const response = await fetch(`reports/latest.json?ts=${Date.now()}`);
-    if (!response.ok) throw new Error('report not found');
-    renderReport(await response.json());
-  } catch (error) {
-    document.getElementById('reportStatus').textContent = 'reports/latest.json が未生成です。Actionsを実行してください。';
-    renderReport(currentReport);
-  }
-}
-
-function initNotes() {
-  const key = 'vcp-sepa-dashboard-note';
-  const textarea = document.getElementById('dailyNote');
-  textarea.value = localStorage.getItem(key) || '';
-  document.getElementById('saveNote').addEventListener('click', () => { localStorage.setItem(key, textarea.value); alert('メモを保存しました'); });
-  document.getElementById('clearNote').addEventListener('click', () => { textarea.value = ''; localStorage.removeItem(key); });
-}
-
-['searchInput', 'marketFilter', 'rankFilter', 'setupFilter', 'sortSelect'].forEach(id => {
-  document.getElementById(id)?.addEventListener('input', () => { renderCandidates(currentReport); renderRiskTable(currentReport); });
-  document.getElementById(id)?.addEventListener('change', () => { renderCandidates(currentReport); renderRiskTable(currentReport); });
-});
-document.getElementById('reloadReport').addEventListener('click', loadReport);
-initNotes();
-loadReport();
+let currentReport={candidates:[],themes:[],tracking:[],summary:{}};
+const nf=new Intl.NumberFormat('ja-JP',{maximumFractionDigits:1});
+const mf=new Intl.NumberFormat('ja-JP',{notation:'compact',maximumFractionDigits:1});
+const $=id=>document.getElementById(id);
+const val=id=>$(id)?.value||'';
+const setText=(id,text)=>{const e=$(id);if(e)e.textContent=text;};
+const setHtml=(id,html)=>{const e=$(id);if(e)e.innerHTML=html;};
+function fmt(v,s=''){if(v===undefined||v===null||v==='')return'-';return typeof v==='number'?`${nf.format(v)}${s}`:`${v}${s}`;}
+function money(v){return v?`$${mf.format(v)}`:'-';}
+function avg(arr){const xs=arr.filter(v=>typeof v==='number'&&!Number.isNaN(v));return xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:0;}
+function marketLabel(m){return m==='JP'?'日本株':m==='US'?'米国株':m||'-';}
+function setupLabel(t){return{breakout:'ブレイク候補',pullback:'押し目候補',theme_leader:'テーマリーダー',high_volatility:'高ボラ注意',trend_watch:'トレンド監視',watch_only:'監視のみ',avoid:'除外寄り'}[t]||t||'未分類';}
+function rankClass(r){return r==='S'?'rank-s':r==='A'?'rank-a':r==='B'?'rank-b':r==='C'?'rank-c':'rank-d';}
+function priority(i){if(i.rank==='S')return'最優先';if(i.rank==='A')return'優先監視';if(i.setupType==='high_volatility')return'サイズ注意';if(i.setupType==='avoid')return'見送り寄り';return'監視';}
+function links(i){const c=i.code||String(i.symbol||'').replace('.T','');if(i.market==='US')return`<a href="https://finance.yahoo.com/quote/${i.symbol}" target="_blank" rel="noopener noreferrer">Yahoo</a><a href="https://www.tradingview.com/symbols/${i.symbol}/" target="_blank" rel="noopener noreferrer">TradingView</a>`;return`<a href="https://kabutan.jp/stock/?code=${c}" target="_blank" rel="noopener noreferrer">株探</a><a href="https://finance.yahoo.co.jp/quote/${c}.T" target="_blank" rel="noopener noreferrer">Yahoo</a><a href="https://jp.tradingview.com/symbols/TSE-${c}/" target="_blank" rel="noopener noreferrer">TradingView</a>`;}
+function passRank(rank,filter){if(filter==='S')return rank==='S';if(filter==='A')return['S','A'].includes(rank);if(filter==='B')return['S','A','B'].includes(rank);return true;}
+function filtered(){const q=val('searchInput').trim().toLowerCase();const m=val('marketFilter')||'all';const r=val('rankFilter')||'all';const st=val('setupFilter')||'all';const sort=val('sortSelect')||'score';return[...(currentReport.candidates||[])].filter(i=>{const h=`${i.symbol||''} ${i.code||''} ${i.name||''} ${i.theme||''} ${i.market||''}`.toLowerCase();if(q&&!h.includes(q))return false;if(m!=='all'&&i.market!==m)return false;if(!passRank(i.rank,r))return false;if(st!=='all'&&i.setupType!==st)return false;return true;}).sort((a,b)=>{if(sort==='turnover')return(b.metrics?.avgTradingValue20Usd||0)-(a.metrics?.avgTradingValue20Usd||0);if(sort==='atr')return(a.metrics?.atrPct??999)-(b.metrics?.atrPct??999);if(sort==='ret60')return(b.metrics?.ret60Pct??-999)-(a.metrics?.ret60Pct??-999);return(b.score||0)-(a.score||0);});}
+function sectorRows(){const market=val('sectorMarketFilter')||'all';const sort=val('sectorSortSelect')||'strength';const groups={};(currentReport.candidates||[]).forEach(i=>{if(market!=='all'&&i.market!==market)return;const key=`${i.market||'-'}|${i.theme||'未分類'}`;if(!groups[key])groups[key]=[];groups[key].push(i);});const rows=Object.entries(groups).map(([key,items])=>{const [m,theme]=key.split('|');const leaders=[...items].sort((a,b)=>(b.score||0)-(a.score||0)).slice(0,4);const sCount=items.filter(i=>i.rank==='S').length;const aCount=items.filter(i=>i.rank==='A').length;const breakout=items.filter(i=>i.setupType==='breakout').length;const pullback=items.filter(i=>i.setupType==='pullback').length;const highVol=items.filter(i=>i.setupType==='high_volatility').length;const strength=Math.round(avg(items.map(i=>i.score||0))*10)/10;const ret20=Math.round(avg(items.map(i=>i.metrics?.ret20Pct))*10)/10;const ret60=Math.round(avg(items.map(i=>i.metrics?.ret60Pct))*10)/10;const atr=Math.round(avg(items.map(i=>i.metrics?.atrPct))*10)/10;const turnover=items.reduce((sum,i)=>sum+(i.metrics?.avgTradingValue20Usd||0),0);return{market:m,theme,items,leaders,sCount,aCount,breakout,pullback,highVol,strength,ret20,ret60,atr,turnover};});return rows.sort((a,b)=>{if(sort==='ret20')return b.ret20-a.ret20;if(sort==='ret60')return b.ret60-a.ret60;if(sort==='turnover')return b.turnover-a.turnover;if(sort==='leaders')return((b.sCount*2+b.aCount)-(a.sCount*2+a.aCount));return b.strength-a.strength;});}
+function renderSummary(){const s=currentReport.summary||{};const cards=[['対象',s.total??currentReport.candidates?.length??0],['S',s.sRank??0],['A',s.aRank??0],['ブレイク',s.breakoutReady??0],['押し目',s.pullbackReady??0],['高ボラ',s.highVolatility??0],['平均',s.averageScore??'-']];setHtml('summaryCards',cards.map(([l,v])=>`<article class="summary-card"><span>${l}</span><strong>${v}</strong></article>`).join(''));}
+function renderMarketSummary(){const s=currentReport.marketSummary||{};setHtml('marketSummary',['JP','US'].map(m=>{const r=s[m]||{};return`<article class="market-card"><span>${marketLabel(m)}</span><strong>${r.selectedRows??0}銘柄</strong><p>入力 ${r.inputRows??0} / S ${r.sRank??0} / A ${r.aRank??0} / 平均 ${r.averageScore??'-'}</p></article>`;}).join(''));}
+function renderSectors(){const rows=sectorRows();setHtml('sectorGrid',rows.slice(0,8).map(r=>{const leaderText=r.leaders.map(i=>i.symbol).join(' / ');return`<article class="theme-card"><span>${marketLabel(r.market)} / ${leaderText}</span><strong>${r.theme}</strong><p>S ${r.sCount} / A ${r.aCount} / ブレイク ${r.breakout} / 押し目 ${r.pullback}</p><div class="theme-meter"><i style="width:${Math.max(0,Math.min(100,r.strength))}%"></i></div><span>強さ ${fmt(r.strength)} / 20日 ${fmt(r.ret20,'%')} / 60日 ${fmt(r.ret60,'%')}</span></article>`;}).join('')||'<p class="empty">セクターデータがありません。</p>');setHtml('sectorTable',`<table><thead><tr><th>市場</th><th>セクター</th><th>強さ</th><th>20日</th><th>60日</th><th>ATR</th><th>S/A</th><th>型</th><th>売買代金</th><th>リーダー</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${marketLabel(r.market)}</td><td>${r.theme}</td><td>${fmt(r.strength)}</td><td>${fmt(r.ret20,'%')}</td><td>${fmt(r.ret60,'%')}</td><td>${fmt(r.atr,'%')}</td><td>S ${r.sCount}<br>A ${r.aCount}</td><td>BO ${r.breakout}<br>PB ${r.pullback}<br>HV ${r.highVol}</td><td>${money(r.turnover)}</td><td>${r.leaders.map(i=>`${i.symbol} ${i.name}`).join('<br>')}</td></tr>`).join('')}</tbody></table>`);}
+function scoreLine(i){const c=i.componentScores||{};return`<div class="score-breakdown">${[['T',c.trend],['M',c.momentum],['V',c.volume],['R',c.risk],['Theme',c.theme],['Setup',c.setup],['Liq',c.liquidity]].map(([k,v])=>`<span>${k}: <strong>${fmt(v)}</strong></span>`).join('')}</div>`;}
+function metricsLine(i){const m=i.metrics||{};return`<div class="score-breakdown metrics-line">${[['20日',fmt(m.ret20Pct,'%')],['60日',fmt(m.ret60Pct,'%')],['ATR',fmt(m.atrPct,'%')],['高値比',fmt(m.drawdownFromHighPct,'%')],['売買代金',money(m.avgTradingValue20Usd)]].map(([k,v])=>`<span>${k}: <strong>${v}</strong></span>`).join('')}</div>`;}
+function renderCandidates(){const all=currentReport.candidates||[];const list=filtered();setText('resultCount',`${list.length} / ${all.length}件を表示中`);if(!list.length){setHtml('candidateList','<p class="empty">条件に合う候補がありません。</p>');return;}setHtml('candidateList',list.map(i=>{const rs=(i.reasons||[]).slice(0,7).map(x=>`<li>${x}</li>`).join('');return`<article class="candidate-card"><div class="candidate-head"><div><span class="candidate-code">${i.symbol||i.code} / ${marketLabel(i.market)} / ${i.dataSource||'unknown'}</span><h3>${i.name}</h3><span class="theme-tag">#${i.theme||'未分類'} / ${i.setup||setupLabel(i.setupType)}</span></div><div class="rank-stack"><span class="rank-badge ${rankClass(i.rank)}">${i.rank||'-'}</span><small>${priority(i)}</small></div></div><div class="metric-grid"><div class="metric"><span class="metric-label">総合</span><strong>${fmt(i.score)}</strong></div><div class="metric"><span class="metric-label">型</span><strong>${setupLabel(i.setupType)}</strong></div><div class="metric"><span class="metric-label">現在値</span><strong>${fmt(i.price)}</strong></div><div class="metric"><span class="metric-label">損切り</span><strong>${fmt(i.stop)}</strong></div></div>${scoreLine(i)}${metricsLine(i)}<p class="action-line"><strong>判断:</strong> ${i.action||'監視継続'}</p><ul class="reason-list">${rs}</ul><div class="card-links">${links(i)}</div></article>`;}).join(''));}
+function renderThemes(){const ts=currentReport.themes||[];setHtml('themeGrid',ts.map(t=>{const note=typeof t.note==='object'?Object.entries(t.note).map(([k,v])=>`${setupLabel(k)} ${v}`).join(' / '):(t.note||'');return`<article class="theme-card"><span>${(t.leaders||[]).join(' / ')||'leaders未設定'}</span><strong>${t.name}</strong><p>${note}</p><div class="theme-meter"><i style="width:${Math.max(0,Math.min(100,t.strength||0))}%"></i></div><span>Strength ${fmt(t.strength)}</span></article>`;}).join('')||'<p class="empty">テーマデータがありません。</p>');}
+function renderRiskTable(){const rows=filtered();setHtml('riskTable',`<table><thead><tr><th>銘柄</th><th>市場</th><th>型</th><th>ランク</th><th>現在値</th><th>ピボット</th><th>損切り</th><th>利確1</th><th>売買代金</th><th>方針</th></tr></thead><tbody>${rows.map(i=>`<tr><td>${i.symbol||i.code}<br>${i.name}</td><td>${marketLabel(i.market)}</td><td>${setupLabel(i.setupType)}</td><td>${i.rank||'-'}</td><td>${fmt(i.price)}</td><td>${fmt(i.pivot)}</td><td>${fmt(i.stop)}</td><td>${fmt(i.target1)}</td><td>${money(i.metrics?.avgTradingValue20Usd)}</td><td>${i.action||'監視'}</td></tr>`).join('')}</tbody></table>`);}
+function renderTracking(){const tr=currentReport.tracking||[];setHtml('trackingList',tr.map(i=>`<article class="tracking-card"><strong>${i.symbol} ${i.name}</strong><span>検出: ${i.detectedAt} / 経過: ${fmt(i.days,'日')}</span><p>最大上昇 ${fmt(i.maxGain,'%')} / 最大下落 ${fmt(i.maxDrawdown,'%')}</p><p class="tracking-status warn">${i.status}</p></article>`).join('')||'<p class="empty">検証データがありません。</p>');}
+function renderAll(){setText('reportStatus',`Report: ${currentReport.generatedAt||'unknown'} / Universe: ${currentReport.universe||'unknown'} / JP・US別トップ${currentReport.screeningTopNPerMarket||'-'}`);renderSummary();renderMarketSummary();renderSectors();renderCandidates();renderThemes();renderRiskTable();renderTracking();}
+async function loadReport(){setText('reportStatus','レポートを再読み込み中...');try{const res=await fetch(`reports/latest.json?ts=${Date.now()}`,{cache:'no-store'});if(!res.ok)throw new Error('not found');currentReport=await res.json();renderAll();}catch(e){setText('reportStatus','reports/latest.json の読み込みに失敗しました。Actionsを実行してください。');renderAll();}}
+function bind(){['searchInput','marketFilter','rankFilter','setupFilter','sortSelect'].forEach(id=>{const e=$(id);if(!e)return;e.addEventListener('input',()=>{renderCandidates();renderRiskTable();});e.addEventListener('change',()=>{renderCandidates();renderRiskTable();});});['sectorMarketFilter','sectorSortSelect'].forEach(id=>{const e=$(id);if(!e)return;e.addEventListener('input',renderSectors);e.addEventListener('change',renderSectors);});$('reloadReport')?.addEventListener('click',loadReport);const ta=$('dailyNote');if(ta){const key='vcp-sepa-dashboard-note';ta.value=localStorage.getItem(key)||'';$('saveNote')?.addEventListener('click',()=>{localStorage.setItem(key,ta.value);alert('メモを保存しました');});$('clearNote')?.addEventListener('click',()=>{ta.value='';localStorage.removeItem(key);});}}
+function init(){bind();loadReport();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
