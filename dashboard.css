@@ -71,6 +71,7 @@ main { width: min(1120px, 100%); margin: 0 auto; padding: 16px; }
 .candidate-card h3 { margin: 4px 0 6px; font-size: 20px; }
 .theme-tag { display: inline-flex; color: var(--muted); font-size: 12px; }
 .rank-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 54px; height: 54px; border-radius: 16px; font-size: 24px; font-weight: 900; }
+.rank-s { background: rgba(250, 204, 21, 0.18); color: #fef08a; border: 1px solid rgba(250, 204, 21, 0.45); }
 .rank-a { background: rgba(34, 197, 94, 0.15); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.35); }
 .rank-b { background: rgba(56, 189, 248, 0.14); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.32); }
 .rank-c { background: rgba(245, 158, 11, 0.14); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.32); }
