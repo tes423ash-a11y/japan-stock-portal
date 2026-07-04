@@ -22,6 +22,10 @@ on:
   schedule:
     - cron: "0 9 * * 1-5"
 
+concurrency:
+  group: daily-screener-report-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -40,6 +44,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -68,10 +74,18 @@ jobs:
           PY
 
       - name: Commit generated report
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Update daily screener report
-          file_pattern: reports/latest.json reports/latest.md
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/latest.json reports/latest.md
+          if git diff --cached --quiet; then
+            echo "No report changes to commit."
+            exit 0
+          fi
+          git commit -m "Update daily screener report"
+          git pull --rebase origin main
+          git push origin HEAD:main
 
       - name: Upload report artifact
         uses: actions/upload-artifact@v4
