@@ -58,6 +58,9 @@ jobs:
       - name: Build report
         run: python scripts/build_report.py
 
+      - name: Enrich sector strength
+        run: python scripts/enrich_sector_strength.py
+
       - name: Print report diagnostics
         run: |
           python - <<'PY'
@@ -69,6 +72,8 @@ jobs:
           print('maxSymbolsPerMarket:', report.get('screeningMaxSymbolsPerMarket'))
           print('marketSummary:', json.dumps(report.get('marketSummary', {}), ensure_ascii=False))
           print('summary:', json.dumps(report.get('summary', {}), ensure_ascii=False))
+          print('sectorStrengthRows:', len(report.get('sectorStrength', [])))
+          print('sectorStrengthPreviousAvailable:', report.get('sectorStrengthPreviousAvailable'))
           print('jquantsStatus:', json.dumps(report.get('jquantsStatus', {}), ensure_ascii=False))
           print('diagnosticsCount:', len(report.get('jquantsQuoteDiagnostics', [])))
           PY
@@ -78,7 +83,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add reports/latest.json reports/latest.md
+          git add reports/latest.json reports/latest.md reports/sector_strength_previous.json
           if git diff --cached --quiet; then
             echo "No report changes to commit."
             exit 0
@@ -94,3 +99,4 @@ jobs:
           path: |
             reports/latest.json
             reports/latest.md
+            reports/sector_strength_previous.json
