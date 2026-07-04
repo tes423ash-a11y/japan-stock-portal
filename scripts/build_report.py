@@ -13,22 +13,42 @@ import yfinance as yf
 
 ROOT = Path(__file__).resolve().parents[1]
 WATCHLISTS = [ROOT / "watchlists" / "jp_candidates.csv", ROOT / "watchlists" / "us_candidates.csv"]
+UNIVERSE_FILES = [ROOT / "universes" / "jp_liquid.csv", ROOT / "universes" / "us_liquid.csv"]
 REPORT_DIR = ROOT / "reports"
 JQUANTS_BASE_URL = "https://api.jquants.com/v2"
 
 
-def read_watchlists() -> list[dict[str, str]]:
+def env_int(name: str, default: int) -> int:
+    try:
+        return int(os.getenv(name, str(default)))
+    except ValueError:
+        return default
+
+
+def read_csv_files(paths: list[Path]) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
-    for path in WATCHLISTS:
+    seen: set[str] = set()
+    for path in paths:
         if not path.exists():
             continue
         with path.open(newline="", encoding="utf-8") as handle:
             reader = csv.DictReader(handle)
             for row in reader:
                 symbol = (row.get("symbol") or "").strip()
-                if symbol:
-                    rows.append({key: (value or "").strip() for key, value in row.items()})
+                if not symbol or symbol in seen:
+                    continue
+                seen.add(symbol)
+                rows.append({key: (value or "").strip() for key, value in row.items()})
     return rows
+
+
+def read_input_rows() -> tuple[list[dict[str, str]], str]:
+    mode = os.getenv("SCREENING_MODE", "watchlists").strip() or "watchlists"
+    if mode in {"top_turnover", "all_universe"}:
+        rows = read_csv_files(UNIVERSE_FILES)
+        if rows:
+            return rows, mode
+    return read_csv_files(WATCHLISTS), "watchlists"
 
 
 def jquants_code_candidates(symbol: str) -> list[str]:
@@ -210,7 +230,7 @@ def theme_score(theme: str, symbol: str, name: str) -> int:
     score = 5
     if any(word in text for word in ["hbm", "memory", "dram", "nand", "micron", "sandisk"]):
         score += 10
-    if any(word in text for word in ["ai", "infrastructure", "data center", "datacenter", "optical"]):
+    if any(word in text for word in ["ai", "infrastructure", "data center", "datacenter", "optical", "semiconductor"]):
         score += 8
     if any(word in text for word in ["defense", "重工", "防衛"]):
         score += 7
@@ -245,11 +265,11 @@ def action_for_setup(setup_type: str) -> str:
 
 def build_placeholder_candidate(row: dict[str, str], index: int, reason: str | None = None) -> dict[str, object]:
     symbol = row.get("symbol", "")
+    setup_type = "watch_only"
+    score = max(35, 55 - index * 3)
     reasons = [row.get("note", "watchlist candidate")]
     if reason:
         reasons.insert(0, reason)
-    setup_type = "watch_only"
-    score = max(35, 55 - index * 3)
     return {
         "symbol": symbol,
         "code": symbol.replace(".T", ""),
@@ -270,7 +290,7 @@ def build_placeholder_candidate(row: dict[str, str], index: int, reason: str | N
         "action": action_for_setup(setup_type),
         "dataSource": "watchlist",
         "componentScores": {"trend": 0, "momentum": 0, "volume": 0, "risk": 0, "theme": theme_score(row.get("theme", ""), symbol, row.get("name", "")), "setup": 0},
-        "metrics": {},
+        "metrics": {"avgTradingValue20": 0},
         "reasons": reasons,
     }
 
@@ -297,6 +317,7 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
     volume20 = avg(volumes[-20:]) if len(volumes) >= 20 else None
     volume50 = avg(volumes[-50:]) if len(volumes) >= 50 else None
     volume_ratio = (volume20 / volume50) if volume20 and volume50 and volume50 > 0 else None
+    avg_trading_value20 = price * volume20 if price and volume20 else 0
     atr14 = atr(quotes, 14)
     atr_pct = (atr14 / price) * 100 if atr14 and price else None
     ret20 = pct_change(closes, 20)
@@ -367,6 +388,7 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
         reasons.append(f"ATR {atr_pct:.1f}%")
 
     theme_points = theme_score(theme, symbol, name)
+    liquidity_bonus = 5 if avg_trading_value20 >= 10_000_000_000 else 3 if avg_trading_value20 >= 3_000_000_000 else 0
 
     breakout_setup = 0
     if trend >= 18 and drawdown_from_high is not None and drawdown_from_high >= -8:
@@ -409,7 +431,7 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
     else:
         setup_type = "watch_only"
 
-    total_score = int(round(clamp(trend + momentum + volume + risk + theme_points + setup_points, 0, 100)))
+    total_score = int(round(clamp(trend + momentum + volume + risk + theme_points + setup_points + liquidity_bonus, 0, 100)))
     rank = rank_from_score(total_score, setup_type)
     stop = round(price - (atr14 * 2), 1) if atr14 else ""
     pivot = round(lookback_high, 1) if lookback_high else ""
@@ -435,7 +457,7 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
         "riskLabel": risk_label,
         "action": action_for_setup(setup_type),
         "dataSource": source,
-        "componentScores": {"trend": trend, "momentum": momentum, "volume": volume, "risk": risk, "theme": theme_points, "setup": setup_points},
+        "componentScores": {"trend": trend, "momentum": momentum, "volume": volume, "risk": risk, "theme": theme_points, "setup": setup_points, "liquidity": liquidity_bonus},
         "metrics": {
             "ma20": round_or_none(ma20),
             "ma50": round_or_none(ma50),
@@ -446,6 +468,8 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
             "atrPct": round_or_none(atr_pct),
             "drawdownFromHighPct": round_or_none(drawdown_from_high),
             "volumeRatio20vs50": round_or_none(volume_ratio, 2),
+            "avgVolume20": round_or_none(volume20, 0),
+            "avgTradingValue20": round_or_none(avg_trading_value20, 0),
         },
         "reasons": reasons or [row.get("note", "watchlist candidate")],
     }
@@ -495,22 +519,39 @@ def build_themes(candidates: list[dict[str, object]]) -> list[dict[str, object]]
 def write_markdown(report: dict[str, object]) -> str:
     candidates = report.get("candidates", [])
     lines = ["# Daily Screener Report", "", f"Generated: {report['generatedAt']}", "", "## Data Provider Status", ""]
+    lines.append(f"- Mode: {report.get('screeningMode')}")
     lines.append(f"- J-Quants: {report.get('jquantsStatus', {}).get('status', 'unknown')}")
     lines.append(f"- Universe: {report.get('universe')}")
     lines.extend(["", "## Top Candidates", ""])
-    for item in candidates[:10]:
-        lines.append(f"- {item['rank']} / {item['score']} / {item['setup']} / {item['symbol']} / {item['name']} / {item['theme']} / {item.get('dataSource', 'unknown')}")
+    for item in candidates[:20]:
+        tv = item.get("metrics", {}).get("avgTradingValue20")
+        lines.append(f"- {item['rank']} / {item['score']} / {item['setup']} / {item['symbol']} / {item['name']} / TV20={tv} / {item.get('dataSource', 'unknown')}")
     lines.append("")
     lines.append("Dashboard input: `reports/latest.json`")
     return "\n".join(lines) + "\n"
 
 
+def select_candidates(candidates: list[dict[str, object]], mode: str, top_n: int) -> list[dict[str, object]]:
+    if mode == "top_turnover":
+        liquid = sorted(candidates, key=lambda item: float(item.get("metrics", {}).get("avgTradingValue20") or 0), reverse=True)
+        return liquid[:top_n]
+    if mode == "all_universe":
+        return candidates[:top_n]
+    return candidates
+
+
 def main() -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    rows = read_watchlists()
+    rows, mode = read_input_rows()
+    top_n = env_int("SCREENING_TOP_N", 50)
+    max_symbols = env_int("SCREENING_MAX_SYMBOLS", 120)
+    if mode in {"top_turnover", "all_universe"}:
+        rows = rows[:max_symbols]
+
     api_key, jquants_status = get_jquants_api_key()
     diagnostics: list[dict[str, object]] = []
-    candidates = [build_candidate(row, i, api_key, diagnostics) for i, row in enumerate(rows)]
+    all_candidates = [build_candidate(row, i, api_key, diagnostics) for i, row in enumerate(rows)]
+    candidates = select_candidates(all_candidates, mode, top_n)
 
     average_score = round(sum(int(item["score"]) for item in candidates) / len(candidates), 1) if candidates else 0
     jquants_candidates = sum(1 for item in candidates if item.get("dataSource") == "jquants_v2")
@@ -529,7 +570,11 @@ def main() -> None:
 
     report = {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
-        "universe": "+".join(["watchlists", *data_sources]),
+        "screeningMode": mode,
+        "screeningTopN": top_n,
+        "screeningMaxSymbols": max_symbols,
+        "inputRows": len(rows),
+        "universe": "+".join([mode, *data_sources]),
         "jquantsStatus": jquants_status,
         "jquantsQuoteDiagnostics": diagnostics,
         "summary": {
@@ -545,10 +590,11 @@ def main() -> None:
             "yfinanceCandidates": yfinance_candidates,
         },
         "candidates": sorted(candidates, key=lambda item: int(item.get("score", 0)), reverse=True),
+        "topTurnover": sorted(candidates, key=lambda item: float(item.get("metrics", {}).get("avgTradingValue20") or 0), reverse=True)[:top_n],
         "themes": build_themes(candidates),
         "tracking": [],
     }
-    print(json.dumps({"universe": report["universe"], "jquantsStatus": jquants_status, "diagnostics": diagnostics}, ensure_ascii=False))
+    print(json.dumps({"mode": mode, "universe": report["universe"], "inputRows": len(rows), "jquantsStatus": jquants_status}, ensure_ascii=False))
     (REPORT_DIR / "latest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     (REPORT_DIR / "latest.md").write_text(write_markdown(report), encoding="utf-8")
 
