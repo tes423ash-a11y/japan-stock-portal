@@ -1,20 +1,20 @@
 {
-  "generatedAt": "sample",
+  "generatedAt": "2026-07-04T16:21:09.879515+00:00",
   "universe": "watchlists",
   "summary": {
-    "total": 2,
-    "aRank": 2,
-    "breakoutReady": 2,
-    "pullbackReady": 0,
-    "averageScore": 89.5
+    "total": 6,
+    "aRank": 3,
+    "breakoutReady": 3,
+    "pullbackReady": 3,
+    "averageScore": 79.5
   },
   "candidates": [
     {
       "symbol": "7011.T",
       "code": "7011",
-      "name": "Sample JP Candidate",
+      "name": "Mitsubishi Heavy Industries",
       "market": "JP",
-      "theme": "Theme A",
+      "theme": "Defense",
       "rank": "A",
       "score": 92,
       "setup": "VCP watch",
@@ -26,14 +26,16 @@
       "rr": "",
       "riskLabel": "Not calculated",
       "action": "Priority review",
-      "reasons": ["sample candidate"]
+      "reasons": [
+        "large cap theme"
+      ]
     },
     {
-      "symbol": "MU",
-      "code": "MU",
-      "name": "Sample US Candidate",
-      "market": "US",
-      "theme": "Theme B",
+      "symbol": "5803.T",
+      "code": "5803",
+      "name": "Fujikura",
+      "market": "JP",
+      "theme": "Data center",
       "rank": "A",
       "score": 87,
       "setup": "VCP watch",
@@ -45,21 +47,143 @@
       "rr": "",
       "riskLabel": "Not calculated",
       "action": "Priority review",
-      "reasons": ["sample candidate"]
+      "reasons": [
+        "optical communication theme"
+      ]
+    },
+    {
+      "symbol": "9501.T",
+      "code": "9501",
+      "name": "TEPCO",
+      "market": "JP",
+      "theme": "Power",
+      "rank": "A",
+      "score": 82,
+      "setup": "VCP watch",
+      "price": "",
+      "pivot": "",
+      "stop": "",
+      "target1": "",
+      "target2": "",
+      "rr": "",
+      "riskLabel": "Not calculated",
+      "action": "Priority review",
+      "reasons": [
+        "AI power demand"
+      ]
+    },
+    {
+      "symbol": "MU",
+      "code": "MU",
+      "name": "Micron Technology",
+      "market": "US",
+      "theme": "HBM Memory",
+      "rank": "B",
+      "score": 77,
+      "setup": "Pullback watch",
+      "price": "",
+      "pivot": "",
+      "stop": "",
+      "target1": "",
+      "target2": "",
+      "rr": "",
+      "riskLabel": "Not calculated",
+      "action": "Wait for setup",
+      "reasons": [
+        "AI memory leader"
+      ]
+    },
+    {
+      "symbol": "SNDK",
+      "code": "SNDK",
+      "name": "SanDisk",
+      "market": "US",
+      "theme": "Memory",
+      "rank": "B",
+      "score": 72,
+      "setup": "Pullback watch",
+      "price": "",
+      "pivot": "",
+      "stop": "",
+      "target1": "",
+      "target2": "",
+      "rr": "",
+      "riskLabel": "Not calculated",
+      "action": "Wait for setup",
+      "reasons": [
+        "storage cycle candidate"
+      ]
+    },
+    {
+      "symbol": "ANET",
+      "code": "ANET",
+      "name": "Arista Networks",
+      "market": "US",
+      "theme": "AI Infrastructure",
+      "rank": "B",
+      "score": 67,
+      "setup": "Pullback watch",
+      "price": "",
+      "pivot": "",
+      "stop": "",
+      "target1": "",
+      "target2": "",
+      "rr": "",
+      "riskLabel": "Not calculated",
+      "action": "Wait for setup",
+      "reasons": [
+        "data center networking"
+      ]
     }
   ],
   "themes": [
     {
-      "name": "Theme A",
-      "strength": 92,
-      "leaders": ["7011.T"],
-      "note": "sample"
+      "name": "Defense",
+      "strength": 92.0,
+      "leaders": [
+        "7011.T"
+      ],
+      "note": "1 candidates in watchlist"
     },
     {
-      "name": "Theme B",
-      "strength": 87,
-      "leaders": ["MU"],
-      "note": "sample"
+      "name": "Data center",
+      "strength": 87.0,
+      "leaders": [
+        "5803.T"
+      ],
+      "note": "1 candidates in watchlist"
+    },
+    {
+      "name": "Power",
+      "strength": 82.0,
+      "leaders": [
+        "9501.T"
+      ],
+      "note": "1 candidates in watchlist"
+    },
+    {
+      "name": "HBM Memory",
+      "strength": 77.0,
+      "leaders": [
+        "MU"
+      ],
+      "note": "1 candidates in watchlist"
+    },
+    {
+      "name": "Memory",
+      "strength": 72.0,
+      "leaders": [
+        "SNDK"
+      ],
+      "note": "1 candidates in watchlist"
+    },
+    {
+      "name": "AI Infrastructure",
+      "strength": 67.0,
+      "leaders": [
+        "ANET"
+      ],
+      "note": "1 candidates in watchlist"
     }
   ],
   "tracking": []
