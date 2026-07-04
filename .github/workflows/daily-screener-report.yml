@@ -1,0 +1,45 @@
+name: Daily Screener Report
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 * * 1-5"
+
+permissions:
+  contents: write
+
+jobs:
+  build-report:
+    runs-on: ubuntu-latest
+    env:
+      JQUANTS_EMAIL: ${{ secrets.JQUANTS_EMAIL }}
+      JQUANTS_PASSWORD: ${{ secrets.JQUANTS_PASSWORD }}
+      JQUANTS_REFRESH_TOKEN: ${{ secrets.JQUANTS_REFRESH_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build report
+        run: python scripts/build_report.py
+
+      - name: Commit generated report
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update daily screener report
+          file_pattern: reports/latest.json reports/latest.md
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-screener-report
+          path: |
+            reports/latest.json
+            reports/latest.md
