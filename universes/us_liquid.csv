@@ -16,14 +16,103 @@ LITE,Lumentum,US,Optical,AI optical communication
 KLAC,KLA,US,Semiconductor,semiconductor equipment
 LRCX,Lam Research,US,Semiconductor,semiconductor equipment
 AMAT,Applied Materials,US,Semiconductor,semiconductor equipment
+ASML,ASML Holding,US,Semiconductor,semiconductor equipment
+TSM,Taiwan Semiconductor,US,Semiconductor,foundry leader
+ARM,Arm Holdings,US,Semiconductor,AI semiconductor
+QCOM,Qualcomm,US,Semiconductor,semiconductor large cap
+INTC,Intel,US,Semiconductor,semiconductor large cap
+TXN,Texas Instruments,US,Semiconductor,analog semiconductor
+ADI,Analog Devices,US,Semiconductor,analog semiconductor
+NXPI,NXP Semiconductors,US,Semiconductor,auto semiconductor
+MCHP,Microchip Technology,US,Semiconductor,industrial semiconductor
+ON,ON Semiconductor,US,Semiconductor,power semiconductor
+MPWR,Monolithic Power Systems,US,Semiconductor,power semiconductor
+TER,Teradyne,US,Semiconductor,semiconductor equipment
+COHR,Coherent,US,Optical,optical communication
 PANW,Palo Alto Networks,US,Cybersecurity,security leader
 CRWD,CrowdStrike,US,Cybersecurity,security leader
+FTNT,Fortinet,US,Cybersecurity,security leader
+ZS,Zscaler,US,Cybersecurity,cloud security
+NET,Cloudflare,US,Cybersecurity,edge security
+OKTA,Okta,US,Cybersecurity,identity security
+S,SentinelOne,US,Cybersecurity,endpoint security
 APP,AppLovin,US,Software,momentum software
 HOOD,Robinhood,US,Fintech,momentum fintech
+COIN,Coinbase,US,Fintech,crypto infrastructure
+SOFI,SoFi Technologies,US,Fintech,fintech growth
+AFRM,Affirm,US,Fintech,fintech growth
+SQ,Block,US,Fintech,payments fintech
+PYPL,PayPal,US,Fintech,payments fintech
+V,Visa,US,Fintech,payments large cap
+MA,Mastercard,US,Fintech,payments large cap
+JPM,JPMorgan Chase,US,Bank,bank large cap
+BAC,Bank of America,US,Bank,bank large cap
+WFC,Wells Fargo,US,Bank,bank large cap
+GS,Goldman Sachs,US,Financial,investment bank
+MS,Morgan Stanley,US,Financial,investment bank
+BLK,BlackRock,US,Financial,asset manager
+SCHW,Charles Schwab,US,Financial,brokerage
+IBKR,Interactive Brokers,US,Financial,brokerage
 AXON,Axon Enterprise,US,Defense,public safety technology
+LMT,Lockheed Martin,US,Defense,defense prime
+RTX,RTX,US,Defense,defense prime
+NOC,Northrop Grumman,US,Defense,defense prime
+GD,General Dynamics,US,Defense,defense prime
+LHX,L3Harris Technologies,US,Defense,defense electronics
+HWM,Howmet Aerospace,US,Aerospace,aerospace supplier
+TDG,TransDigm,US,Aerospace,aerospace supplier
+BA,Boeing,US,Aerospace,aerospace large cap
 RKLB,Rocket Lab,US,Space,space theme
 ASTS,AST SpaceMobile,US,Space,space theme
+LUNR,Intuitive Machines,US,Space,space theme
 OKLO,Oklo,US,Nuclear,nuclear power theme
 GEV,GE Vernova,US,Power,power infrastructure
 VRT,Vertiv,US,Data center,data center power
 CEG,Constellation Energy,US,Power,nuclear power leader
+NEE,NextEra Energy,US,Power,utility large cap
+SO,Southern Company,US,Power,utility large cap
+DUK,Duke Energy,US,Power,utility large cap
+VST,Vistra,US,Power,power momentum
+NRG,NRG Energy,US,Power,power generation
+ETN,Eaton,US,Power,electrical equipment
+EMR,Emerson Electric,US,Industrial,industrial automation
+ROK,Rockwell Automation,US,Factory Automation,automation
+PH,Parker Hannifin,US,Industrial,industrial large cap
+CAT,Caterpillar,US,Industrial,machinery large cap
+DE,Deere,US,Industrial,machinery large cap
+PWR,Quanta Services,US,Power,power grid construction
+ORCL,Oracle,US,AI Infrastructure,cloud infrastructure
+CRM,Salesforce,US,Software,enterprise software
+NOW,ServiceNow,US,Software,enterprise software
+ADBE,Adobe,US,Software,creative software
+SNOW,Snowflake,US,Software,data cloud
+PLTR,Palantir,US,AI Software,AI software
+DDOG,Datadog,US,Software,observability
+MDB,MongoDB,US,Software,database
+SHOP,Shopify,US,Internet,ecommerce software
+UBER,Uber Technologies,US,Internet,mobility platform
+ABNB,Airbnb,US,Internet,travel platform
+MELI,MercadoLibre,US,Internet,ecommerce fintech
+NFLX,Netflix,US,Consumer Tech,streaming
+DIS,Walt Disney,US,Consumer,media large cap
+COST,Costco,US,Consumer,retail large cap
+WMT,Walmart,US,Consumer,retail large cap
+HD,Home Depot,US,Consumer,retail large cap
+MCD,McDonald's,US,Consumer,restaurant large cap
+SBUX,Starbucks,US,Consumer,restaurant large cap
+NKE,Nike,US,Consumer,consumer brand
+LLY,Eli Lilly,US,Healthcare,pharma leader
+UNH,UnitedHealth,US,Healthcare,healthcare large cap
+JNJ,Johnson & Johnson,US,Healthcare,pharma large cap
+ABBV,AbbVie,US,Healthcare,pharma large cap
+MRK,Merck,US,Healthcare,pharma large cap
+TMO,Thermo Fisher Scientific,US,Healthcare,life science tools
+ISRG,Intuitive Surgical,US,Healthcare,medical robotics
+XOM,Exxon Mobil,US,Energy,energy large cap
+CVX,Chevron,US,Energy,energy large cap
+COP,ConocoPhillips,US,Energy,energy large cap
+SLB,SLB,US,Energy,oil services
+LNG,Cheniere Energy,US,Energy,LNG export
+FCX,Freeport-McMoRan,US,Materials,copper theme
+NEM,Newmont,US,Materials,gold miner
+AA,Alcoa,US,Materials,aluminum
