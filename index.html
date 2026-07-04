@@ -5,20 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SEPA/VCP 日次スクリーナー</title>
   <meta name="description" content="日本株・米国株の売買代金上位からVCP/SEPA候補、セクター強弱、押し目候補、高ボラ注意銘柄をスマホで確認する投資ダッシュボード" />
-  <link rel="stylesheet" href="dashboard.css?v=20260705-sector-strength" />
+  <link rel="stylesheet" href="dashboard.css?v=20260705-sector-v2" />
 </head>
 <body>
   <header class="hero">
     <p class="eyebrow">SEPA / VCP Daily Screener</p>
     <h1>日次スクリーナー</h1>
-    <p class="lead">日本株と米国株を別々に売買代金上位で抽出し、セクター強弱・ブレイク候補・押し目候補を絞り込みます。</p>
+    <p class="lead">日米の売買代金上位から、強いセクター、リーダー銘柄、ブレイク候補を一気通貫で確認します。</p>
     <nav class="quick-nav" aria-label="主要セクション">
       <a href="#command-center">司令室</a>
       <a href="#sector-strength">セクター</a>
       <a href="#candidates">候補</a>
       <a href="#themes">テーマ</a>
       <a href="#risk-plan">売買計画</a>
-      <a href="#tracking">検証</a>
       <a href="#notes">メモ</a>
     </nav>
   </header>
@@ -30,21 +29,30 @@
       <div id="summaryCards" class="summary-grid"></div>
       <div id="marketSummary" class="market-summary"></div>
       <div class="decision-flow">
-        <article><strong>1. セクター強弱</strong><p>まず日米別に強いセクターを確認。弱いテーマの個別株は優先度を下げる。</p></article>
-        <article><strong>2. S/Aだけ確認</strong><p>地合いが悪い日はS・Aランクだけ見る。B以下は無理に触らない。</p></article>
-        <article><strong>3. 型で絞る</strong><p>ブレイク、押し目、高ボラ注意を分ける。高ボラはサイズを落とす。</p></article>
-        <article><strong>4. リスクを見る</strong><p>ATR、損切り幅、ピボット距離を見て、RR 1:2以上だけ残す。</p></article>
+        <article><strong>1. 強くなったテーマ</strong><p>まず前回比で強くなったテーマとヒートマップを見る。</p></article>
+        <article><strong>2. セクター内ランキング</strong><p>テーマをタップして、内部のリーダー銘柄だけ見る。</p></article>
+        <article><strong>3. S/Aだけ確認</strong><p>地合いが悪い日はS・Aランクだけ。高ボラはサイズを落とす。</p></article>
+        <article><strong>4. リスクを見る</strong><p>ATR、損切り幅、ピボット距離を見てRRを確認する。</p></article>
       </div>
     </section>
 
     <section id="sector-strength" class="panel">
       <div class="section-title"><span>Sector / Theme Strength</span><h2>セクター別の強さ</h2></div>
-      <p class="lead">KabuTrend風に、テーマごとの平均スコア、20日/60日上昇率、売買代金、S/A銘柄数、リーダー銘柄をまとめます。</p>
-      <div class="toolbar advanced-toolbar">
-        <label>市場<select id="sectorMarketFilter"><option value="all">日米すべて</option><option value="JP">日本株</option><option value="US">米国株</option></select></label>
-        <label>並び替え<select id="sectorSortSelect"><option value="strength">強さ順</option><option value="ret20">20日上昇順</option><option value="ret60">60日上昇順</option><option value="turnover">売買代金順</option><option value="leaders">S/A多い順</option></select></label>
+      <p class="lead">テーマごとの強さ、前回比、リーダー銘柄、内部ランキングを確認します。カードをタップすると詳細が開きます。</p>
+      <div class="tab-bar" role="tablist" aria-label="市場切替">
+        <button class="tab-button active" type="button" data-sector-market="all">日米すべて</button>
+        <button class="tab-button" type="button" data-sector-market="JP">日本株</button>
+        <button class="tab-button" type="button" data-sector-market="US">米国株</button>
       </div>
-      <div id="sectorGrid" class="theme-grid"></div>
+      <div class="toolbar advanced-toolbar">
+        <label>並び替え<select id="sectorSortSelect"><option value="change">強くなった順</option><option value="strength">強さ順</option><option value="ret20">20日上昇順</option><option value="ret60">60日上昇順</option><option value="turnover">売買代金順</option><option value="leaders">S/A多い順</option></select></label>
+      </div>
+      <h3 class="subhead">強くなったテーマ</h3>
+      <div id="strongerThemes" class="heatmap-grid"></div>
+      <h3 class="subhead">ヒートマップ</h3>
+      <div id="sectorHeatmap" class="heatmap-grid"></div>
+      <h3 class="subhead">セクターランキング</h3>
+      <div id="sectorGrid" class="sector-list"></div>
       <div id="sectorTable" class="table-wrap"></div>
     </section>
 
@@ -73,6 +81,6 @@
   </main>
 
   <footer class="footer"><p>このダッシュボードは投資判断の補助用です。売買前に必ず証券会社画面、企業IR、TDnet、EDINETなど一次情報を確認してください。</p></footer>
-  <script src="dashboard.js?v=20260705-sector-strength"></script>
+  <script src="dashboard.js?v=20260705-sector-v2"></script>
 </body>
 </html>
