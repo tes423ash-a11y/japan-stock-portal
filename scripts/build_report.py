@@ -52,6 +52,14 @@ def safe_http_status(error: requests.RequestException) -> str:
     return f"HTTP {response.status_code}{detail}"
 
 
+def jquants_recent_unavailable(diagnostics: list[dict[str, object]]) -> bool:
+    for item in diagnostics:
+        message = str(item.get("message", ""))
+        if "subscription covers" in message or "Rate limit exceeded" in message:
+            return True
+    return False
+
+
 def get_jquants_api_key() -> tuple[str | None, dict[str, object]]:
     api_key = os.getenv("JQUANTS_API_KEY") or os.getenv("JQUANTS_REFRESH_TOKEN")
     legacy_email = os.getenv("JQUANTS_EMAIL")
@@ -181,31 +189,77 @@ def clamp(number: float, low: float, high: float) -> float:
     return max(low, min(high, number))
 
 
-def rank_from_score(score: int) -> str:
-    if score >= 80:
+def round_or_none(number: float | None, digits: int = 1) -> float | None:
+    return round(number, digits) if number is not None else None
+
+
+def rank_from_score(score: int, setup_type: str) -> str:
+    if setup_type == "avoid":
+        return "D"
+    if score >= 76 and setup_type not in {"high_volatility"}:
         return "A"
-    if score >= 65:
+    if score >= 62:
         return "B"
-    if score >= 50:
+    if score >= 46:
         return "C"
     return "D"
 
 
+def theme_score(theme: str, symbol: str, name: str) -> int:
+    text = f"{theme} {symbol} {name}".lower()
+    score = 5
+    if any(word in text for word in ["hbm", "memory", "dram", "nand", "micron", "sandisk"]):
+        score += 10
+    if any(word in text for word in ["ai", "infrastructure", "data center", "datacenter", "optical"]):
+        score += 8
+    if any(word in text for word in ["defense", "重工", "防衛"]):
+        score += 7
+    if any(word in text for word in ["power", "electric", "電力", "原子力"]):
+        score += 5
+    return int(clamp(score, 0, 15))
+
+
+def setup_label(setup_type: str) -> str:
+    return {
+        "breakout": "ブレイク候補",
+        "pullback": "押し目候補",
+        "theme_leader": "テーマリーダー監視",
+        "high_volatility": "高ボラ注意",
+        "trend_watch": "トレンド監視",
+        "watch_only": "監視のみ",
+        "avoid": "除外寄り",
+    }.get(setup_type, "監視のみ")
+
+
+def action_for_setup(setup_type: str) -> str:
+    return {
+        "breakout": "ピボット超えと出来高増を確認。高値掴みは避ける。",
+        "pullback": "20日線/50日線の反発、下げ止まり、出来高減少を確認。",
+        "theme_leader": "テーマ資金が戻るまで優先監視。地合い回復時に再評価。",
+        "high_volatility": "ボラが高い。サイズを落とすか、ATR低下・横ばい化を待つ。",
+        "trend_watch": "上昇トレンドは残る。セットアップ形成待ち。",
+        "watch_only": "現時点では形不足。監視継続。",
+        "avoid": "トレンド修復まで原則見送り。",
+    }.get(setup_type, "監視継続。")
+
+
 def build_placeholder_candidate(row: dict[str, str], index: int, reason: str | None = None) -> dict[str, object]:
-    score = max(55, 92 - index * 5)
     symbol = row.get("symbol", "")
     reasons = [row.get("note", "watchlist candidate")]
     if reason:
         reasons.insert(0, reason)
+    setup_type = "watch_only"
+    score = max(35, 55 - index * 3)
     return {
         "symbol": symbol,
         "code": symbol.replace(".T", ""),
         "name": row.get("name", "Unnamed"),
         "market": row.get("market", ""),
         "theme": row.get("theme", "Uncategorized"),
-        "rank": rank_from_score(score),
+        "rank": rank_from_score(score, setup_type),
         "score": score,
-        "setup": "VCP watch" if score >= 80 else "Pullback watch" if score >= 65 else "Watch only",
+        "setup": setup_label(setup_type),
+        "setupType": setup_type,
         "price": "",
         "pivot": "",
         "stop": "",
@@ -213,14 +267,18 @@ def build_placeholder_candidate(row: dict[str, str], index: int, reason: str | N
         "target2": "",
         "rr": "",
         "riskLabel": "Not calculated",
-        "action": "Priority review" if score >= 80 else "Wait for setup",
+        "action": action_for_setup(setup_type),
         "dataSource": "watchlist",
+        "componentScores": {"trend": 0, "momentum": 0, "volume": 0, "risk": 0, "theme": theme_score(row.get("theme", ""), symbol, row.get("name", "")), "setup": 0},
+        "metrics": {},
         "reasons": reasons,
     }
 
 
 def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], index: int, source: str) -> dict[str, object]:
     symbol = row.get("symbol", "")
+    name = row.get("name", "Unnamed")
+    theme = row.get("theme", "Uncategorized")
     closes = [value(item, "AdjC", "AdjustmentClose", "C", "Close") for item in quotes]
     closes = [item for item in closes if item is not None]
     volumes = [value(item, "AdjVo", "AdjustmentVolume", "Vo", "Volume") for item in quotes]
@@ -238,60 +296,121 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
     lookback_low = min(closes[-252:]) if len(closes) >= 252 else min(closes)
     volume20 = avg(volumes[-20:]) if len(volumes) >= 20 else None
     volume50 = avg(volumes[-50:]) if len(volumes) >= 50 else None
+    volume_ratio = (volume20 / volume50) if volume20 and volume50 and volume50 > 0 else None
     atr14 = atr(quotes, 14)
     atr_pct = (atr14 / price) * 100 if atr14 and price else None
     ret20 = pct_change(closes, 20)
     ret60 = pct_change(closes, 60)
+    drawdown_from_high = ((price / lookback_high) - 1) * 100 if lookback_high else None
 
-    score_points = 0.0
     reasons: list[str] = []
-
+    trend = 0
     if ma20 and price > ma20:
-        score_points += 8
-        reasons.append("price > 20MA")
+        trend += 4
+        reasons.append("20MA上")
     if ma50 and price > ma50:
-        score_points += 12
-        reasons.append("price > 50MA")
+        trend += 6
+        reasons.append("50MA上")
     if ma150 and price > ma150:
-        score_points += 7
-        reasons.append("price > 150MA")
+        trend += 5
+        reasons.append("150MA上")
     if ma200 and price > ma200:
-        score_points += 7
-        reasons.append("price > 200MA")
+        trend += 5
+        reasons.append("200MA上")
     if ma50 and ma150 and ma200 and ma50 > ma150 > ma200:
-        score_points += 10
-        reasons.append("50MA > 150MA > 200MA")
-    if lookback_high and price >= lookback_high * 0.75:
-        score_points += 8
-        reasons.append("near lookback high")
-    if lookback_low and price >= lookback_low * 1.25:
-        score_points += 5
-        reasons.append("above lookback low")
+        trend += 5
+        reasons.append("50>150>200MA")
+    trend = int(clamp(trend, 0, 25))
+
+    momentum = 0.0
     if ret20 is not None:
-        score_points += clamp(ret20, -10, 20) * 0.4
-        reasons.append(f"20d return {ret20:.1f}%")
+        momentum += clamp((ret20 + 8) / 28 * 9, 0, 9)
+        reasons.append(f"20日 {ret20:.1f}%")
     if ret60 is not None:
-        score_points += clamp(ret60, -20, 45) * 0.35
-        reasons.append(f"60d return {ret60:.1f}%")
-    if volume20 and volume50 and volume50 > 0:
-        ratio = volume20 / volume50
-        if ratio >= 1.4:
-            score_points += 10
-            reasons.append("volume expansion")
-        elif ratio >= 1.0:
-            score_points += 6
-            reasons.append("volume stable")
+        momentum += clamp((ret60 + 15) / 60 * 11, 0, 11)
+        reasons.append(f"60日 {ret60:.1f}%")
+    if drawdown_from_high is not None and drawdown_from_high >= -12:
+        momentum += 5
+        reasons.append(f"高値から {drawdown_from_high:.1f}%")
+    momentum = int(round(clamp(momentum, 0, 25)))
+
+    volume = 0
+    if volume_ratio is not None:
+        if volume_ratio >= 1.5:
+            volume = 10
+            reasons.append(f"出来高拡大 x{volume_ratio:.2f}")
+        elif volume_ratio >= 1.05:
+            volume = 7
+            reasons.append(f"出来高安定 x{volume_ratio:.2f}")
+        elif volume_ratio >= 0.75:
+            volume = 4
+            reasons.append(f"出来高収縮 x{volume_ratio:.2f}")
+
+    risk = 0
+    risk_label = "ATR unknown"
     if atr_pct is not None:
         if atr_pct <= 3.5:
-            score_points += 12
+            risk = 15
+            risk_label = "低ボラ"
         elif atr_pct <= 5.5:
-            score_points += 8
+            risk = 12
+            risk_label = "許容ボラ"
         elif atr_pct <= 8:
-            score_points += 4
-        reasons.append(f"ATR% {atr_pct:.1f}")
+            risk = 8
+            risk_label = "やや高ボラ"
+        elif atr_pct <= 12:
+            risk = 4
+            risk_label = "高ボラ"
+        else:
+            risk = 1
+            risk_label = "超高ボラ"
+        reasons.append(f"ATR {atr_pct:.1f}%")
 
-    score = int(round(clamp(score_points, 0, 100)))
-    rank = rank_from_score(score)
+    theme_points = theme_score(theme, symbol, name)
+
+    breakout_setup = 0
+    if trend >= 18 and drawdown_from_high is not None and drawdown_from_high >= -8:
+        breakout_setup += 8
+    if ma20 and price > ma20:
+        breakout_setup += 3
+    if volume_ratio is not None and volume_ratio >= 1.05:
+        breakout_setup += 4
+
+    pullback_setup = 0
+    if trend >= 16 and drawdown_from_high is not None and -35 <= drawdown_from_high <= -5:
+        pullback_setup += 8
+    if ma20 and price >= ma20 * 0.95:
+        pullback_setup += 3
+    if ret20 is not None and ret20 >= -12:
+        pullback_setup += 4
+
+    theme_leader_setup = 0
+    if theme_points >= 12 and trend >= 14:
+        theme_leader_setup += 8
+    if ret60 is not None and ret60 >= -20:
+        theme_leader_setup += 4
+    if price >= lookback_low * 1.25:
+        theme_leader_setup += 3
+
+    setup_points = int(clamp(max(breakout_setup, pullback_setup, theme_leader_setup), 0, 15))
+
+    if trend < 10 and (ret60 is not None and ret60 < -15):
+        setup_type = "avoid"
+    elif atr_pct is not None and atr_pct >= 10:
+        setup_type = "high_volatility"
+    elif breakout_setup >= 11:
+        setup_type = "breakout"
+    elif pullback_setup >= 10:
+        setup_type = "pullback"
+    elif theme_leader_setup >= 10:
+        setup_type = "theme_leader"
+    elif trend >= 16:
+        setup_type = "trend_watch"
+    else:
+        setup_type = "watch_only"
+
+    total_score = int(round(clamp(trend + momentum + volume + risk + theme_points + setup_points, 0, 100)))
+    rank = rank_from_score(total_score, setup_type)
     stop = round(price - (atr14 * 2), 1) if atr14 else ""
     pivot = round(lookback_high, 1) if lookback_high else ""
     target1 = round(price + (price - stop) * 2, 1) if isinstance(stop, float) and price > stop else ""
@@ -300,21 +419,34 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
     return {
         "symbol": symbol,
         "code": symbol.replace(".T", ""),
-        "name": row.get("name", "Unnamed"),
+        "name": name,
         "market": row.get("market", ""),
-        "theme": row.get("theme", "Uncategorized"),
+        "theme": theme,
         "rank": rank,
-        "score": score,
-        "setup": "SEPA/VCP candidate" if score >= 80 else "Pullback watch" if score >= 65 else "Watch only",
+        "score": total_score,
+        "setup": setup_label(setup_type),
+        "setupType": setup_type,
         "price": round(price, 1),
         "pivot": pivot,
         "stop": stop,
         "target1": target1,
         "target2": target2,
         "rr": 2 if target1 else "",
-        "riskLabel": "ATR stop" if atr14 else "Not calculated",
-        "action": "Priority review" if rank == "A" else "Wait for setup",
+        "riskLabel": risk_label,
+        "action": action_for_setup(setup_type),
         "dataSource": source,
+        "componentScores": {"trend": trend, "momentum": momentum, "volume": volume, "risk": risk, "theme": theme_points, "setup": setup_points},
+        "metrics": {
+            "ma20": round_or_none(ma20),
+            "ma50": round_or_none(ma50),
+            "ma150": round_or_none(ma150),
+            "ma200": round_or_none(ma200),
+            "ret20Pct": round_or_none(ret20),
+            "ret60Pct": round_or_none(ret60),
+            "atrPct": round_or_none(atr_pct),
+            "drawdownFromHighPct": round_or_none(drawdown_from_high),
+            "volumeRatio20vs50": round_or_none(volume_ratio, 2),
+        },
         "reasons": reasons or [row.get("note", "watchlist candidate")],
     }
 
@@ -322,7 +454,7 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
 def build_candidate(row: dict[str, str], index: int, api_key: str | None, diagnostics: list[dict[str, object]]) -> dict[str, object]:
     market = (row.get("market") or "").upper()
     symbol = row.get("symbol", "")
-    if api_key and (market == "JP" or symbol.endswith(".T")):
+    if api_key and (market == "JP" or symbol.endswith(".T")) and not jquants_recent_unavailable(diagnostics):
         for code in jquants_code_candidates(symbol):
             try:
                 quotes = fetch_jquants_daily_quotes(code, api_key)
@@ -353,7 +485,10 @@ def build_themes(candidates: list[dict[str, object]]) -> list[dict[str, object]]
     for theme, items in grouped.items():
         average = sum(int(item.get("score", 0)) for item in items) / len(items)
         leaders = [str(item.get("symbol")) for item in sorted(items, key=lambda x: int(x.get("score", 0)), reverse=True)[:3]]
-        themes.append({"name": theme, "strength": round(average, 1), "leaders": leaders, "note": f"{len(items)} candidates in watchlist"})
+        setup_counts = defaultdict(int)
+        for item in items:
+            setup_counts[str(item.get("setupType", "watch_only"))] += 1
+        themes.append({"name": theme, "strength": round(average, 1), "leaders": leaders, "note": dict(setup_counts)})
     return sorted(themes, key=lambda item: float(item["strength"]), reverse=True)
 
 
@@ -364,7 +499,7 @@ def write_markdown(report: dict[str, object]) -> str:
     lines.append(f"- Universe: {report.get('universe')}")
     lines.extend(["", "## Top Candidates", ""])
     for item in candidates[:10]:
-        lines.append(f"- {item['rank']} / {item['score']} / {item['symbol']} / {item['name']} / {item['theme']} / {item.get('dataSource', 'unknown')}")
+        lines.append(f"- {item['rank']} / {item['score']} / {item['setup']} / {item['symbol']} / {item['name']} / {item['theme']} / {item.get('dataSource', 'unknown')}")
     lines.append("")
     lines.append("Dashboard input: `reports/latest.json`")
     return "\n".join(lines) + "\n"
@@ -381,6 +516,9 @@ def main() -> None:
     jquants_candidates = sum(1 for item in candidates if item.get("dataSource") == "jquants_v2")
     yfinance_candidates = sum(1 for item in candidates if item.get("dataSource") == "yfinance")
     data_sources = sorted({str(item.get("dataSource")) for item in candidates})
+    setup_counts = defaultdict(int)
+    for item in candidates:
+        setup_counts[str(item.get("setupType", "watch_only"))] += 1
 
     if jquants_candidates > 0:
         jquants_status["status"] = "ok"
@@ -394,8 +532,19 @@ def main() -> None:
         "universe": "+".join(["watchlists", *data_sources]),
         "jquantsStatus": jquants_status,
         "jquantsQuoteDiagnostics": diagnostics,
-        "summary": {"total": len(candidates), "aRank": sum(1 for item in candidates if item["rank"] == "A"), "breakoutReady": sum(1 for item in candidates if "VCP" in str(item.get("setup"))), "pullbackReady": sum(1 for item in candidates if "Pullback" in str(item.get("setup"))), "averageScore": average_score, "jquantsCandidates": jquants_candidates, "yfinanceCandidates": yfinance_candidates},
-        "candidates": candidates,
+        "summary": {
+            "total": len(candidates),
+            "aRank": sum(1 for item in candidates if item["rank"] == "A"),
+            "breakoutReady": setup_counts["breakout"],
+            "pullbackReady": setup_counts["pullback"],
+            "themeLeader": setup_counts["theme_leader"],
+            "highVolatility": setup_counts["high_volatility"],
+            "avoid": setup_counts["avoid"],
+            "averageScore": average_score,
+            "jquantsCandidates": jquants_candidates,
+            "yfinanceCandidates": yfinance_candidates,
+        },
+        "candidates": sorted(candidates, key=lambda item: int(item.get("score", 0)), reverse=True),
         "themes": build_themes(candidates),
         "tracking": [],
     }
