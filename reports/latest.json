@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T17:24:07.197803+00:00",
+  "generatedAt": "2026-07-04T17:32:51.323776+00:00",
   "universe": "watchlists+yfinance",
   "jquantsStatus": {
     "enabled": true,
@@ -31,42 +31,10 @@
       "rows": 244
     },
     {
-      "provider": "jquants_v2",
-      "symbol": "5803.T",
-      "code": "5803",
-      "endpoint": "v2/equities/bars/daily",
-      "status": "quote_failed",
-      "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
-    },
-    {
-      "provider": "jquants_v2",
-      "symbol": "5803.T",
-      "code": "58030",
-      "endpoint": "v2/equities/bars/daily",
-      "status": "quote_failed",
-      "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
-    },
-    {
       "provider": "yfinance",
       "symbol": "5803.T",
       "status": "ok",
       "rows": 244
-    },
-    {
-      "provider": "jquants_v2",
-      "symbol": "9501.T",
-      "code": "9501",
-      "endpoint": "v2/equities/bars/daily",
-      "status": "quote_failed",
-      "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
-    },
-    {
-      "provider": "jquants_v2",
-      "symbol": "9501.T",
-      "code": "95010",
-      "endpoint": "v2/equities/bars/daily",
-      "status": "quote_failed",
-      "message": "HTTP 429 body={\"message\": \"Rate limit exceeded. Please try again later.\"}"
     },
     {
       "provider": "yfinance",
@@ -98,34 +66,110 @@
     "aRank": 0,
     "breakoutReady": 0,
     "pullbackReady": 1,
-    "averageScore": 37.7,
+    "themeLeader": 0,
+    "highVolatility": 3,
+    "avoid": 2,
+    "averageScore": 57.8,
     "jquantsCandidates": 0,
     "yfinanceCandidates": 6
   },
   "candidates": [
     {
-      "symbol": "7011.T",
-      "code": "7011",
-      "name": "Mitsubishi Heavy Industries",
-      "market": "JP",
-      "theme": "Defense",
-      "rank": "D",
-      "score": 9,
-      "setup": "Watch only",
-      "price": 3792.0,
-      "pivot": 5180.2,
-      "stop": 3488.7,
-      "target1": 4398.6,
-      "target2": 4701.9,
+      "symbol": "MU",
+      "code": "MU",
+      "name": "Micron Technology",
+      "market": "US",
+      "theme": "HBM Memory",
+      "rank": "B",
+      "score": 73,
+      "setup": "高ボラ注意",
+      "setupType": "high_volatility",
+      "price": 975.6,
+      "pivot": 1213.6,
+      "stop": 762.2,
+      "target1": 1402.3,
+      "target2": 1615.6,
       "rr": 2,
-      "riskLabel": "ATR stop",
-      "action": "Wait for setup",
+      "riskLabel": "高ボラ",
+      "action": "ボラが高い。サイズを落とすか、ATR低下・横ばい化を待つ。",
       "dataSource": "yfinance",
+      "componentScores": {
+        "trend": 21,
+        "momentum": 11,
+        "volume": 7,
+        "risk": 4,
+        "theme": 15,
+        "setup": 15
+      },
+      "metrics": {
+        "ma20": 1043.3,
+        "ma50": 852.1,
+        "ma150": 524.8,
+        "ma200": 444.2,
+        "ret20Pct": -9.6,
+        "ret60Pct": 158.4,
+        "atrPct": 10.9,
+        "drawdownFromHighPct": -19.6,
+        "volumeRatio20vs50": 1.09
+      },
       "reasons": [
-        "price > 20MA",
-        "20d return 0.1%",
-        "60d return -19.9%",
-        "ATR% 4.0"
+        "50MA上",
+        "150MA上",
+        "200MA上",
+        "50>150>200MA",
+        "20日 -9.6%",
+        "60日 158.4%",
+        "出来高安定 x1.09",
+        "ATR 10.9%"
+      ]
+    },
+    {
+      "symbol": "SNDK",
+      "code": "SNDK",
+      "name": "SanDisk",
+      "market": "US",
+      "theme": "Memory",
+      "rank": "B",
+      "score": 68,
+      "setup": "高ボラ注意",
+      "setupType": "high_volatility",
+      "price": 1745.0,
+      "pivot": 2335.0,
+      "stop": 1277.9,
+      "target1": 2679.2,
+      "target2": 3146.3,
+      "rr": 2,
+      "riskLabel": "超高ボラ",
+      "action": "ボラが高い。サイズを落とすか、ATR低下・横ばい化を待つ。",
+      "dataSource": "yfinance",
+      "componentScores": {
+        "trend": 21,
+        "momentum": 12,
+        "volume": 4,
+        "risk": 1,
+        "theme": 15,
+        "setup": 15
+      },
+      "metrics": {
+        "ma20": 1951.7,
+        "ma50": 1610.5,
+        "ma150": 882.4,
+        "ma200": 703.4,
+        "ret20Pct": -4.7,
+        "ret60Pct": 145.5,
+        "atrPct": 13.4,
+        "drawdownFromHighPct": -25.3,
+        "volumeRatio20vs50": 0.92
+      },
+      "reasons": [
+        "50MA上",
+        "150MA上",
+        "200MA上",
+        "50>150>200MA",
+        "20日 -4.7%",
+        "60日 145.5%",
+        "出来高収縮 x0.92",
+        "ATR 13.4%"
       ]
     },
     {
@@ -134,27 +178,142 @@
       "name": "Fujikura",
       "market": "JP",
       "theme": "Data center",
-      "rank": "D",
-      "score": 48,
-      "setup": "Watch only",
+      "rank": "B",
+      "score": 67,
+      "setup": "高ボラ注意",
+      "setupType": "high_volatility",
       "price": 5358.0,
       "pivot": 7855.0,
       "stop": 4283.0,
       "target1": 7508.0,
       "target2": 8583.0,
       "rr": 2,
-      "riskLabel": "ATR stop",
-      "action": "Wait for setup",
+      "riskLabel": "高ボラ",
+      "action": "ボラが高い。サイズを落とすか、ATR低下・横ばい化を待つ。",
       "dataSource": "yfinance",
+      "componentScores": {
+        "trend": 19,
+        "momentum": 12,
+        "volume": 4,
+        "risk": 4,
+        "theme": 13,
+        "setup": 15
+      },
+      "metrics": {
+        "ma20": 5256.5,
+        "ma50": 5490.2,
+        "ma150": 4295.6,
+        "ma200": 3912.7,
+        "ret20Pct": 12.9,
+        "ret60Pct": 16.5,
+        "atrPct": 10.0,
+        "drawdownFromHighPct": -31.8,
+        "volumeRatio20vs50": 0.84
+      },
       "reasons": [
-        "price > 20MA",
-        "price > 150MA",
-        "price > 200MA",
-        "50MA > 150MA > 200MA",
-        "above lookback low",
-        "20d return 12.9%",
-        "60d return 16.5%",
-        "ATR% 10.0"
+        "20MA上",
+        "150MA上",
+        "200MA上",
+        "50>150>200MA",
+        "20日 12.9%",
+        "60日 16.5%",
+        "出来高収縮 x0.84",
+        "ATR 10.0%"
+      ]
+    },
+    {
+      "symbol": "ANET",
+      "code": "ANET",
+      "name": "Arista Networks",
+      "market": "US",
+      "theme": "AI Infrastructure",
+      "rank": "B",
+      "score": 67,
+      "setup": "押し目候補",
+      "setupType": "pullback",
+      "price": 160.0,
+      "pivot": 177.7,
+      "stop": 141.9,
+      "target1": 196.2,
+      "target2": 214.3,
+      "rr": 2,
+      "riskLabel": "やや高ボラ",
+      "action": "20日線/50日線の反発、下げ止まり、出来高減少を確認。",
+      "dataSource": "yfinance",
+      "componentScores": {
+        "trend": 16,
+        "momentum": 11,
+        "volume": 4,
+        "risk": 8,
+        "theme": 13,
+        "setup": 15
+      },
+      "metrics": {
+        "ma20": 162.7,
+        "ma50": 159.8,
+        "ma150": 143.0,
+        "ma200": 143.1,
+        "ret20Pct": -8.2,
+        "ret60Pct": 19.7,
+        "atrPct": 5.7,
+        "drawdownFromHighPct": -10.0,
+        "volumeRatio20vs50": 0.81
+      },
+      "reasons": [
+        "50MA上",
+        "150MA上",
+        "200MA上",
+        "20日 -8.2%",
+        "60日 19.7%",
+        "高値から -10.0%",
+        "出来高収縮 x0.81",
+        "ATR 5.7%"
+      ]
+    },
+    {
+      "symbol": "7011.T",
+      "code": "7011",
+      "name": "Mitsubishi Heavy Industries",
+      "market": "JP",
+      "theme": "Defense",
+      "rank": "D",
+      "score": 42,
+      "setup": "除外寄り",
+      "setupType": "avoid",
+      "price": 3792.0,
+      "pivot": 5180.2,
+      "stop": 3488.7,
+      "target1": 4398.6,
+      "target2": 4701.9,
+      "rr": 2,
+      "riskLabel": "許容ボラ",
+      "action": "トレンド修復まで原則見送り。",
+      "dataSource": "yfinance",
+      "componentScores": {
+        "trend": 4,
+        "momentum": 3,
+        "volume": 4,
+        "risk": 12,
+        "theme": 12,
+        "setup": 7
+      },
+      "metrics": {
+        "ma20": 3718.3,
+        "ma50": 3994.0,
+        "ma150": 4316.0,
+        "ma200": 4258.9,
+        "ret20Pct": 0.1,
+        "ret60Pct": -19.9,
+        "atrPct": 4.0,
+        "drawdownFromHighPct": -26.8,
+        "volumeRatio20vs50": 0.84
+      },
+      "reasons": [
+        "20MA上",
+        "20日 0.1%",
+        "60日 -19.9%",
+        "出来高収縮 x0.84",
+        "ATR 4.0%"
       ]
     },
     {
@@ -164,161 +323,105 @@
       "market": "JP",
       "theme": "Power",
       "rank": "D",
-      "score": 0,
-      "setup": "Watch only",
+      "score": 30,
+      "setup": "除外寄り",
+      "setupType": "avoid",
       "price": 465.0,
       "pivot": 934.1,
       "stop": 423.0,
       "target1": 549.0,
       "target2": 591.0,
       "rr": 2,
-      "riskLabel": "ATR stop",
-      "action": "Wait for setup",
+      "riskLabel": "許容ボラ",
+      "action": "トレンド修復まで原則見送り。",
       "dataSource": "yfinance",
+      "componentScores": {
+        "trend": 0,
+        "momentum": 0,
+        "volume": 4,
+        "risk": 12,
+        "theme": 10,
+        "setup": 4
+      },
+      "metrics": {
+        "ma20": 490.3,
+        "ma50": 547.2,
+        "ma150": 624.4,
+        "ma200": 659.3,
+        "ret20Pct": -12.0,
+        "ret60Pct": -26.9,
+        "atrPct": 4.5,
+        "drawdownFromHighPct": -50.2,
+        "volumeRatio20vs50": 0.86
+      },
       "reasons": [
-        "20d return -12.0%",
-        "60d return -26.9%",
-        "ATR% 4.5"
-      ]
-    },
-    {
-      "symbol": "MU",
-      "code": "MU",
-      "name": "Micron Technology",
-      "market": "US",
-      "theme": "HBM Memory",
-      "rank": "B",
-      "score": 67,
-      "setup": "Pullback watch",
-      "price": 975.6,
-      "pivot": 1213.6,
-      "stop": 762.2,
-      "target1": 1402.3,
-      "target2": 1615.6,
-      "rr": 2,
-      "riskLabel": "ATR stop",
-      "action": "Wait for setup",
-      "dataSource": "yfinance",
-      "reasons": [
-        "price > 50MA",
-        "price > 150MA",
-        "price > 200MA",
-        "50MA > 150MA > 200MA",
-        "near lookback high",
-        "above lookback low",
-        "20d return -9.6%",
-        "60d return 158.4%",
-        "volume stable",
-        "ATR% 10.9"
-      ]
-    },
-    {
-      "symbol": "SNDK",
-      "code": "SNDK",
-      "name": "SanDisk",
-      "market": "US",
-      "theme": "Memory",
-      "rank": "C",
-      "score": 55,
-      "setup": "Watch only",
-      "price": 1745.0,
-      "pivot": 2335.0,
-      "stop": 1277.9,
-      "target1": 2679.2,
-      "target2": 3146.3,
-      "rr": 2,
-      "riskLabel": "ATR stop",
-      "action": "Wait for setup",
-      "dataSource": "yfinance",
-      "reasons": [
-        "price > 50MA",
-        "price > 150MA",
-        "price > 200MA",
-        "50MA > 150MA > 200MA",
-        "above lookback low",
-        "20d return -4.7%",
-        "60d return 145.5%",
-        "ATR% 13.4"
-      ]
-    },
-    {
-      "symbol": "ANET",
-      "code": "ANET",
-      "name": "Arista Networks",
-      "market": "US",
-      "theme": "AI Infrastructure",
-      "rank": "D",
-      "score": 47,
-      "setup": "Watch only",
-      "price": 160.0,
-      "pivot": 177.7,
-      "stop": 141.9,
-      "target1": 196.2,
-      "target2": 214.3,
-      "rr": 2,
-      "riskLabel": "ATR stop",
-      "action": "Wait for setup",
-      "dataSource": "yfinance",
-      "reasons": [
-        "price > 50MA",
-        "price > 150MA",
-        "price > 200MA",
-        "near lookback high",
-        "above lookback low",
-        "20d return -8.2%",
-        "60d return 19.7%",
-        "ATR% 5.7"
+        "20日 -12.0%",
+        "60日 -26.9%",
+        "出来高収縮 x0.86",
+        "ATR 4.5%"
       ]
     }
   ],
   "themes": [
     {
       "name": "HBM Memory",
-      "strength": 67.0,
+      "strength": 73.0,
       "leaders": [
         "MU"
       ],
-      "note": "1 candidates in watchlist"
+      "note": {
+        "high_volatility": 1
+      }
     },
     {
       "name": "Memory",
-      "strength": 55.0,
+      "strength": 68.0,
       "leaders": [
         "SNDK"
       ],
-      "note": "1 candidates in watchlist"
+      "note": {
+        "high_volatility": 1
+      }
     },
     {
       "name": "Data center",
-      "strength": 48.0,
+      "strength": 67.0,
       "leaders": [
         "5803.T"
       ],
-      "note": "1 candidates in watchlist"
+      "note": {
+        "high_volatility": 1
+      }
     },
     {
       "name": "AI Infrastructure",
-      "strength": 47.0,
+      "strength": 67.0,
       "leaders": [
         "ANET"
       ],
-      "note": "1 candidates in watchlist"
+      "note": {
+        "pullback": 1
+      }
     },
     {
       "name": "Defense",
-      "strength": 9.0,
+      "strength": 42.0,
       "leaders": [
         "7011.T"
       ],
-      "note": "1 candidates in watchlist"
+      "note": {
+        "avoid": 1
+      }
     },
     {
       "name": "Power",
-      "strength": 0.0,
+      "strength": 30.0,
       "leaders": [
         "9501.T"
       ],
-      "note": "1 candidates in watchlist"
+      "note": {
+        "avoid": 1
+      }
     }
   ],
   "tracking": []
