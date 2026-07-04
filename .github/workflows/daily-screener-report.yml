@@ -2,6 +2,19 @@ name: Daily Screener Report
 
 on:
   workflow_dispatch:
+    inputs:
+      screening_mode:
+        description: "watchlists / top_turnover / all_universe"
+        required: false
+        default: "top_turnover"
+      screening_top_n:
+        description: "Number of candidates to keep after turnover filtering"
+        required: false
+        default: "50"
+      screening_max_symbols:
+        description: "Max universe symbols to fetch before filtering"
+        required: false
+        default: "100"
   schedule:
     - cron: "0 9 * * 1-5"
 
@@ -12,6 +25,10 @@ jobs:
   build-report:
     runs-on: ubuntu-latest
     env:
+      SCREENING_MODE: ${{ github.event.inputs.screening_mode || 'top_turnover' }}
+      SCREENING_TOP_N: ${{ github.event.inputs.screening_top_n || '50' }}
+      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '100' }}
+      JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
       JQUANTS_EMAIL: ${{ secrets.JQUANTS_EMAIL }}
       JQUANTS_PASSWORD: ${{ secrets.JQUANTS_PASSWORD }}
       JQUANTS_REFRESH_TOKEN: ${{ secrets.JQUANTS_REFRESH_TOKEN }}
@@ -36,10 +53,12 @@ jobs:
           import json
           from pathlib import Path
           report = json.loads(Path('reports/latest.json').read_text(encoding='utf-8'))
+          print('mode:', report.get('screeningMode'))
           print('universe:', report.get('universe'))
+          print('inputRows:', report.get('inputRows'))
           print('summary:', json.dumps(report.get('summary', {}), ensure_ascii=False))
           print('jquantsStatus:', json.dumps(report.get('jquantsStatus', {}), ensure_ascii=False))
-          print('jquantsQuoteDiagnostics:', json.dumps(report.get('jquantsQuoteDiagnostics', []), ensure_ascii=False))
+          print('diagnosticsCount:', len(report.get('jquantsQuoteDiagnostics', [])))
           PY
 
       - name: Commit generated report
