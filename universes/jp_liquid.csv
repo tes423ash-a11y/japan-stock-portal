@@ -1,123 +1,123 @@
 symbol,name,market,theme,note
-7203.T,Toyota Motor,JP,Auto,liquid large cap
-6758.T,Sony Group,JP,AI Infrastructure,liquid large cap
-9984.T,SoftBank Group,JP,AI Infrastructure,liquid large cap
-8035.T,Tokyo Electron,JP,Semiconductor,liquid large cap
-6857.T,Advantest,JP,Semiconductor,liquid large cap
-4063.T,Shin-Etsu Chemical,JP,Semiconductor,liquid large cap
-6146.T,Disco,JP,Semiconductor,liquid large cap
-6098.T,Recruit Holdings,JP,Internet,liquid large cap
-9983.T,Fast Retailing,JP,Consumer,liquid large cap
-8306.T,Mitsubishi UFJ Financial,JP,Bank,liquid large cap
-8316.T,Sumitomo Mitsui Financial,JP,Bank,liquid large cap
-8411.T,Mizuho Financial,JP,Bank,liquid large cap
-8308.T,Resona Holdings,JP,Bank,bank large cap
-7182.T,Japan Post Bank,JP,Bank,bank large cap
-8725.T,MS&AD Insurance,JP,Insurance,insurance large cap
-8766.T,Tokio Marine,JP,Insurance,insurance large cap
-8630.T,Sompo Holdings,JP,Insurance,insurance large cap
-8591.T,Orix,JP,Financial,financial large cap
-8604.T,Nomura Holdings,JP,Financial,securities large cap
-8473.T,SBI Holdings,JP,Financial,online securities
-8058.T,Mitsubishi Corp,JP,Trading,liquid large cap
-8001.T,Itochu,JP,Trading,liquid large cap
-8031.T,Mitsui,JP,Trading,liquid large cap
-8053.T,Sumitomo Corp,JP,Trading,liquid large cap
-8015.T,Toyota Tsusho,JP,Trading,liquid large cap
-6501.T,Hitachi,JP,AI Infrastructure,liquid large cap
-6503.T,Mitsubishi Electric,JP,AI Infrastructure,liquid large cap
-6504.T,Fuji Electric,JP,Power,power electronics
-6701.T,NEC,JP,AI Infrastructure,liquid large cap
-6702.T,Fujitsu,JP,AI Infrastructure,liquid large cap
-9432.T,NTT,JP,Telecom,liquid large cap
-9433.T,KDDI,JP,Telecom,liquid large cap
-9434.T,SoftBank Corp,JP,Telecom,liquid large cap
-7011.T,Mitsubishi Heavy Industries,JP,Defense,defense leader
-7012.T,Kawasaki Heavy Industries,JP,Defense,defense leader
-7013.T,IHI,JP,Defense,defense leader
-5803.T,Fujikura,JP,Data center,optical communication theme
-5802.T,Sumitomo Electric,JP,Data center,optical communication theme
-5801.T,Furukawa Electric,JP,Data center,optical communication theme
-6981.T,Murata Manufacturing,JP,MLCC,AI server components
-6971.T,Kyocera,JP,Electronic Components,liquid large cap
-6762.T,TDK,JP,Electronic Components,AI server components
-6479.T,MinebeaMitsumi,JP,Electronic Components,precision components
-6920.T,Lasertec,JP,Semiconductor,liquid large cap
-6723.T,Renesas Electronics,JP,Semiconductor,liquid large cap
-7735.T,Screen Holdings,JP,Semiconductor,semiconductor equipment
-6963.T,Rohm,JP,Semiconductor,liquid large cap
-6526.T,Socionext,JP,Semiconductor,semiconductor design
-6315.T,TOWA,JP,Semiconductor,semiconductor equipment
-3436.T,SUMCO,JP,Semiconductor,semiconductor wafer
-6728.T,Ulvac,JP,Semiconductor,vacuum equipment
-7729.T,Tokyo Seimitsu,JP,Semiconductor,semiconductor equipment
-4186.T,Tokyo Ohka Kogyo,JP,Semiconductor,semiconductor material
-6861.T,Keyence,JP,Factory Automation,liquid large cap
-6954.T,Fanuc,JP,Factory Automation,liquid large cap
-6273.T,SMC,JP,Factory Automation,liquid large cap
-6645.T,Omron,JP,Factory Automation,industrial automation
-6367.T,Daikin Industries,JP,Industrial,liquid large cap
-6326.T,Kubota,JP,Industrial,machinery large cap
-6301.T,Komatsu,JP,Industrial,machinery large cap
-7751.T,Canon,JP,Electronics,liquid large cap
-7731.T,Nikon,JP,Electronics,precision equipment
-4901.T,Fujifilm Holdings,JP,Healthcare,liquid large cap
-7741.T,HOYA,JP,Healthcare,liquid large cap
-7733.T,Olympus,JP,Healthcare,medical device
-4543.T,Terumo,JP,Healthcare,medical device
-4568.T,Daiichi Sankyo,JP,Healthcare,liquid large cap
-4502.T,Takeda Pharmaceutical,JP,Healthcare,liquid large cap
-4519.T,Chugai Pharmaceutical,JP,Healthcare,liquid large cap
-4523.T,Eisai,JP,Healthcare,liquid large cap
-4503.T,Astellas Pharma,JP,Healthcare,pharma large cap
-4507.T,Shionogi,JP,Healthcare,pharma
-4528.T,Ono Pharmaceutical,JP,Healthcare,pharma
-7267.T,Honda Motor,JP,Auto,liquid large cap
-7269.T,Suzuki Motor,JP,Auto,liquid large cap
-7201.T,Nissan Motor,JP,Auto,liquid large cap
-7202.T,Isuzu Motors,JP,Auto,truck and commercial vehicles
-7211.T,Mitsubishi Motors,JP,Auto,auto large cap
-7270.T,Subaru,JP,Auto,auto large cap
-6902.T,Denso,JP,Auto Parts,auto components
-7259.T,Aisin,JP,Auto Parts,auto components
-5108.T,Bridgestone,JP,Auto Parts,tire large cap
-9101.T,Nippon Yusen,JP,Shipping,shipping large cap
-9104.T,Mitsui OSK Lines,JP,Shipping,shipping large cap
-9107.T,Kawasaki Kisen,JP,Shipping,shipping large cap
-9201.T,Japan Airlines,JP,Airline,airline large cap
-9202.T,ANA Holdings,JP,Airline,airline large cap
-9020.T,JR East,JP,Railway,railway large cap
-9021.T,JR West,JP,Railway,railway large cap
-9022.T,JR Central,JP,Railway,railway large cap
-8801.T,Mitsui Fudosan,JP,Real Estate,real estate large cap
-8802.T,Mitsubishi Estate,JP,Real Estate,real estate large cap
-8830.T,Sumitomo Realty,JP,Real Estate,real estate large cap
-1801.T,Taisei,JP,Construction,construction large cap
-1802.T,Obayashi,JP,Construction,construction large cap
-1803.T,Shimizu,JP,Construction,construction large cap
-8267.T,Aeon,JP,Consumer,retail large cap
-3382.T,Seven & i Holdings,JP,Consumer,retail large cap
-7532.T,Pan Pacific International,JP,Consumer,retail large cap
-9843.T,Nitori Holdings,JP,Consumer,retail large cap
-7974.T,Nintendo,JP,Consumer,gaming large cap
-4689.T,LY Corp,JP,Internet,internet large cap
-4755.T,Rakuten Group,JP,Internet,internet large cap
-4452.T,Kao,JP,Consumer,defensive large cap
-4911.T,Shiseido,JP,Consumer,consumer large cap
-2914.T,Japan Tobacco,JP,Defensive,defensive large cap
-2502.T,Asahi Group,JP,Consumer,beverage large cap
-2802.T,Ajinomoto,JP,Consumer,food large cap
-9501.T,TEPCO,JP,Power,power theme
-9502.T,Chubu Electric Power,JP,Power,power theme
-9503.T,Kansai Electric Power,JP,Power,power theme
-9508.T,Kyushu Electric Power,JP,Power,power theme
-9513.T,J-Power,JP,Power,power theme
-1605.T,INPEX,JP,Energy,energy theme
-5020.T,ENEOS Holdings,JP,Energy,energy theme
-5401.T,Nippon Steel,JP,Materials,steel large cap
-5411.T,JFE Holdings,JP,Materials,steel large cap
-5713.T,Sumitomo Metal Mining,JP,Materials,nonferrous metal
-5711.T,Mitsubishi Materials,JP,Materials,nonferrous metal
-4204.T,Sekisui Chemical,JP,Materials,advanced materials
-3402.T,Toray Industries,JP,Materials,advanced materials
-3407.T,Asahi Kasei,JP,Materials,chemical large cap
+7203.T,トヨタ自動車,JP,自動車,liquid large cap
+6758.T,ソニーグループ,JP,AIインフラ,liquid large cap
+9984.T,ソフトバンクグループ,JP,AIインフラ,liquid large cap
+8035.T,東京エレクトロン,JP,半導体,liquid large cap
+6857.T,アドバンテスト,JP,半導体,liquid large cap
+4063.T,信越化学工業,JP,半導体,liquid large cap
+6146.T,ディスコ,JP,半導体,liquid large cap
+6098.T,リクルートHD,JP,インターネット,liquid large cap
+9983.T,ファーストリテイリング,JP,消費,liquid large cap
+8306.T,三菱UFJフィナンシャル・グループ,JP,銀行,liquid large cap
+8316.T,三井住友フィナンシャルグループ,JP,銀行,liquid large cap
+8411.T,みずほフィナンシャルグループ,JP,銀行,liquid large cap
+8308.T,りそなホールディングス,JP,銀行,bank large cap
+7182.T,ゆうちょ銀行,JP,銀行,bank large cap
+8725.T,MS&ADインシュアランスグループHD,JP,保険,insurance large cap
+8766.T,東京海上ホールディングス,JP,保険,insurance large cap
+8630.T,SOMPOホールディングス,JP,保険,insurance large cap
+8591.T,オリックス,JP,金融,financial large cap
+8604.T,野村ホールディングス,JP,金融,securities large cap
+8473.T,SBIホールディングス,JP,金融,online securities
+8058.T,三菱商事,JP,商社,liquid large cap
+8001.T,伊藤忠商事,JP,商社,liquid large cap
+8031.T,三井物産,JP,商社,liquid large cap
+8053.T,住友商事,JP,商社,liquid large cap
+8015.T,豊田通商,JP,商社,liquid large cap
+6501.T,日立製作所,JP,AIインフラ,liquid large cap
+6503.T,三菱電機,JP,AIインフラ,liquid large cap
+6504.T,富士電機,JP,電力,power electronics
+6701.T,NEC,JP,AIインフラ,liquid large cap
+6702.T,富士通,JP,AIインフラ,liquid large cap
+9432.T,NTT,JP,通信,liquid large cap
+9433.T,KDDI,JP,通信,liquid large cap
+9434.T,ソフトバンク,JP,通信,liquid large cap
+7011.T,三菱重工業,JP,防衛,defense leader
+7012.T,川崎重工業,JP,防衛,defense leader
+7013.T,IHI,JP,防衛,defense leader
+5803.T,フジクラ,JP,データセンター,optical communication theme
+5802.T,住友電気工業,JP,データセンター,optical communication theme
+5801.T,古河電気工業,JP,データセンター,optical communication theme
+6981.T,村田製作所,JP,MLCC,AI server components
+6971.T,京セラ,JP,電子部品,liquid large cap
+6762.T,TDK,JP,電子部品,AI server components
+6479.T,ミネベアミツミ,JP,電子部品,precision components
+6920.T,レーザーテック,JP,半導体,liquid large cap
+6723.T,ルネサスエレクトロニクス,JP,半導体,liquid large cap
+7735.T,SCREENホールディングス,JP,半導体,semiconductor equipment
+6963.T,ローム,JP,半導体,liquid large cap
+6526.T,ソシオネクスト,JP,半導体,semiconductor design
+6315.T,TOWA,JP,半導体,semiconductor equipment
+3436.T,SUMCO,JP,半導体,semiconductor wafer
+6728.T,アルバック,JP,半導体,vacuum equipment
+7729.T,東京精密,JP,半導体,semiconductor equipment
+4186.T,東京応化工業,JP,半導体,semiconductor material
+6861.T,キーエンス,JP,FA,liquid large cap
+6954.T,ファナック,JP,FA,liquid large cap
+6273.T,SMC,JP,FA,liquid large cap
+6645.T,オムロン,JP,FA,industrial automation
+6367.T,ダイキン工業,JP,産業機械,liquid large cap
+6326.T,クボタ,JP,産業機械,machinery large cap
+6301.T,小松製作所,JP,産業機械,machinery large cap
+7751.T,キヤノン,JP,電機,liquid large cap
+7731.T,ニコン,JP,電機,precision equipment
+4901.T,富士フイルムHD,JP,ヘルスケア,liquid large cap
+7741.T,HOYA,JP,ヘルスケア,liquid large cap
+7733.T,オリンパス,JP,ヘルスケア,medical device
+4543.T,テルモ,JP,ヘルスケア,medical device
+4568.T,第一三共,JP,ヘルスケア,liquid large cap
+4502.T,武田薬品工業,JP,ヘルスケア,liquid large cap
+4519.T,中外製薬,JP,ヘルスケア,liquid large cap
+4523.T,エーザイ,JP,ヘルスケア,liquid large cap
+4503.T,アステラス製薬,JP,ヘルスケア,pharma large cap
+4507.T,塩野義製薬,JP,ヘルスケア,pharma
+4528.T,小野薬品工業,JP,ヘルスケア,pharma
+7267.T,本田技研工業,JP,自動車,liquid large cap
+7269.T,スズキ,JP,自動車,liquid large cap
+7201.T,日産自動車,JP,自動車,liquid large cap
+7202.T,いすゞ自動車,JP,自動車,truck and commercial vehicles
+7211.T,三菱自動車工業,JP,自動車,auto large cap
+7270.T,SUBARU,JP,自動車,auto large cap
+6902.T,デンソー,JP,自動車部品,auto components
+7259.T,アイシン,JP,自動車部品,auto components
+5108.T,ブリヂストン,JP,自動車部品,tire large cap
+9101.T,日本郵船,JP,海運,shipping large cap
+9104.T,商船三井,JP,海運,shipping large cap
+9107.T,川崎汽船,JP,海運,shipping large cap
+9201.T,日本航空,JP,空運,airline large cap
+9202.T,ANAホールディングス,JP,空運,airline large cap
+9020.T,JR東日本,JP,鉄道,railway large cap
+9021.T,JR西日本,JP,鉄道,railway large cap
+9022.T,JR東海,JP,鉄道,railway large cap
+8801.T,三井不動産,JP,不動産,real estate large cap
+8802.T,三菱地所,JP,不動産,real estate large cap
+8830.T,住友不動産,JP,不動産,real estate large cap
+1801.T,大成建設,JP,建設,construction large cap
+1802.T,大林組,JP,建設,construction large cap
+1803.T,清水建設,JP,建設,construction large cap
+8267.T,イオン,JP,消費,retail large cap
+3382.T,セブン&アイHD,JP,消費,retail large cap
+7532.T,パン・パシフィック・インターナショナルHD,JP,消費,retail large cap
+9843.T,ニトリホールディングス,JP,消費,retail large cap
+7974.T,任天堂,JP,消費,gaming large cap
+4689.T,LINEヤフー,JP,インターネット,internet large cap
+4755.T,楽天グループ,JP,インターネット,internet large cap
+4452.T,花王,JP,消費,defensive large cap
+4911.T,資生堂,JP,消費,consumer large cap
+2914.T,日本たばこ産業,JP,ディフェンシブ,defensive large cap
+2502.T,アサヒグループHD,JP,消費,beverage large cap
+2802.T,味の素,JP,消費,food large cap
+9501.T,東京電力HD,JP,電力,power theme
+9502.T,中部電力,JP,電力,power theme
+9503.T,関西電力,JP,電力,power theme
+9508.T,九州電力,JP,電力,power theme
+9513.T,J-POWER,JP,電力,power theme
+1605.T,INPEX,JP,エネルギー,energy theme
+5020.T,ENEOSホールディングス,JP,エネルギー,energy theme
+5401.T,日本製鉄,JP,素材,steel large cap
+5411.T,JFEホールディングス,JP,素材,steel large cap
+5713.T,住友金属鉱山,JP,素材,nonferrous metal
+5711.T,三菱マテリアル,JP,素材,nonferrous metal
+4204.T,積水化学工業,JP,素材,advanced materials
+3402.T,東レ,JP,素材,advanced materials
+3407.T,旭化成,JP,素材,chemical large cap
