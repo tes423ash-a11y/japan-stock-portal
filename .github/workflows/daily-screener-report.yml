@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       screening_mode:
-        description: "watchlists / top_turnover / all_universe"
+        description: "watchlists / top_turnover_today / top_turnover / all_universe"
         required: false
-        default: "top_turnover"
+        default: "top_turnover_today"
       screening_top_n:
         description: "Top turnover count per market. 100 to 300. Example: 100 means JP 100 + US 100."
         required: false
@@ -36,7 +36,7 @@ jobs:
   build-report:
     runs-on: ubuntu-latest
     env:
-      SCREENING_MODE: ${{ github.event.inputs.screening_mode || 'top_turnover' }}
+      SCREENING_MODE: ${{ github.event.inputs.screening_mode || 'top_turnover_today' }}
       SCREENING_TOP_N: ${{ github.event.inputs.screening_top_n || '100' }}
       SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '300' }}
       SCREENING_USDJPY: ${{ github.event.inputs.screening_usdjpy || '150' }}
@@ -71,6 +71,7 @@ jobs:
           from pathlib import Path
           report = json.loads(Path('reports/latest.json').read_text(encoding='utf-8'))
           print('mode:', report.get('screeningMode'))
+          print('turnoverSortMetric:', report.get('turnoverSortMetric'))
           print('topNPerMarket:', report.get('screeningTopNPerMarket'))
           print('maxSymbolsPerMarket:', report.get('screeningMaxSymbolsPerMarket'))
           print('marketSummary:', json.dumps(report.get('marketSummary', {}), ensure_ascii=False))
