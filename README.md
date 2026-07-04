@@ -16,7 +16,7 @@
 ## データの流れ
 
 ```text
-watchlists/*.csv
+watchlists/*.csv または universes/*.csv
 ↓
 scripts/build_report.py
 ↓
@@ -27,17 +27,39 @@ index.html + dashboard.js
 スマホでダッシュボード確認
 ```
 
-## Watchlist CSV
+## Screening Mode
 
-`watchlists/jp_candidates.csv` と `watchlists/us_candidates.csv` を編集します。
+GitHub Actionsの手動実行時に、以下のモードを選べます。
 
-列は以下です。
+### watchlists
+
+`watchlists/jp_candidates.csv` と `watchlists/us_candidates.csv` だけをスコアリングします。
+
+### top_turnover
+
+`universes/jp_liquid.csv` と `universes/us_liquid.csv` を読み、20日平均売買代金を計算して上位N件を残します。
+
+おすすめはこれです。
+
+```text
+screening_mode: top_turnover
+screening_top_n: 50
+screening_max_symbols: 100
+```
+
+### all_universe
+
+`universes/*.csv` の銘柄を順番に処理します。全銘柄リストを入れれば全銘柄に近い運用もできますが、yfinanceを数千銘柄に投げると遅く不安定になるため、GitHub Actionsではまず100〜300銘柄程度から始めます。
+
+## CSV形式
+
+`watchlists/` も `universes/` も列は同じです。
 
 ```csv
 symbol,name,market,theme,note
 ```
 
-日本株は `7011.T` のように `.T` を付けます。J-Quants APIへ渡すときは、スクリプト内で `7011` に変換します。
+日本株は `7011.T` のように `.T` を付けます。
 
 例:
 
@@ -48,20 +70,15 @@ MU,Micron Technology,US,HBM・メモリ,AIメモリ主役候補
 
 ## J-Quants API設定
 
-日本株はJ-Quants APIを使って日足データを取得できます。
+日本株はJ-Quants APIを使って日足データを取得できます。ただし契約期間外の場合は自動でyfinanceにfallbackします。
 
-GitHub Actionsで使う場合は、Repository Secretsに以下のどちらかを設定します。
+GitHub Actionsで使う場合は、Repository Secretsに以下を設定します。
 
-### 方法A: メールアドレスとパスワード
+```text
+JQUANTS_API_KEY
+```
 
-- `JQUANTS_EMAIL`
-- `JQUANTS_PASSWORD`
-
-### 方法B: リフレッシュトークン
-
-- `JQUANTS_REFRESH_TOKEN`
-
-どちらも未設定の場合、スクリプトはJ-Quants取得をスキップし、CSVベースのMVPスコアでレポートを作ります。
+既に `JQUANTS_REFRESH_TOKEN` にAPI Keyを入れている場合も、互換のため読み込みます。
 
 ## レポート生成
 
@@ -81,28 +98,22 @@ python scripts/build_report.py
 
 `.github/workflows/daily-screener-report.yml` で、平日18:00 JST相当に日次実行します。
 
-注意: 新規Workflowファイルは、PRをマージして `main` に入ってからActions画面で手動実行できるようになります。PR確認中はSecrets設定とコードレビューまで行い、マージ後に `Actions > Daily Screener Report > Run workflow` を実行してください。
+手動実行では以下を指定できます。
+
+- `screening_mode`: `watchlists` / `top_turnover` / `all_universe`
+- `screening_top_n`: 出力に残す件数
+- `screening_max_symbols`: 取得対象にする最大銘柄数
 
 ## 現在のスコアリング
 
-J-Quants認証情報がある場合、日本株について以下を計算します。
-
-- 50日、150日、200日移動平均
-- 52週高値・安値
+- 20日、50日、150日、200日移動平均
+- 直近高値・安値
 - 出来高20日/50日平均
+- 20日平均売買代金
 - ATR風ボラティリティ
 - 20日/60日リターン
-- 簡易SEPA/VCPスコア
-- ATRベースの初期損切り候補
-
-米国株はまだ外部データ取得なしです。次の拡張でyfinanceまたは別APIを追加します。
-
-## 今後の拡張
-
-- 米国株の日足取得
-- ブレイク後の3日/5日/10日リターンを自動記録
-- テーマ強度を出来高・騰落率ベースで集計
-- 決算日・TDnet・EDINETリンクの自動補完
+- setupType分類: breakout / pullback / theme_leader / high_volatility / trend_watch / avoid
+- componentScores: trend / momentum / volume / risk / theme / setup / liquidity
 
 ## 注意
 
