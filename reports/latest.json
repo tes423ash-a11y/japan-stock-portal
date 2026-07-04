@@ -1,14 +1,23 @@
 {
-  "generatedAt": "2026-07-04T17:10:58.007153+00:00",
-  "universe": "watchlists",
+  "generatedAt": "2026-07-04T17:14:36.821201+00:00",
+  "universe": "watchlists+yfinance",
   "jquantsStatus": {
     "enabled": true,
     "authSource": "api_key_from_refresh_token_secret",
-    "status": "quote_failed",
-    "message": "API key loaded, but no Japanese candidates were converted to J-Quants data."
+    "status": "fallback_to_yfinance",
+    "message": "J-Quants was unavailable for the requested range; yfinance fallback was used when possible."
   },
   "jquantsQuoteDiagnostics": [
     {
+      "provider": "jquants_v2",
+      "symbol": "7011.T",
+      "code": "7011",
+      "endpoint": "v2/equities/bars/daily",
+      "status": "quote_failed",
+      "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
+    },
+    {
+      "provider": "jquants_v2",
       "symbol": "7011.T",
       "code": "70110",
       "endpoint": "v2/equities/bars/daily",
@@ -16,6 +25,21 @@
       "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
     },
     {
+      "provider": "yfinance",
+      "symbol": "7011.T",
+      "status": "ok",
+      "rows": 244
+    },
+    {
+      "provider": "jquants_v2",
+      "symbol": "5803.T",
+      "code": "5803",
+      "endpoint": "v2/equities/bars/daily",
+      "status": "quote_failed",
+      "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
+    },
+    {
+      "provider": "jquants_v2",
       "symbol": "5803.T",
       "code": "58030",
       "endpoint": "v2/equities/bars/daily",
@@ -23,20 +47,60 @@
       "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
     },
     {
+      "provider": "yfinance",
+      "symbol": "5803.T",
+      "status": "ok",
+      "rows": 244
+    },
+    {
+      "provider": "jquants_v2",
+      "symbol": "9501.T",
+      "code": "9501",
+      "endpoint": "v2/equities/bars/daily",
+      "status": "quote_failed",
+      "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
+    },
+    {
+      "provider": "jquants_v2",
       "symbol": "9501.T",
       "code": "95010",
       "endpoint": "v2/equities/bars/daily",
       "status": "quote_failed",
-      "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
+      "message": "HTTP 429 body={\"message\": \"Rate limit exceeded. Please try again later.\"}"
+    },
+    {
+      "provider": "yfinance",
+      "symbol": "9501.T",
+      "status": "ok",
+      "rows": 244
+    },
+    {
+      "provider": "yfinance",
+      "symbol": "MU",
+      "status": "ok",
+      "rows": 251
+    },
+    {
+      "provider": "yfinance",
+      "symbol": "SNDK",
+      "status": "ok",
+      "rows": 251
+    },
+    {
+      "provider": "yfinance",
+      "symbol": "ANET",
+      "status": "ok",
+      "rows": 251
     }
   ],
   "summary": {
     "total": 6,
-    "aRank": 3,
-    "breakoutReady": 3,
-    "pullbackReady": 3,
-    "averageScore": 79.5,
-    "jquantsCandidates": 0
+    "aRank": 0,
+    "breakoutReady": 0,
+    "pullbackReady": 1,
+    "averageScore": 37.7,
+    "jquantsCandidates": 0,
+    "yfinanceCandidates": 6
   },
   "candidates": [
     {
@@ -45,20 +109,23 @@
       "name": "Mitsubishi Heavy Industries",
       "market": "JP",
       "theme": "Defense",
-      "rank": "A",
-      "score": 92,
-      "setup": "VCP watch",
-      "price": "",
-      "pivot": "",
-      "stop": "",
-      "target1": "",
-      "target2": "",
-      "rr": "",
-      "riskLabel": "Not calculated",
-      "action": "Priority review",
-      "dataSource": "watchlist",
+      "rank": "D",
+      "score": 9,
+      "setup": "Watch only",
+      "price": 3792.0,
+      "pivot": 5180.2,
+      "stop": 3488.7,
+      "target1": 4398.6,
+      "target2": 4701.9,
+      "rr": 2,
+      "riskLabel": "ATR stop",
+      "action": "Wait for setup",
+      "dataSource": "yfinance",
       "reasons": [
-        "large cap theme"
+        "price > 20MA",
+        "20d return 0.1%",
+        "60d return -19.9%",
+        "ATR% 4.0"
       ]
     },
     {
@@ -67,20 +134,27 @@
       "name": "Fujikura",
       "market": "JP",
       "theme": "Data center",
-      "rank": "A",
-      "score": 87,
-      "setup": "VCP watch",
-      "price": "",
-      "pivot": "",
-      "stop": "",
-      "target1": "",
-      "target2": "",
-      "rr": "",
-      "riskLabel": "Not calculated",
-      "action": "Priority review",
-      "dataSource": "watchlist",
+      "rank": "D",
+      "score": 48,
+      "setup": "Watch only",
+      "price": 5358.0,
+      "pivot": 7855.0,
+      "stop": 4283.0,
+      "target1": 7508.0,
+      "target2": 8583.0,
+      "rr": 2,
+      "riskLabel": "ATR stop",
+      "action": "Wait for setup",
+      "dataSource": "yfinance",
       "reasons": [
-        "optical communication theme"
+        "price > 20MA",
+        "price > 150MA",
+        "price > 200MA",
+        "50MA > 150MA > 200MA",
+        "above lookback low",
+        "20d return 12.9%",
+        "60d return 16.5%",
+        "ATR% 10.0"
       ]
     },
     {
@@ -89,20 +163,22 @@
       "name": "TEPCO",
       "market": "JP",
       "theme": "Power",
-      "rank": "A",
-      "score": 82,
-      "setup": "VCP watch",
-      "price": "",
-      "pivot": "",
-      "stop": "",
-      "target1": "",
-      "target2": "",
-      "rr": "",
-      "riskLabel": "Not calculated",
-      "action": "Priority review",
-      "dataSource": "watchlist",
+      "rank": "D",
+      "score": 0,
+      "setup": "Watch only",
+      "price": 465.0,
+      "pivot": 934.1,
+      "stop": 423.0,
+      "target1": 549.0,
+      "target2": 591.0,
+      "rr": 2,
+      "riskLabel": "ATR stop",
+      "action": "Wait for setup",
+      "dataSource": "yfinance",
       "reasons": [
-        "AI power demand"
+        "20d return -12.0%",
+        "60d return -26.9%",
+        "ATR% 4.5"
       ]
     },
     {
@@ -112,19 +188,28 @@
       "market": "US",
       "theme": "HBM Memory",
       "rank": "B",
-      "score": 77,
+      "score": 67,
       "setup": "Pullback watch",
-      "price": "",
-      "pivot": "",
-      "stop": "",
-      "target1": "",
-      "target2": "",
-      "rr": "",
-      "riskLabel": "Not calculated",
+      "price": 975.6,
+      "pivot": 1213.6,
+      "stop": 762.2,
+      "target1": 1402.3,
+      "target2": 1615.6,
+      "rr": 2,
+      "riskLabel": "ATR stop",
       "action": "Wait for setup",
-      "dataSource": "watchlist",
+      "dataSource": "yfinance",
       "reasons": [
-        "AI memory leader"
+        "price > 50MA",
+        "price > 150MA",
+        "price > 200MA",
+        "50MA > 150MA > 200MA",
+        "near lookback high",
+        "above lookback low",
+        "20d return -9.6%",
+        "60d return 158.4%",
+        "volume stable",
+        "ATR% 10.9"
       ]
     },
     {
@@ -133,20 +218,27 @@
       "name": "SanDisk",
       "market": "US",
       "theme": "Memory",
-      "rank": "B",
-      "score": 72,
-      "setup": "Pullback watch",
-      "price": "",
-      "pivot": "",
-      "stop": "",
-      "target1": "",
-      "target2": "",
-      "rr": "",
-      "riskLabel": "Not calculated",
+      "rank": "C",
+      "score": 55,
+      "setup": "Watch only",
+      "price": 1745.0,
+      "pivot": 2335.0,
+      "stop": 1277.9,
+      "target1": 2679.2,
+      "target2": 3146.3,
+      "rr": 2,
+      "riskLabel": "ATR stop",
       "action": "Wait for setup",
-      "dataSource": "watchlist",
+      "dataSource": "yfinance",
       "reasons": [
-        "storage cycle candidate"
+        "price > 50MA",
+        "price > 150MA",
+        "price > 200MA",
+        "50MA > 150MA > 200MA",
+        "above lookback low",
+        "20d return -4.7%",
+        "60d return 145.5%",
+        "ATR% 13.4"
       ]
     },
     {
@@ -155,51 +247,34 @@
       "name": "Arista Networks",
       "market": "US",
       "theme": "AI Infrastructure",
-      "rank": "B",
-      "score": 67,
-      "setup": "Pullback watch",
-      "price": "",
-      "pivot": "",
-      "stop": "",
-      "target1": "",
-      "target2": "",
-      "rr": "",
-      "riskLabel": "Not calculated",
+      "rank": "D",
+      "score": 47,
+      "setup": "Watch only",
+      "price": 160.0,
+      "pivot": 177.7,
+      "stop": 141.9,
+      "target1": 196.2,
+      "target2": 214.3,
+      "rr": 2,
+      "riskLabel": "ATR stop",
       "action": "Wait for setup",
-      "dataSource": "watchlist",
+      "dataSource": "yfinance",
       "reasons": [
-        "data center networking"
+        "price > 50MA",
+        "price > 150MA",
+        "price > 200MA",
+        "near lookback high",
+        "above lookback low",
+        "20d return -8.2%",
+        "60d return 19.7%",
+        "ATR% 5.7"
       ]
     }
   ],
   "themes": [
     {
-      "name": "Defense",
-      "strength": 92.0,
-      "leaders": [
-        "7011.T"
-      ],
-      "note": "1 candidates in watchlist"
-    },
-    {
-      "name": "Data center",
-      "strength": 87.0,
-      "leaders": [
-        "5803.T"
-      ],
-      "note": "1 candidates in watchlist"
-    },
-    {
-      "name": "Power",
-      "strength": 82.0,
-      "leaders": [
-        "9501.T"
-      ],
-      "note": "1 candidates in watchlist"
-    },
-    {
       "name": "HBM Memory",
-      "strength": 77.0,
+      "strength": 67.0,
       "leaders": [
         "MU"
       ],
@@ -207,17 +282,41 @@
     },
     {
       "name": "Memory",
-      "strength": 72.0,
+      "strength": 55.0,
       "leaders": [
         "SNDK"
       ],
       "note": "1 candidates in watchlist"
     },
     {
+      "name": "Data center",
+      "strength": 48.0,
+      "leaders": [
+        "5803.T"
+      ],
+      "note": "1 candidates in watchlist"
+    },
+    {
       "name": "AI Infrastructure",
-      "strength": 67.0,
+      "strength": 47.0,
       "leaders": [
         "ANET"
+      ],
+      "note": "1 candidates in watchlist"
+    },
+    {
+      "name": "Defense",
+      "strength": 9.0,
+      "leaders": [
+        "7011.T"
+      ],
+      "note": "1 candidates in watchlist"
+    },
+    {
+      "name": "Power",
+      "strength": 0.0,
+      "leaders": [
+        "9501.T"
       ],
       "note": "1 candidates in watchlist"
     }
