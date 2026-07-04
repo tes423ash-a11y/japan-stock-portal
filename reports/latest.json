@@ -1,14 +1,66 @@
 {
-  "generatedAt": "placeholder",
+  "generatedAt": "sample",
   "universe": "watchlists",
   "summary": {
-    "total": 0,
-    "aRank": 0,
-    "breakoutReady": 0,
+    "total": 2,
+    "aRank": 2,
+    "breakoutReady": 2,
     "pullbackReady": 0,
-    "averageScore": 0
+    "averageScore": 89.5
   },
-  "candidates": [],
-  "themes": [],
+  "candidates": [
+    {
+      "symbol": "7011.T",
+      "code": "7011",
+      "name": "Sample JP Candidate",
+      "market": "JP",
+      "theme": "Theme A",
+      "rank": "A",
+      "score": 92,
+      "setup": "VCP watch",
+      "price": "",
+      "pivot": "",
+      "stop": "",
+      "target1": "",
+      "target2": "",
+      "rr": "",
+      "riskLabel": "Not calculated",
+      "action": "Priority review",
+      "reasons": ["sample candidate"]
+    },
+    {
+      "symbol": "MU",
+      "code": "MU",
+      "name": "Sample US Candidate",
+      "market": "US",
+      "theme": "Theme B",
+      "rank": "A",
+      "score": 87,
+      "setup": "VCP watch",
+      "price": "",
+      "pivot": "",
+      "stop": "",
+      "target1": "",
+      "target2": "",
+      "rr": "",
+      "riskLabel": "Not calculated",
+      "action": "Priority review",
+      "reasons": ["sample candidate"]
+    }
+  ],
+  "themes": [
+    {
+      "name": "Theme A",
+      "strength": 92,
+      "leaders": ["7011.T"],
+      "note": "sample"
+    },
+    {
+      "name": "Theme B",
+      "strength": 87,
+      "leaders": ["MU"],
+      "note": "sample"
+    }
+  ],
   "tracking": []
 }
