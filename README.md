@@ -37,12 +37,31 @@ index.html + dashboard.js
 symbol,name,market,theme,note
 ```
 
+日本株は `7011.T` のように `.T` を付けます。J-Quants APIへ渡すときは、スクリプト内で `7011` に変換します。
+
 例:
 
 ```csv
 7011.T,三菱重工業,JP,防衛・重工,大型テーマ継続
 MU,Micron Technology,US,HBM・メモリ,AIメモリ主役候補
 ```
+
+## J-Quants API設定
+
+日本株はJ-Quants APIを使って日足データを取得できます。
+
+GitHub Actionsで使う場合は、Repository Secretsに以下のどちらかを設定します。
+
+### 方法A: メールアドレスとパスワード
+
+- `JQUANTS_EMAIL`
+- `JQUANTS_PASSWORD`
+
+### 方法B: リフレッシュトークン
+
+- `JQUANTS_REFRESH_TOKEN`
+
+どちらも未設定の場合、スクリプトはJ-Quants取得をスキップし、CSVベースのMVPスコアでレポートを作ります。
 
 ## レポート生成
 
@@ -64,13 +83,26 @@ python scripts/build_report.py
 
 手動実行も可能です。
 
+## 現在のスコアリング
+
+J-Quants認証情報がある場合、日本株について以下を計算します。
+
+- 50日、150日、200日移動平均
+- 52週高値・安値
+- 出来高20日/50日平均
+- ATR風ボラティリティ
+- 20日/60日リターン
+- 簡易SEPA/VCPスコア
+- ATRベースの初期損切り候補
+
+米国株はまだ外部データ取得なしです。次の拡張でyfinanceまたは別APIを追加します。
+
 ## 今後の拡張
 
-- yfinanceで米国株の日足を取得
-- J-Quants APIで日本株の日足を取得
-- 50/150/200日線、52週高値安値、出来高平均、ATR、相対強度を自動計算
-- VCP/SEPAスコアを実データで算出
+- 米国株の日足取得
 - ブレイク後の3日/5日/10日リターンを自動記録
+- テーマ強度を出来高・騰落率ベースで集計
+- 決算日・TDnet・EDINETリンクの自動補完
 
 ## 注意
 
