@@ -90,27 +90,14 @@ def get_jquants_api_key() -> tuple[str | None, dict[str, object]]:
 
 
 def fetch_jquants_daily_quotes(code: str, api_key: str) -> list[dict[str, Any]]:
-    # Use a short range first because some J-Quants subscriptions only allow recent ranges.
     end = date.today()
     start = end - timedelta(days=95)
-    params: dict[str, Any] = {
-        "code": code,
-        "from": start.isoformat(),
-        "to": end.isoformat(),
-    }
-    headers = {
-        "x-api-key": api_key,
-        "User-Agent": "japan-stock-portal/1.0",
-    }
+    params: dict[str, Any] = {"code": code, "from": start.isoformat(), "to": end.isoformat()}
+    headers = {"x-api-key": api_key, "User-Agent": "japan-stock-portal/1.0"}
     all_rows: list[dict[str, Any]] = []
 
     while True:
-        response = requests.get(
-            f"{JQUANTS_BASE_URL}/equities/bars/daily",
-            params=params,
-            headers=headers,
-            timeout=30,
-        )
+        response = requests.get(f"{JQUANTS_BASE_URL}/equities/bars/daily", params=params, headers=headers, timeout=30)
         response.raise_for_status()
         payload = response.json()
         rows = payload.get("data", [])
@@ -126,19 +113,22 @@ def fetch_jquants_daily_quotes(code: str, api_key: str) -> list[dict[str, Any]]:
 
 def fetch_yfinance_daily_quotes(symbol: str) -> list[dict[str, Any]]:
     ticker = yf.Ticker(symbol)
-    history = ticker.history(period="1y", interval="1d", auto_adjust=False)
+    history = ticker.history(period="1y", interval="1d", auto_adjust=True)
     if history.empty:
         return []
 
     rows: list[dict[str, Any]] = []
     for idx, item in history.iterrows():
-        close = item.get("Adj Close", item.get("Close"))
+        close = item.get("Close")
+        high = item.get("High")
+        low = item.get("Low")
+        volume = item.get("Volume")
         rows.append({
             "Date": idx.strftime("%Y-%m-%d"),
             "AdjC": float(close) if close == close else None,
-            "AdjH": float(item.get("High")) if item.get("High") == item.get("High") else None,
-            "AdjL": float(item.get("Low")) if item.get("Low") == item.get("Low") else None,
-            "AdjVo": float(item.get("Volume")) if item.get("Volume") == item.get("Volume") else None,
+            "AdjH": float(high) if high == high else None,
+            "AdjL": float(low) if low == low else None,
+            "AdjVo": float(volume) if volume == volume else None,
         })
     return rows
 
@@ -404,15 +394,7 @@ def main() -> None:
         "universe": "+".join(["watchlists", *data_sources]),
         "jquantsStatus": jquants_status,
         "jquantsQuoteDiagnostics": diagnostics,
-        "summary": {
-            "total": len(candidates),
-            "aRank": sum(1 for item in candidates if item["rank"] == "A"),
-            "breakoutReady": sum(1 for item in candidates if "VCP" in str(item.get("setup"))),
-            "pullbackReady": sum(1 for item in candidates if "Pullback" in str(item.get("setup"))),
-            "averageScore": average_score,
-            "jquantsCandidates": jquants_candidates,
-            "yfinanceCandidates": yfinance_candidates,
-        },
+        "summary": {"total": len(candidates), "aRank": sum(1 for item in candidates if item["rank"] == "A"), "breakoutReady": sum(1 for item in candidates if "VCP" in str(item.get("setup"))), "pullbackReady": sum(1 for item in candidates if "Pullback" in str(item.get("setup"))), "averageScore": average_score, "jquantsCandidates": jquants_candidates, "yfinanceCandidates": yfinance_candidates},
         "candidates": candidates,
         "themes": build_themes(candidates),
         "tracking": [],
