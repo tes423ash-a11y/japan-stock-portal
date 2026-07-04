@@ -31,16 +31,44 @@ def read_watchlists() -> list[dict[str, str]]:
 
 
 def jquants_code(symbol: str) -> str:
-    return symbol.replace(".T", "").strip()
+    code = symbol.replace(".T", "").strip()
+    if code.isdigit() and len(code) == 4:
+        return f"{code}0"
+    return code
 
 
-def get_jquants_id_token() -> str | None:
+def safe_http_status(error: requests.RequestException) -> str:
+    response = getattr(error, "response", None)
+    if response is None:
+        return error.__class__.__name__
+    return f"HTTP {response.status_code}"
+
+
+def get_jquants_id_token() -> tuple[str | None, dict[str, object]]:
     refresh_token = os.getenv("JQUANTS_REFRESH_TOKEN")
     mailaddress = os.getenv("JQUANTS_EMAIL")
     password = os.getenv("JQUANTS_PASSWORD")
+    status: dict[str, object] = {
+        "enabled": bool(refresh_token or mailaddress or password),
+        "authSource": "none",
+        "status": "missing_credentials",
+        "message": "No J-Quants credentials were provided.",
+    }
+
+    if refresh_token:
+        status["authSource"] = "refresh_token"
+    elif mailaddress or password:
+        status["authSource"] = "email_password"
+
+    if not refresh_token and not (mailaddress and password):
+        if mailaddress or password:
+            status["status"] = "partial_credentials"
+            status["message"] = "JQUANTS_EMAIL and JQUANTS_PASSWORD must both be set."
+        print(f"J-Quants status: {status['status']}")
+        return None, status
 
     try:
-        if not refresh_token and mailaddress and password:
+        if not refresh_token:
             response = requests.post(
                 f"{JQUANTS_BASE_URL}/token/auth_user",
                 json={"mailaddress": mailaddress, "password": password},
@@ -48,9 +76,11 @@ def get_jquants_id_token() -> str | None:
             )
             response.raise_for_status()
             refresh_token = response.json().get("refreshToken")
-
-        if not refresh_token:
-            return None
+            if not refresh_token:
+                status["status"] = "no_refresh_token"
+                status["message"] = "J-Quants did not return a refreshToken."
+                print(f"J-Quants status: {status['status']}")
+                return None, status
 
         response = requests.post(
             f"{JQUANTS_BASE_URL}/token/auth_refresh",
@@ -58,10 +88,22 @@ def get_jquants_id_token() -> str | None:
             timeout=30,
         )
         response.raise_for_status()
-        return response.json().get("idToken")
+        id_token = response.json().get("idToken")
+        if not id_token:
+            status["status"] = "no_id_token"
+            status["message"] = "J-Quants did not return an idToken."
+            print(f"J-Quants status: {status['status']}")
+            return None, status
+
+        status["status"] = "ok"
+        status["message"] = "Authenticated successfully."
+        print("J-Quants status: ok")
+        return id_token, status
     except requests.RequestException as error:
-        print(f"J-Quants authentication skipped: {error}")
-        return None
+        status["status"] = "auth_failed"
+        status["message"] = safe_http_status(error)
+        print(f"J-Quants status: auth_failed ({status['message']})")
+        return None, status
 
 
 def fetch_jquants_daily_quotes(code: str, id_token: str) -> list[dict[str, Any]]:
@@ -136,11 +178,14 @@ def rank_from_score(score: int) -> str:
     return "D"
 
 
-def build_placeholder_candidate(row: dict[str, str], index: int) -> dict[str, object]:
+def build_placeholder_candidate(row: dict[str, str], index: int, reason: str | None = None) -> dict[str, object]:
     score = max(55, 92 - index * 5)
     symbol = row.get("symbol", "")
     setup = "VCP watch" if score >= 80 else "Pullback watch" if score >= 65 else "Watch only"
     action = "Priority review" if score >= 80 else "Wait for setup"
+    reasons = [row.get("note", "watchlist candidate")]
+    if reason:
+        reasons.insert(0, reason)
     return {
         "symbol": symbol,
         "code": symbol.replace(".T", ""),
@@ -158,7 +203,8 @@ def build_placeholder_candidate(row: dict[str, str], index: int) -> dict[str, ob
         "rr": "",
         "riskLabel": "Not calculated",
         "action": action,
-        "reasons": [row.get("note", "watchlist candidate")],
+        "dataSource": "watchlist",
+        "reasons": reasons,
     }
 
 
@@ -170,7 +216,7 @@ def build_jquants_candidate(row: dict[str, str], quotes: list[dict[str, Any]], i
     volumes = [item for item in volumes if item is not None]
 
     if len(closes) < 60:
-        return build_placeholder_candidate(row, index)
+        return build_placeholder_candidate(row, index, "J-Quants history was too short.")
 
     price = closes[-1]
     ma50 = sma(closes, 50)
@@ -265,20 +311,25 @@ def build_jquants_candidate(row: dict[str, str], quotes: list[dict[str, Any]], i
         "rr": rr,
         "riskLabel": "ATR stop" if atr14 else "Not calculated",
         "action": "Priority review" if rank == "A" else "Wait for setup",
+        "dataSource": "jquants",
         "reasons": reasons or [row.get("note", "watchlist candidate")],
     }
 
 
-def build_candidate(row: dict[str, str], index: int, id_token: str | None) -> dict[str, object]:
+def build_candidate(row: dict[str, str], index: int, id_token: str | None, quote_diagnostics: list[dict[str, object]]) -> dict[str, object]:
     market = (row.get("market") or "").upper()
     symbol = row.get("symbol", "")
     if id_token and (market == "JP" or symbol.endswith(".T")):
+        code = jquants_code(symbol)
         try:
-            quotes = fetch_jquants_daily_quotes(jquants_code(symbol), id_token)
+            quotes = fetch_jquants_daily_quotes(code, id_token)
+            quote_diagnostics.append({"symbol": symbol, "code": code, "status": "ok", "rows": len(quotes)})
             if quotes:
                 return build_jquants_candidate(row, quotes, index)
+            return build_placeholder_candidate(row, index, "J-Quants returned no rows.")
         except requests.RequestException as error:
-            print(f"J-Quants quote fetch skipped for {symbol}: {error}")
+            quote_diagnostics.append({"symbol": symbol, "code": code, "status": "quote_failed", "message": safe_http_status(error)})
+            print(f"J-Quants quote fetch skipped for {symbol} ({code}): {safe_http_status(error)}")
     return build_placeholder_candidate(row, index)
 
 
@@ -302,9 +353,11 @@ def build_themes(candidates: list[dict[str, object]]) -> list[dict[str, object]]
 
 def write_markdown(report: dict[str, object]) -> str:
     candidates = report.get("candidates", [])
-    lines = ["# Daily Screener Report", "", f"Generated: {report['generatedAt']}", "", "## Top Candidates", ""]
+    lines = ["# Daily Screener Report", "", f"Generated: {report['generatedAt']}", "", "## J-Quants Status", ""]
+    lines.append(f"- {report.get('jquantsStatus', {}).get('status', 'unknown')}")
+    lines.extend(["", "## Top Candidates", ""])
     for item in candidates[:10]:
-        lines.append(f"- {item['rank']} / {item['score']} / {item['symbol']} / {item['name']} / {item['theme']}")
+        lines.append(f"- {item['rank']} / {item['score']} / {item['symbol']} / {item['name']} / {item['theme']} / {item.get('dataSource', 'unknown')}")
     lines.append("")
     lines.append("Dashboard input: `reports/latest.json`")
     return "\n".join(lines) + "\n"
@@ -313,23 +366,29 @@ def write_markdown(report: dict[str, object]) -> str:
 def main() -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     rows = read_watchlists()
-    id_token = get_jquants_id_token()
-    candidates = [build_candidate(row, i, id_token) for i, row in enumerate(rows)]
+    id_token, jquants_status = get_jquants_id_token()
+    quote_diagnostics: list[dict[str, object]] = []
+    candidates = [build_candidate(row, i, id_token, quote_diagnostics) for i, row in enumerate(rows)]
     average_score = round(sum(int(item["score"]) for item in candidates) / len(candidates), 1) if candidates else 0
+    jquants_candidates = sum(1 for item in candidates if item.get("dataSource") == "jquants")
     report = {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
-        "universe": "watchlists+jquants" if id_token else "watchlists",
+        "universe": "watchlists+jquants" if jquants_candidates else "watchlists",
+        "jquantsStatus": jquants_status,
+        "jquantsQuoteDiagnostics": quote_diagnostics,
         "summary": {
             "total": len(candidates),
             "aRank": sum(1 for item in candidates if item["rank"] == "A"),
             "breakoutReady": sum(1 for item in candidates if "VCP" in str(item.get("setup"))),
             "pullbackReady": sum(1 for item in candidates if "Pullback" in str(item.get("setup"))),
             "averageScore": average_score,
+            "jquantsCandidates": jquants_candidates,
         },
         "candidates": candidates,
         "themes": build_themes(candidates),
         "tracking": [],
     }
+    print(json.dumps({"universe": report["universe"], "jquantsStatus": jquants_status, "quoteDiagnostics": quote_diagnostics}, ensure_ascii=False))
     (REPORT_DIR / "latest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     (REPORT_DIR / "latest.md").write_text(write_markdown(report), encoding="utf-8")
 
