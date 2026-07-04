@@ -67,6 +67,21 @@ def read_input_rows() -> tuple[list[dict[str, str]], str, int]:
     return rows, "watchlists", len(rows)
 
 
+def market_of(row: dict[str, str]) -> str:
+    market = (row.get("market") or "").upper().strip()
+    symbol = row.get("symbol", "")
+    if market in {"JP", "US"}:
+        return market
+    return "JP" if symbol.endswith(".T") else "US"
+
+
+def split_rows_by_market(rows: list[dict[str, str]]) -> dict[str, list[dict[str, str]]]:
+    grouped: dict[str, list[dict[str, str]]] = {"JP": [], "US": []}
+    for row in rows:
+        grouped.setdefault(market_of(row), []).append(row)
+    return grouped
+
+
 def jquants_code_candidates(symbol: str) -> list[str]:
     code = symbol.replace(".T", "").strip()
     if code.isdigit() and len(code) == 4:
@@ -262,7 +277,7 @@ def build_placeholder_candidate(row: dict[str, str], index: int, reason: str | N
         "symbol": symbol,
         "code": symbol.replace(".T", ""),
         "name": row.get("name", "Unnamed"),
-        "market": row.get("market", ""),
+        "market": market_of(row),
         "theme": row.get("theme", "Uncategorized"),
         "rank": "D",
         "score": score,
@@ -285,7 +300,7 @@ def build_placeholder_candidate(row: dict[str, str], index: int, reason: str | N
 
 def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], index: int, source: str, usd_jpy: float) -> dict[str, object]:
     symbol = row.get("symbol", "")
-    market = (row.get("market") or "").upper()
+    market = market_of(row)
     name = row.get("name", "Unnamed")
     theme = row.get("theme", "Uncategorized")
     closes = [value(item, "AdjC", "AdjustmentClose", "C", "Close") for item in quotes]
@@ -425,7 +440,7 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
         "symbol": symbol,
         "code": symbol.replace(".T", ""),
         "name": name,
-        "market": row.get("market", ""),
+        "market": market,
         "theme": theme,
         "rank": rank,
         "score": total_score,
@@ -460,7 +475,7 @@ def build_quote_candidate(row: dict[str, str], quotes: list[dict[str, Any]], ind
 
 
 def build_candidate(row: dict[str, str], index: int, api_key: str | None, diagnostics: list[dict[str, object]], usd_jpy: float) -> dict[str, object]:
-    market = (row.get("market") or "").upper()
+    market = market_of(row)
     symbol = row.get("symbol", "")
     if api_key and (market == "JP" or symbol.endswith(".T")) and not jquants_recent_unavailable(diagnostics):
         for code in jquants_code_candidates(symbol):
@@ -483,6 +498,10 @@ def build_candidate(row: dict[str, str], index: int, api_key: str | None, diagno
     return build_placeholder_candidate(row, index, "All data providers failed.")
 
 
+def top_by_turnover(candidates: list[dict[str, object]], top_n: int) -> list[dict[str, object]]:
+    return sorted(candidates, key=lambda item: float(item.get("metrics", {}).get("avgTradingValue20Usd") or 0), reverse=True)[:top_n]
+
+
 def build_themes(candidates: list[dict[str, object]]) -> list[dict[str, object]]:
     grouped: dict[str, list[dict[str, object]]] = defaultdict(list)
     for item in candidates:
@@ -498,52 +517,76 @@ def build_themes(candidates: list[dict[str, object]]) -> list[dict[str, object]]
     return sorted(themes, key=lambda item: float(item["strength"]), reverse=True)
 
 
-def select_candidates(candidates: list[dict[str, object]], mode: str, top_n: int) -> list[dict[str, object]]:
-    if mode == "top_turnover":
-        liquid = sorted(candidates, key=lambda item: float(item.get("metrics", {}).get("avgTradingValue20Usd") or 0), reverse=True)
-        return liquid[:top_n]
-    if mode == "all_universe":
-        return candidates[:top_n]
-    return candidates
+def market_summary(rows_by_market: dict[str, list[dict[str, str]]], built_by_market: dict[str, list[dict[str, object]]], selected_by_market: dict[str, list[dict[str, object]]], universe_by_market: dict[str, int]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for market in ["JP", "US"]:
+        selected = selected_by_market.get(market, [])
+        setups = defaultdict(int)
+        for item in selected:
+            setups[str(item.get("setupType", "watch_only"))] += 1
+        result[market] = {
+            "universeRows": universe_by_market.get(market, 0),
+            "inputRows": len(rows_by_market.get(market, [])),
+            "builtRows": len(built_by_market.get(market, [])),
+            "selectedRows": len(selected),
+            "sRank": sum(1 for item in selected if item.get("rank") == "S"),
+            "aRank": sum(1 for item in selected if item.get("rank") == "A"),
+            "averageScore": round(sum(int(item.get("score", 0)) for item in selected) / len(selected), 1) if selected else 0,
+            "setupCounts": dict(setups),
+        }
+    return result
 
 
 def write_markdown(report: dict[str, object]) -> str:
     lines = ["# Daily Screener Report", "", f"Generated: {report['generatedAt']}", "", "## Data Provider Status", ""]
     lines.append(f"- Mode: {report.get('screeningMode')}")
-    lines.append(f"- Target turnover universe: top {report.get('screeningTopN')} from {report.get('screeningMaxSymbols')} symbols")
+    lines.append(f"- Per-market turnover top N: {report.get('screeningTopNPerMarket')}")
+    lines.append(f"- Per-market max symbols: {report.get('screeningMaxSymbolsPerMarket')}")
     lines.append(f"- USDJPY used for turnover conversion: {report.get('usdJpyForTurnover')}")
     lines.append(f"- Universe: {report.get('universe')}")
+    lines.extend(["", "## Market Summary", ""])
+    for market, summary in report.get("marketSummary", {}).items():
+        lines.append(f"- {market}: selected {summary.get('selectedRows')} / input {summary.get('inputRows')} / S {summary.get('sRank')} / A {summary.get('aRank')}")
     lines.extend(["", "## Top Candidates", ""])
     for item in report.get("candidates", [])[:30]:
         tv_usd = item.get("metrics", {}).get("avgTradingValue20Usd")
-        lines.append(f"- {item['rank']} / {item['score']} / {item['setup']} / {item['symbol']} / {item['name']} / TV20USD={tv_usd} / {item.get('dataSource', 'unknown')}")
+        lines.append(f"- {item['rank']} / {item['score']} / {item['setup']} / {item['market']} / {item['symbol']} / {item['name']} / TV20USD={tv_usd}")
     return "\n".join(lines) + "\n"
 
 
 def main() -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    rows, mode, universe_rows = read_input_rows()
-    top_n = env_int("SCREENING_TOP_N", 100)
-    max_symbols = env_int("SCREENING_MAX_SYMBOLS", 300)
+    rows, mode, universe_rows_total = read_input_rows()
+    top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 100), 100, 300))
+    max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 300), top_n_per_market, 300))
     usd_jpy = env_float("SCREENING_USDJPY", 150.0)
-    if mode == "top_turnover":
-        top_n = int(clamp(top_n, 100, 300))
-        max_symbols = int(clamp(max_symbols, top_n, 300))
+
+    all_rows_by_market = split_rows_by_market(rows)
+    universe_by_market = {market: len(items) for market, items in all_rows_by_market.items()}
     if mode in {"top_turnover", "all_universe"}:
-        rows = rows[:max_symbols]
+        rows_by_market = {market: items[:max_symbols_per_market] for market, items in all_rows_by_market.items()}
+    else:
+        rows_by_market = all_rows_by_market
 
     api_key, jquants_status = get_jquants_api_key()
     diagnostics: list[dict[str, object]] = []
-    all_candidates = [build_candidate(row, i, api_key, diagnostics, usd_jpy) for i, row in enumerate(rows)]
-    candidates = select_candidates(all_candidates, mode, top_n)
-    candidates_by_score = sorted(candidates, key=lambda item: int(item.get("score", 0)), reverse=True)
-    candidates_by_turnover = sorted(candidates, key=lambda item: float(item.get("metrics", {}).get("avgTradingValue20Usd") or 0), reverse=True)
+    built_by_market: dict[str, list[dict[str, object]]] = {"JP": [], "US": []}
+    selected_by_market: dict[str, list[dict[str, object]]] = {"JP": [], "US": []}
 
-    jquants_candidates = sum(1 for item in candidates if item.get("dataSource") == "jquants_v2")
-    yfinance_candidates = sum(1 for item in candidates if item.get("dataSource") == "yfinance")
-    data_sources = sorted({str(item.get("dataSource")) for item in candidates})
+    for market in ["JP", "US"]:
+        built = [build_candidate(row, i, api_key, diagnostics, usd_jpy) for i, row in enumerate(rows_by_market.get(market, []))]
+        built_by_market[market] = built
+        selected_by_market[market] = top_by_turnover(built, top_n_per_market) if mode == "top_turnover" else built[:top_n_per_market]
+
+    selected_candidates = selected_by_market["JP"] + selected_by_market["US"]
+    candidates_by_score = sorted(selected_candidates, key=lambda item: int(item.get("score", 0)), reverse=True)
+    top_turnover_by_market = {market: top_by_turnover(selected_by_market.get(market, []), top_n_per_market) for market in ["JP", "US"]}
+
+    jquants_candidates = sum(1 for item in selected_candidates if item.get("dataSource") == "jquants_v2")
+    yfinance_candidates = sum(1 for item in selected_candidates if item.get("dataSource") == "yfinance")
+    data_sources = sorted({str(item.get("dataSource")) for item in selected_candidates})
     setup_counts = defaultdict(int)
-    for item in candidates:
+    for item in selected_candidates:
         setup_counts[str(item.get("setupType", "watch_only"))] += 1
 
     if jquants_candidates > 0:
@@ -556,34 +599,38 @@ def main() -> None:
     report = {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "screeningMode": mode,
-        "screeningTopN": top_n,
-        "screeningMaxSymbols": max_symbols,
-        "universeRows": universe_rows,
-        "inputRows": len(rows),
+        "screeningTopNPerMarket": top_n_per_market,
+        "screeningMaxSymbolsPerMarket": max_symbols_per_market,
+        "universeRows": universe_rows_total,
+        "universeRowsByMarket": universe_by_market,
+        "inputRows": sum(len(items) for items in rows_by_market.values()),
+        "inputRowsByMarket": {market: len(items) for market, items in rows_by_market.items()},
         "usdJpyForTurnover": usd_jpy,
         "turnoverSortMetric": "avgTradingValue20Usd",
-        "universe": "+".join([mode, *data_sources]),
+        "universe": "+".join([f"{mode}_per_market", *data_sources]),
         "jquantsStatus": jquants_status,
         "jquantsQuoteDiagnostics": diagnostics,
         "summary": {
-            "total": len(candidates),
-            "sRank": sum(1 for item in candidates if item["rank"] == "S"),
-            "aRank": sum(1 for item in candidates if item["rank"] == "A"),
+            "total": len(selected_candidates),
+            "sRank": sum(1 for item in selected_candidates if item["rank"] == "S"),
+            "aRank": sum(1 for item in selected_candidates if item["rank"] == "A"),
             "breakoutReady": setup_counts["breakout"],
             "pullbackReady": setup_counts["pullback"],
             "themeLeader": setup_counts["theme_leader"],
             "highVolatility": setup_counts["high_volatility"],
             "avoid": setup_counts["avoid"],
-            "averageScore": round(sum(int(item["score"]) for item in candidates) / len(candidates), 1) if candidates else 0,
+            "averageScore": round(sum(int(item["score"]) for item in selected_candidates) / len(selected_candidates), 1) if selected_candidates else 0,
             "jquantsCandidates": jquants_candidates,
             "yfinanceCandidates": yfinance_candidates,
         },
+        "marketSummary": market_summary(rows_by_market, built_by_market, selected_by_market, universe_by_market),
         "candidates": candidates_by_score,
-        "topTurnover": candidates_by_turnover,
-        "themes": build_themes(candidates),
+        "candidatesByMarket": {market: sorted(selected_by_market.get(market, []), key=lambda item: int(item.get("score", 0)), reverse=True) for market in ["JP", "US"]},
+        "topTurnoverByMarket": top_turnover_by_market,
+        "themes": build_themes(selected_candidates),
         "tracking": [],
     }
-    print(json.dumps({"mode": mode, "topN": top_n, "maxSymbols": max_symbols, "universeRows": universe_rows, "inputRows": len(rows), "summary": report["summary"]}, ensure_ascii=False))
+    print(json.dumps({"mode": mode, "topNPerMarket": top_n_per_market, "maxSymbolsPerMarket": max_symbols_per_market, "marketSummary": report["marketSummary"], "summary": report["summary"]}, ensure_ascii=False))
     (REPORT_DIR / "latest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     (REPORT_DIR / "latest.md").write_text(write_markdown(report), encoding="utf-8")
 
