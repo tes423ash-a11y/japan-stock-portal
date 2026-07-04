@@ -8,13 +8,17 @@ on:
         required: false
         default: "top_turnover"
       screening_top_n:
-        description: "Number of candidates to keep after turnover filtering"
-        required: false
-        default: "50"
-      screening_max_symbols:
-        description: "Max universe symbols to fetch before filtering"
+        description: "Top turnover count per market. 100 to 300. Example: 100 means JP 100 + US 100."
         required: false
         default: "100"
+      screening_max_symbols:
+        description: "Max symbols to fetch per market before filtering. 100 to 300."
+        required: false
+        default: "300"
+      screening_usdjpy:
+        description: "USDJPY used to compare JP turnover with US turnover"
+        required: false
+        default: "150"
   schedule:
     - cron: "0 9 * * 1-5"
 
@@ -26,8 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SCREENING_MODE: ${{ github.event.inputs.screening_mode || 'top_turnover' }}
-      SCREENING_TOP_N: ${{ github.event.inputs.screening_top_n || '50' }}
-      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '100' }}
+      SCREENING_TOP_N: ${{ github.event.inputs.screening_top_n || '100' }}
+      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '300' }}
+      SCREENING_USDJPY: ${{ github.event.inputs.screening_usdjpy || '150' }}
       JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
       JQUANTS_EMAIL: ${{ secrets.JQUANTS_EMAIL }}
       JQUANTS_PASSWORD: ${{ secrets.JQUANTS_PASSWORD }}
@@ -54,8 +59,9 @@ jobs:
           from pathlib import Path
           report = json.loads(Path('reports/latest.json').read_text(encoding='utf-8'))
           print('mode:', report.get('screeningMode'))
-          print('universe:', report.get('universe'))
-          print('inputRows:', report.get('inputRows'))
+          print('topNPerMarket:', report.get('screeningTopNPerMarket'))
+          print('maxSymbolsPerMarket:', report.get('screeningMaxSymbolsPerMarket'))
+          print('marketSummary:', json.dumps(report.get('marketSummary', {}), ensure_ascii=False))
           print('summary:', json.dumps(report.get('summary', {}), ensure_ascii=False))
           print('jquantsStatus:', json.dumps(report.get('jquantsStatus', {}), ensure_ascii=False))
           print('diagnosticsCount:', len(report.get('jquantsQuoteDiagnostics', [])))
