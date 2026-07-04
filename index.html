@@ -3,146 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>日本株 投資ポータル</title>
-  <meta name="description" content="スマホで使いやすい日本株投資用の個人ポータルサイト" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="menu.css" />
+  <title>VCP/SEPA Daily Dashboard</title>
+  <meta name="description" content="VCP/SEPA候補、テーマ強弱、リスクライン、ブレイク後検証をスマホで確認する投資ダッシュボード" />
+  <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-  <header id="home" class="app-header">
-    <div>
-      <p class="eyebrow">Japan Stock Portal</p>
-      <h1>日本株 投資司令室</h1>
-      <p class="lead">市況・銘柄検索・テーマ監視・SEPA分析・損切り/利確ラインを1画面に集約します。</p>
-    </div>
-    <div class="header-actions">
-      <a class="pill-link" href="#stock-search">銘柄検索</a>
-      <a class="pill-link secondary" href="#stock-manager">銘柄管理</a>
-      <a class="pill-link secondary" href="#sepa-screener">SEPA分析</a>
-      <a class="pill-link secondary" href="#watchlist">監視リスト</a>
-    </div>
+  <header class="hero">
+    <p class="eyebrow">VCP / SEPA Daily Screener</p>
+    <h1>投資ダッシュボード</h1>
+    <p class="lead">日次スクリーニング結果を、A級候補・テーマ強弱・リスクライン・ブレイク後検証の順に確認します。</p>
+    <nav class="quick-nav" aria-label="主要セクション">
+      <a href="#command-center">司令室</a>
+      <a href="#candidates">A級候補</a>
+      <a href="#themes">テーマ</a>
+      <a href="#risk-plan">売買計画</a>
+      <a href="#tracking">検証</a>
+      <a href="#notes">メモ</a>
+    </nav>
   </header>
 
-  <main class="container">
-    <section id="market-overview" class="market-grid" aria-label="市況ショートカット">
-      <article class="card market-card highlight">
-        <span class="card-label">市況</span>
-        <h2>今日見るリンク</h2>
-        <p>日経平均、TOPIX、為替、米国株、半導体指数などをすぐ確認できます。</p>
-      </article>
-      <a class="card shortcut-card" href="https://finance.yahoo.co.jp/quote/998407.O" target="_blank" rel="noopener noreferrer"><span>日経平均</span><strong>Yahoo!ファイナンス</strong></a>
-      <a class="card shortcut-card" href="https://finance.yahoo.co.jp/quote/998405.T" target="_blank" rel="noopener noreferrer"><span>TOPIX</span><strong>Yahoo!ファイナンス</strong></a>
-      <a class="card shortcut-card" href="https://finance.yahoo.co.jp/quote/USDJPY=X" target="_blank" rel="noopener noreferrer"><span>ドル円</span><strong>為替確認</strong></a>
-      <a class="card shortcut-card" href="https://jp.tradingview.com/markets/indices/quotes-major/" target="_blank" rel="noopener noreferrer"><span>世界指数</span><strong>TradingView</strong></a>
+  <main>
+    <section id="command-center" class="panel command-panel">
+      <div class="section-title">
+        <span>Daily Command Center</span>
+        <h2>今日の見る順番</h2>
+      </div>
+      <div id="reportStatus" class="status-line">レポートを読み込み中...</div>
+      <div id="summaryCards" class="summary-grid"></div>
+      <div class="decision-flow">
+        <article><strong>1. 地合い</strong><p>指数、半導体、金利、ドル円を確認。地合いが悪い日はA級だけに絞る。</p></article>
+        <article><strong>2. テーマ</strong><p>資金流入が継続しているテーマだけ見る。単発材料は優先度を落とす。</p></article>
+        <article><strong>3. 形</strong><p>高値圏、出来高収縮、移動平均、ピボット接近を優先。</p></article>
+        <article><strong>4. リスク</strong><p>損切り幅が深い銘柄は見送り。RR 1:2以上を基本にする。</p></article>
+      </div>
     </section>
 
-    <section id="stock-search" class="card search-card">
-      <div class="section-heading"><span class="card-label">Search</span><h2>銘柄コード検索</h2><p>4桁の銘柄コードを入力すると、主要サイトへのリンクを自動生成します。</p></div>
-      <form id="stockForm" class="search-form">
-        <label for="stockCode">銘柄コード</label>
-        <div class="input-row"><input id="stockCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="例：7011" autocomplete="off" /><button type="submit">リンク生成</button></div>
-        <p class="hint">例：7011 三菱重工、5803 フジクラ、1605 INPEX</p>
-      </form>
-      <div id="generatedLinks" class="generated-links" aria-live="polite"></div>
+    <section id="candidates" class="panel">
+      <div class="section-title">
+        <span>A-Rank Candidates</span>
+        <h2>A級候補ランキング</h2>
+      </div>
+      <div class="toolbar">
+        <label>表示フィルター
+          <select id="rankFilter">
+            <option value="all">すべて</option>
+            <option value="A">Aランクのみ</option>
+            <option value="B">B以上</option>
+            <option value="breakout">ブレイク候補</option>
+            <option value="pullback">押し目候補</option>
+          </select>
+        </label>
+        <button id="reloadReport" type="button">再読み込み</button>
+      </div>
+      <div id="candidateList" class="candidate-list"></div>
     </section>
 
-    <section id="stock-manager" class="card manager-card">
-      <div class="section-heading"><span class="card-label">Editor</span><h2>銘柄追加・編集</h2><p>銘柄、リスク管理、SEPA分析用データをスマホ内に保存します。</p></div>
-      <form id="stockEditorForm" class="stock-editor-form">
-        <input type="hidden" id="editStockId" />
-
-        <details class="editor-section" open>
-          <summary>基本情報・リスク管理</summary>
-          <div class="form-grid">
-            <div class="form-field"><label for="editorCode">銘柄コード</label><input id="editorCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="例：7011" required /></div>
-            <div class="form-field"><label for="editorName">銘柄名</label><input id="editorName" type="text" placeholder="例：三菱重工業" required /></div>
-            <div class="form-field"><label for="editorTheme">テーマ</label><input id="editorTheme" type="text" list="themeOptions" placeholder="例：防衛" required /><datalist id="themeOptions"></datalist></div>
-            <div class="form-field"><label for="editorStatus">ステータス</label><select id="editorStatus"><option value="保有">保有</option><option value="監視" selected>監視</option><option value="候補">候補</option></select></div>
-            <div class="form-field"><label for="editorEntryPrice">エントリー価格</label><input id="editorEntryPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1500" /></div>
-            <div class="form-field"><label for="editorStopLoss">損切りライン</label><input id="editorStopLoss" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1425" /></div>
-            <div class="form-field"><label for="editorTargetPrice">利確ライン</label><input id="editorTargetPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1800" /></div>
-            <div class="form-field"><label for="editorEarningsDate">決算日</label><input id="editorEarningsDate" type="date" /></div>
-          </div>
-        </details>
-
-        <details class="editor-section" open>
-          <summary>SEPAテクニカル入力</summary>
-          <div class="form-grid">
-            <div class="form-field"><label for="editorCurrentPrice">現在株価</label><input id="editorCurrentPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1600" /></div>
-            <div class="form-field"><label for="editorMa50">50日移動平均</label><input id="editorMa50" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1500" /></div>
-            <div class="form-field"><label for="editorMa150">150日移動平均</label><input id="editorMa150" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1350" /></div>
-            <div class="form-field"><label for="editorMa200">200日移動平均</label><input id="editorMa200" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1250" /></div>
-            <div class="form-field"><label for="editorWeek52High">52週高値</label><input id="editorWeek52High" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1700" /></div>
-            <div class="form-field"><label for="editorWeek52Low">52週安値</label><input id="editorWeek52Low" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：900" /></div>
-            <div class="form-field"><label for="editorRsScore">RS評価 1〜100</label><input id="editorRsScore" type="number" inputmode="numeric" min="0" max="100" step="1" placeholder="例：85" /></div>
-            <div class="form-field"><label for="editorVolumeRating">出来高評価 1〜5</label><input id="editorVolumeRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div>
-            <div class="form-field"><label for="editorBaseRating">ベース形成評価 1〜5</label><input id="editorBaseRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div>
-            <div class="form-field"><label for="editorVcpRating">VCP収縮評価 1〜5</label><input id="editorVcpRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：5" /></div>
-            <div class="form-field"><label for="editorPivotPrice">ピボット価格</label><input id="editorPivotPrice" type="number" inputmode="decimal" min="0" step="0.1" placeholder="例：1650" /></div>
-            <div class="form-field checkbox-field"><label for="editorIsBreakout">ブレイク済み</label><input id="editorIsBreakout" type="checkbox" /></div>
-          </div>
-        </details>
-
-        <details class="editor-section">
-          <summary>業績・テーマ評価</summary>
-          <div class="form-grid">
-            <div class="form-field"><label for="editorEpsGrowth">EPS成長率 %</label><input id="editorEpsGrowth" type="number" inputmode="decimal" step="0.1" placeholder="例：30" /></div>
-            <div class="form-field"><label for="editorSalesGrowth">売上成長率 %</label><input id="editorSalesGrowth" type="number" inputmode="decimal" step="0.1" placeholder="例：15" /></div>
-            <div class="form-field"><label for="editorOpProfitGrowth">営業利益成長率 %</label><input id="editorOpProfitGrowth" type="number" inputmode="decimal" step="0.1" placeholder="例：25" /></div>
-            <div class="form-field"><label for="editorEarningsRating">決算評価 1〜5</label><input id="editorEarningsRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div>
-            <div class="form-field"><label for="editorThemeRating">テーマ性 1〜5</label><input id="editorThemeRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：5" /></div>
-            <div class="form-field"><label for="editorSupplyRating">需給評価 1〜5</label><input id="editorSupplyRating" type="number" inputmode="numeric" min="0" max="5" step="1" placeholder="例：4" /></div>
-          </div>
-        </details>
-
-        <div class="form-field full-width"><label for="editorMemo">銘柄メモ</label><textarea id="editorMemo" placeholder="買い仮説、需給、決算跨ぎ判断、損切り理由など"></textarea></div>
-        <div class="editor-actions sticky-actions"><button type="submit" id="saveStockButton">銘柄を保存</button><button type="button" id="resetEditorButton" class="button-muted">入力をクリア</button></div>
-      </form>
+    <section id="themes" class="panel">
+      <div class="section-title">
+        <span>Theme Strength</span>
+        <h2>テーマ別の資金流入</h2>
+      </div>
+      <div id="themeGrid" class="theme-grid"></div>
     </section>
 
-    <section id="sepa-screener" class="card sepa-section">
-      <div class="section-heading"><span class="card-label">SEPA Screener</span><h2>ミネルヴィニSEPAスクリーナー</h2><p>手入力データをもとに、Trend Template、VCP、業績、需給、リスク管理を100点満点で採点します。</p></div>
-      <div id="sepaSummary" class="portfolio-summary"></div>
-      <div class="sepa-controls"><div class="form-field"><label for="sepaThemeFilter">テーマで絞り込み</label><select id="sepaThemeFilter"></select></div><div id="sepaFilterButtons" class="filter-row" aria-label="SEPAフィルター"></div></div>
-      <div id="sepaRanking" class="sepa-ranking"></div>
+    <section id="risk-plan" class="panel">
+      <div class="section-title">
+        <span>Risk Plan</span>
+        <h2>エントリー・損切り・利確ライン</h2>
+      </div>
+      <div id="riskTable" class="table-wrap"></div>
     </section>
 
-    <section id="watchlist" class="card">
-      <div class="section-heading"><span class="card-label">Watchlist</span><h2>テーマ別ウォッチリスト</h2><p>気になるテーマを選ぶと、該当銘柄だけに絞り込めます。カード下部から編集・削除できます。</p></div>
-      <div id="portfolioSummary" class="portfolio-summary"></div>
-      <div id="themeFilters" class="filter-row" aria-label="テーマフィルター"></div>
-      <div id="watchlistGrid" class="watchlist-grid"></div>
+    <section id="tracking" class="panel">
+      <div class="section-title">
+        <span>Breakout Tracking</span>
+        <h2>ブレイク後の検証</h2>
+      </div>
+      <div id="trackingList" class="tracking-list"></div>
     </section>
 
-    <section class="memo-layout">
-      <article id="memo-section" class="card">
-        <div class="section-heading"><span class="card-label">Memo</span><h2>投資メモ</h2><p>入力内容はこのスマホ・ブラウザ内に保存されます。</p></div>
-        <div id="memoGrid" class="memo-grid"></div>
-      </article>
-      <article id="tradingview-section" class="card tradingview-card">
-        <div class="section-heading"><span class="card-label">Chart</span><h2>TradingViewウィジェット枠</h2><p>あとからTradingViewの無料ウィジェットコードをここへ貼り付けます。</p></div>
-        <div class="widget-placeholder"><strong>TradingView Widget Area</strong><p>今は空枠です。第3段階でチャート・ティッカー・ヒートマップなどを追加できます。</p></div>
-      </article>
-    </section>
-
-    <section id="how-to-use" class="card how-to-section">
-      <div class="section-heading"><span class="card-label">Guide</span><h2>使い方</h2><p>左上メニューから各機能へ移動できます。まずはこの順番で使うと迷いにくいです。</p></div>
-      <div class="how-to-grid">
-        <article class="how-to-card"><strong>1. 銘柄コード検索</strong><p>気になる銘柄コードを入力すると、株探、Yahoo!ファイナンス、TradingViewなどを開けます。</p></article>
-        <article class="how-to-card"><strong>2. 銘柄追加・編集</strong><p>銘柄名、テーマ、エントリー価格、損切り、利確、決算日、メモを入力します。データは自分のスマホ/ブラウザ内に保存されます。</p></article>
-        <article class="how-to-card"><strong>3. SEPAスクリーナー</strong><p>現在株価、移動平均、52週高値安値、RS、出来高評価、VCP評価などを入力し、Trend TemplateやSEPAスコアを確認します。</p></article>
-        <article class="how-to-card"><strong>4. スイングスクリーナー</strong><p>新高値ブレイク、大底反転、形が良い銘柄を候補として登録し、売買代金、業績、チャート、資金流入継続性からA/B/C評価します。</p></article>
-        <article class="how-to-card"><strong>5. テーマ別ウォッチリスト</strong><p>防衛、半導体、データセンターなどテーマ別に監視銘柄を確認します。</p></article>
-        <article class="how-to-card"><strong>6. 投資メモ</strong><p>今日の強いテーマ、気になる銘柄、決算跨ぎ候補、損切り、利確ラインをメモします。</p></article>
-        <article class="how-to-card warning-card"><strong>7. 注意点</strong><p>このサイトは投資判断の補助ツールです。APIなしのため株価や移動平均、売買代金は手入力です。localStorage保存なので別端末には同期されず、ブラウザデータ削除で消える可能性があります。証券口座情報、APIキー、個人情報は入力しないでください。</p></article>
+    <section id="notes" class="panel notes-panel">
+      <div class="section-title">
+        <span>Manual Notes</span>
+        <h2>今日の判断メモ</h2>
+      </div>
+      <textarea id="dailyNote" placeholder="今日の地合い、強いテーマ、買わない理由、利確/損切りの判断をメモ"></textarea>
+      <div class="note-actions">
+        <button id="saveNote" type="button">メモ保存</button>
+        <button id="clearNote" type="button" class="ghost-button">クリア</button>
       </div>
     </section>
   </main>
 
-  <footer class="footer"><p>個人用の投資情報ポータルです。投資判断は必ず公式情報・証券会社画面で確認してください。</p></footer>
-  <script src="script.js"></script>
-  <script src="sepa.js"></script>
-  <script src="swing.js"></script>
-  <script src="menu.js"></script>
+  <footer class="footer">
+    <p>このダッシュボードは投資判断の補助用です。売買前に必ず証券会社画面、企業IR、TDnet、EDINETなど一次情報を確認してください。</p>
+  </footer>
+
+  <script src="dashboard.js"></script>
 </body>
 </html>
