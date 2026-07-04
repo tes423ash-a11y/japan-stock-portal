@@ -81,7 +81,7 @@ python scripts/build_report.py
 
 `.github/workflows/daily-screener-report.yml` で、平日18:00 JST相当に日次実行します。
 
-手動実行も可能です。
+注意: 新規Workflowファイルは、PRをマージして `main` に入ってからActions画面で手動実行できるようになります。PR確認中はSecrets設定とコードレビューまで行い、マージ後に `Actions > Daily Screener Report > Run workflow` を実行してください。
 
 ## 現在のスコアリング
 
