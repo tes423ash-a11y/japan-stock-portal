@@ -30,6 +30,18 @@ jobs:
       - name: Build report
         run: python scripts/build_report.py
 
+      - name: Print report diagnostics
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('reports/latest.json').read_text(encoding='utf-8'))
+          print('universe:', report.get('universe'))
+          print('summary:', json.dumps(report.get('summary', {}), ensure_ascii=False))
+          print('jquantsStatus:', json.dumps(report.get('jquantsStatus', {}), ensure_ascii=False))
+          print('jquantsQuoteDiagnostics:', json.dumps(report.get('jquantsQuoteDiagnostics', []), ensure_ascii=False))
+          PY
+
       - name: Commit generated report
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
