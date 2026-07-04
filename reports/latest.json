@@ -1,12 +1,20 @@
 {
-  "generatedAt": "2026-07-04T16:25:21.990932+00:00",
+  "generatedAt": "2026-07-04T16:43:21.625166+00:00",
   "universe": "watchlists",
+  "jquantsStatus": {
+    "enabled": true,
+    "authSource": "email_password",
+    "status": "auth_failed",
+    "message": "HTTP 410"
+  },
+  "jquantsQuoteDiagnostics": [],
   "summary": {
     "total": 6,
     "aRank": 3,
     "breakoutReady": 3,
     "pullbackReady": 3,
-    "averageScore": 79.5
+    "averageScore": 79.5,
+    "jquantsCandidates": 0
   },
   "candidates": [
     {
@@ -26,6 +34,7 @@
       "rr": "",
       "riskLabel": "Not calculated",
       "action": "Priority review",
+      "dataSource": "watchlist",
       "reasons": [
         "large cap theme"
       ]
@@ -47,6 +56,7 @@
       "rr": "",
       "riskLabel": "Not calculated",
       "action": "Priority review",
+      "dataSource": "watchlist",
       "reasons": [
         "optical communication theme"
       ]
@@ -68,6 +78,7 @@
       "rr": "",
       "riskLabel": "Not calculated",
       "action": "Priority review",
+      "dataSource": "watchlist",
       "reasons": [
         "AI power demand"
       ]
@@ -89,6 +100,7 @@
       "rr": "",
       "riskLabel": "Not calculated",
       "action": "Wait for setup",
+      "dataSource": "watchlist",
       "reasons": [
         "AI memory leader"
       ]
@@ -110,6 +122,7 @@
       "rr": "",
       "riskLabel": "Not calculated",
       "action": "Wait for setup",
+      "dataSource": "watchlist",
       "reasons": [
         "storage cycle candidate"
       ]
@@ -131,6 +144,7 @@
       "rr": "",
       "riskLabel": "Not calculated",
       "action": "Wait for setup",
+      "dataSource": "watchlist",
       "reasons": [
         "data center networking"
       ]
