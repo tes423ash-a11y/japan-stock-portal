@@ -7,6 +7,7 @@ function fmt(value, suffix = '') {
 }
 
 function rankClass(rank) {
+  if (rank === 'S') return 'rank-s';
   if (rank === 'A') return 'rank-a';
   if (rank === 'B') return 'rank-b';
   if (rank === 'C') return 'rank-c';
@@ -37,10 +38,10 @@ function renderSummary(report) {
   const s = report.summary || {};
   const cards = [
     ['対象', s.total ?? report.candidates?.length ?? 0],
+    ['S', s.sRank ?? 0],
     ['A', s.aRank ?? 0],
     ['ブレイク', s.breakoutReady ?? 0],
     ['押し目', s.pullbackReady ?? 0],
-    ['テーマ', s.themeLeader ?? 0],
     ['高ボラ', s.highVolatility ?? 0],
     ['平均', s.averageScore ?? '-']
   ];
@@ -49,8 +50,8 @@ function renderSummary(report) {
 
 function filterCandidates(candidates) {
   const value = document.getElementById('rankFilter').value;
-  if (value === 'A') return candidates.filter(x => x.rank === 'A');
-  if (value === 'B') return candidates.filter(x => ['A', 'B'].includes(x.rank));
+  if (value === 'A') return candidates.filter(x => ['S', 'A'].includes(x.rank));
+  if (value === 'B') return candidates.filter(x => ['S', 'A', 'B'].includes(x.rank));
   if (value === 'breakout') return candidates.filter(x => x.setupType === 'breakout');
   if (value === 'pullback') return candidates.filter(x => x.setupType === 'pullback');
   return candidates;
@@ -58,13 +59,13 @@ function filterCandidates(candidates) {
 
 function scoreLine(item) {
   const c = item.componentScores || {};
-  const parts = [['T', c.trend], ['M', c.momentum], ['V', c.volume], ['R', c.risk], ['Theme', c.theme], ['Setup', c.setup]];
+  const parts = [['T', c.trend], ['M', c.momentum], ['V', c.volume], ['R', c.risk], ['Theme', c.theme], ['Setup', c.setup], ['Liq', c.liquidity]];
   return `<div class="score-breakdown">${parts.map(([k, v]) => `<span>${k}: <strong>${fmt(v)}</strong></span>`).join('')}</div>`;
 }
 
 function metricsLine(item) {
   const m = item.metrics || {};
-  const parts = [['20日', m.ret20Pct, '%'], ['60日', m.ret60Pct, '%'], ['ATR', m.atrPct, '%'], ['高値比', m.drawdownFromHighPct, '%']];
+  const parts = [['20日', m.ret20Pct, '%'], ['60日', m.ret60Pct, '%'], ['ATR', m.atrPct, '%'], ['高値比', m.drawdownFromHighPct, '%'], ['売買代金USD', m.avgTradingValue20Usd, '']];
   return `<div class="score-breakdown metrics-line">${parts.map(([k, v, s]) => `<span>${k}: <strong>${fmt(v, s)}</strong></span>`).join('')}</div>`;
 }
 
@@ -78,7 +79,7 @@ function renderCandidates(report) {
   target.innerHTML = list.map(item => {
     const reasons = (item.reasons || []).slice(0, 8).map(x => `<li>${x}</li>`).join('');
     return `<article class="candidate-card">
-      <div class="candidate-head"><div><span class="candidate-code">${item.symbol || item.code} / ${item.dataSource || 'unknown'}</span><h3>${item.name}</h3><span class="theme-tag">#${item.theme || '未分類'} / ${item.setup || setupLabel(item.setupType)}</span></div><span class="rank-badge ${rankClass(item.rank)}">${item.rank || '-'}</span></div>
+      <div class="candidate-head"><div><span class="candidate-code">${item.symbol || item.code} / ${item.market || '-'} / ${item.dataSource || 'unknown'}</span><h3>${item.name}</h3><span class="theme-tag">#${item.theme || '未分類'} / ${item.setup || setupLabel(item.setupType)}</span></div><span class="rank-badge ${rankClass(item.rank)}">${item.rank || '-'}</span></div>
       <div class="metric-grid"><div class="metric"><span class="metric-label">総合</span><strong>${fmt(item.score)}</strong></div><div class="metric"><span class="metric-label">型</span><strong>${setupLabel(item.setupType)}</strong></div><div class="metric"><span class="metric-label">現在値</span><strong>${fmt(item.price)}</strong></div><div class="metric"><span class="metric-label">損切り</span><strong>${fmt(item.stop)}</strong></div></div>
       ${scoreLine(item)}${metricsLine(item)}
       <p><strong>判断:</strong> ${item.action || '監視継続'}</p><ul class="reason-list">${reasons}</ul><div class="card-links">${stockLinks(item)}</div>
@@ -96,7 +97,7 @@ function renderThemes(report) {
 
 function renderRiskTable(report) {
   const rows = [...(report.candidates || [])].sort((a, b) => (b.score || 0) - (a.score || 0));
-  document.getElementById('riskTable').innerHTML = `<table><thead><tr><th>銘柄</th><th>型</th><th>ランク</th><th>現在値</th><th>ピボット</th><th>損切り</th><th>利確1</th><th>利確2</th><th>方針</th></tr></thead><tbody>${rows.map(item => `<tr><td>${item.symbol || item.code}<br>${item.name}</td><td>${setupLabel(item.setupType)}</td><td>${item.rank || '-'}</td><td>${fmt(item.price)}</td><td>${fmt(item.pivot)}</td><td>${fmt(item.stop)}</td><td>${fmt(item.target1)}</td><td>${fmt(item.target2)}</td><td>${item.action || '監視'}</td></tr>`).join('')}</tbody></table>`;
+  document.getElementById('riskTable').innerHTML = `<table><thead><tr><th>銘柄</th><th>市場</th><th>型</th><th>ランク</th><th>現在値</th><th>ピボット</th><th>損切り</th><th>利確1</th><th>利確2</th><th>方針</th></tr></thead><tbody>${rows.map(item => `<tr><td>${item.symbol || item.code}<br>${item.name}</td><td>${item.market || '-'}</td><td>${setupLabel(item.setupType)}</td><td>${item.rank || '-'}</td><td>${fmt(item.price)}</td><td>${fmt(item.pivot)}</td><td>${fmt(item.stop)}</td><td>${fmt(item.target1)}</td><td>${fmt(item.target2)}</td><td>${item.action || '監視'}</td></tr>`).join('')}</tbody></table>`;
 }
 
 function renderTracking(report) {
