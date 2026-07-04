@@ -1,0 +1,29 @@
+symbol,name,market,theme,note
+NVDA,NVIDIA,US,AI Infrastructure,liquid large cap
+MSFT,Microsoft,US,AI Infrastructure,liquid large cap
+AAPL,Apple,US,Consumer Tech,liquid large cap
+AMZN,Amazon,US,AI Infrastructure,liquid large cap
+GOOGL,Alphabet,US,AI Infrastructure,liquid large cap
+META,Meta Platforms,US,AI Infrastructure,liquid large cap
+TSLA,Tesla,US,Robotics,liquid large cap
+AVGO,Broadcom,US,AI Infrastructure,liquid large cap
+AMD,Advanced Micro Devices,US,Semiconductor,liquid large cap
+MU,Micron Technology,US,HBM Memory,AI memory leader
+SNDK,SanDisk,US,Memory,storage cycle candidate
+MRVL,Marvell Technology,US,AI Infrastructure,networking semiconductor
+ANET,Arista Networks,US,AI Infrastructure,data center networking
+LITE,Lumentum,US,Optical,AI optical communication
+KLAC,KLA,US,Semiconductor,semiconductor equipment
+LRCX,Lam Research,US,Semiconductor,semiconductor equipment
+AMAT,Applied Materials,US,Semiconductor,semiconductor equipment
+PANW,Palo Alto Networks,US,Cybersecurity,security leader
+CRWD,CrowdStrike,US,Cybersecurity,security leader
+APP,AppLovin,US,Software,momentum software
+HOOD,Robinhood,US,Fintech,momentum fintech
+AXON,Axon Enterprise,US,Defense,public safety technology
+RKLB,Rocket Lab,US,Space,space theme
+ASTS,AST SpaceMobile,US,Space,space theme
+OKLO,Oklo,US,Nuclear,nuclear power theme
+GEV,GE Vernova,US,Power,power infrastructure
+VRT,Vertiv,US,Data center,data center power
+CEG,Constellation Energy,US,Power,nuclear power leader
