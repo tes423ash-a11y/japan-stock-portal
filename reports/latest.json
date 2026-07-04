@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T17:04:39.010554+00:00",
+  "generatedAt": "2026-07-04T17:10:58.007153+00:00",
   "universe": "watchlists",
   "jquantsStatus": {
     "enabled": true,
@@ -10,24 +10,24 @@
   "jquantsQuoteDiagnostics": [
     {
       "symbol": "7011.T",
-      "code": "7011",
+      "code": "70110",
       "endpoint": "v2/equities/bars/daily",
       "status": "quote_failed",
-      "message": "HTTP 400"
+      "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
     },
     {
       "symbol": "5803.T",
-      "code": "5803",
+      "code": "58030",
       "endpoint": "v2/equities/bars/daily",
       "status": "quote_failed",
-      "message": "HTTP 400"
+      "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
     },
     {
       "symbol": "9501.T",
-      "code": "9501",
+      "code": "95010",
       "endpoint": "v2/equities/bars/daily",
       "status": "quote_failed",
-      "message": "HTTP 400"
+      "message": "HTTP 400 body={\"message\": \"Your subscription covers the following dates: 2024-04-12 ~ 2026-04-12. If you want more data, please check other plans:https://jpx-jquants.com/#dataset\"}"
     }
   ],
   "summary": {
