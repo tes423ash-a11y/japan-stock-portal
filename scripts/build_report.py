@@ -31,14 +31,24 @@ def read_watchlists() -> list[dict[str, str]]:
 
 
 def jquants_code(symbol: str) -> str:
-    return symbol.replace(".T", "").strip()
+    code = symbol.replace(".T", "").strip()
+    if code.isdigit() and len(code) == 4:
+        return f"{code}0"
+    return code
 
 
 def safe_http_status(error: requests.RequestException) -> str:
     response = getattr(error, "response", None)
     if response is None:
         return error.__class__.__name__
-    return f"HTTP {response.status_code}"
+    detail = ""
+    try:
+        body = response.text.strip().replace("\n", " ")
+        if body:
+            detail = f" body={body[:240]}"
+    except Exception:
+        detail = ""
+    return f"HTTP {response.status_code}{detail}"
 
 
 def get_jquants_api_key() -> tuple[str | None, dict[str, object]]:
@@ -83,8 +93,8 @@ def fetch_jquants_daily_quotes(code: str, api_key: str) -> list[dict[str, Any]]:
     start = end - timedelta(days=430)
     params: dict[str, Any] = {
         "code": code,
-        "from": start.strftime("%Y%m%d"),
-        "to": end.strftime("%Y%m%d"),
+        "from": start.isoformat(),
+        "to": end.isoformat(),
     }
     headers = {
         "x-api-key": api_key,
@@ -334,12 +344,7 @@ def build_themes(candidates: list[dict[str, object]]) -> list[dict[str, object]]
     for theme, items in grouped.items():
         average = sum(int(item.get("score", 0)) for item in items) / len(items)
         leaders = [str(item.get("symbol")) for item in sorted(items, key=lambda x: int(x.get("score", 0)), reverse=True)[:3]]
-        themes.append({
-            "name": theme,
-            "strength": round(average, 1),
-            "leaders": leaders,
-            "note": f"{len(items)} candidates in watchlist",
-        })
+        themes.append({"name": theme, "strength": round(average, 1), "leaders": leaders, "note": f"{len(items)} candidates in watchlist"})
     return sorted(themes, key=lambda item: float(item["strength"]), reverse=True)
 
 
@@ -375,14 +380,7 @@ def main() -> None:
         "universe": "watchlists+jquants_v2" if jquants_candidates else "watchlists",
         "jquantsStatus": jquants_status,
         "jquantsQuoteDiagnostics": quote_diagnostics,
-        "summary": {
-            "total": len(candidates),
-            "aRank": sum(1 for item in candidates if item["rank"] == "A"),
-            "breakoutReady": sum(1 for item in candidates if "VCP" in str(item.get("setup"))),
-            "pullbackReady": sum(1 for item in candidates if "Pullback" in str(item.get("setup"))),
-            "averageScore": average_score,
-            "jquantsCandidates": jquants_candidates,
-        },
+        "summary": {"total": len(candidates), "aRank": sum(1 for item in candidates if item["rank"] == "A"), "breakoutReady": sum(1 for item in candidates if "VCP" in str(item.get("setup"))), "pullbackReady": sum(1 for item in candidates if "Pullback" in str(item.get("setup"))), "averageScore": average_score, "jquantsCandidates": jquants_candidates},
         "candidates": candidates,
         "themes": build_themes(candidates),
         "tracking": [],
