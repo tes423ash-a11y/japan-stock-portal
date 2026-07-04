@@ -37,19 +37,36 @@ GitHub Actionsの手動実行時に、以下のモードを選べます。
 
 ### top_turnover
 
-`universes/jp_liquid.csv` と `universes/us_liquid.csv` を読み、20日平均売買代金を計算して上位N件を残します。
+`universes/jp_liquid.csv` と `universes/us_liquid.csv` を読み、20日平均売買代金を計算して、**日本株と米国株を別々に上位N件** 残します。
+
+JP/USを合算しません。
+
+```text
+screening_top_n: 100
+```
+
+なら、意味は以下です。
+
+```text
+日本株 売買代金トップ100
+米国株 売買代金トップ100
+合計 最大200銘柄
+```
 
 おすすめはこれです。
 
 ```text
 screening_mode: top_turnover
-screening_top_n: 50
-screening_max_symbols: 100
+screening_top_n: 100
+screening_max_symbols: 300
+screening_usdjpy: 150
 ```
+
+`screening_top_n` と `screening_max_symbols` は、どちらも **各市場ごと** の数です。
 
 ### all_universe
 
-`universes/*.csv` の銘柄を順番に処理します。全銘柄リストを入れれば全銘柄に近い運用もできますが、yfinanceを数千銘柄に投げると遅く不安定になるため、GitHub Actionsではまず100〜300銘柄程度から始めます。
+`universes/*.csv` の銘柄をJP/US別に順番処理します。全銘柄リストを入れれば全銘柄に近い運用もできますが、yfinanceを数千銘柄に投げると遅く不安定になるため、GitHub Actionsではまず各市場100〜300銘柄程度から始めます。
 
 ## CSV形式
 
@@ -101,8 +118,9 @@ python scripts/build_report.py
 手動実行では以下を指定できます。
 
 - `screening_mode`: `watchlists` / `top_turnover` / `all_universe`
-- `screening_top_n`: 出力に残す件数
-- `screening_max_symbols`: 取得対象にする最大銘柄数
+- `screening_top_n`: 各市場ごとに残す売買代金上位件数。100〜300。
+- `screening_max_symbols`: 各市場ごとに取得する最大銘柄数。100〜300。
+- `screening_usdjpy`: 日本株の売買代金をUSD換算するための仮レート。
 
 ## 現在のスコアリング
 
@@ -110,9 +128,11 @@ python scripts/build_report.py
 - 直近高値・安値
 - 出来高20日/50日平均
 - 20日平均売買代金
+- 20日平均売買代金USD換算
 - ATR風ボラティリティ
 - 20日/60日リターン
 - setupType分類: breakout / pullback / theme_leader / high_volatility / trend_watch / avoid
+- rank分類: S / A / B / C / D
 - componentScores: trend / momentum / volume / risk / theme / setup / liquidity
 
 ## 注意
