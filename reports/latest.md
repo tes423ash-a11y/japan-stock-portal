@@ -1,10 +1,10 @@
 # Daily Screener Report
 
-Generated: 2026-07-04T16:51:56.237672+00:00
+Generated: 2026-07-04T17:04:39.010554+00:00
 
 ## J-Quants Status
 
-- auth_failed
+- quote_failed
 
 ## Top Candidates
 

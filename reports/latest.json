@@ -1,13 +1,35 @@
 {
-  "generatedAt": "2026-07-04T16:51:56.237672+00:00",
+  "generatedAt": "2026-07-04T17:04:39.010554+00:00",
   "universe": "watchlists",
   "jquantsStatus": {
     "enabled": true,
-    "authSource": "refresh_token",
-    "status": "auth_failed",
-    "message": "HTTP 410"
+    "authSource": "api_key_from_refresh_token_secret",
+    "status": "quote_failed",
+    "message": "API key loaded, but no Japanese candidates were converted to J-Quants data."
   },
-  "jquantsQuoteDiagnostics": [],
+  "jquantsQuoteDiagnostics": [
+    {
+      "symbol": "7011.T",
+      "code": "7011",
+      "endpoint": "v2/equities/bars/daily",
+      "status": "quote_failed",
+      "message": "HTTP 400"
+    },
+    {
+      "symbol": "5803.T",
+      "code": "5803",
+      "endpoint": "v2/equities/bars/daily",
+      "status": "quote_failed",
+      "message": "HTTP 400"
+    },
+    {
+      "symbol": "9501.T",
+      "code": "9501",
+      "endpoint": "v2/equities/bars/daily",
+      "status": "quote_failed",
+      "message": "HTTP 400"
+    }
+  ],
   "summary": {
     "total": 6,
     "aRank": 3,
