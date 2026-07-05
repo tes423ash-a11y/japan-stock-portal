@@ -20,7 +20,6 @@
       <a href="#notes">メモ</a>
     </nav>
   </header>
-
   <main>
     <section id="command-center" class="panel compact-panel">
       <div class="section-title"><span>Command Center</span><h2>今日の概況</h2></div>
@@ -28,7 +27,6 @@
       <div id="summaryCards" class="summary-grid compact-summary"></div>
       <div id="marketSummary" class="market-summary compact-market"></div>
     </section>
-
     <section id="sector-strength" class="panel compact-panel">
       <div class="section-title"><span>Sector Strength</span><h2>セクター別の強さ</h2></div>
       <div class="tab-bar" role="tablist" aria-label="市場切替">
@@ -47,7 +45,6 @@
       <div id="sectorGrid" class="sector-list"></div>
       <details class="collapse-panel"><summary>全セクター表を開く</summary><div id="sectorTable" class="table-wrap"></div></details>
     </section>
-
     <section id="candidates" class="panel compact-panel">
       <div class="section-title"><span>Candidate Finder</span><h2>S/A候補を絞り込む</h2></div>
       <div class="toolbar advanced-toolbar compact-toolbar">
@@ -61,20 +58,17 @@
       <div id="resultCount" class="status-line compact-status"></div>
       <div id="candidateList" class="candidate-list"></div>
     </section>
-
     <details id="risk-plan" class="panel collapse-panel"><summary>売買計画テーブルを開く</summary><div id="riskTable" class="table-wrap"></div></details>
     <details class="panel collapse-panel"><summary>テーマ別資金流入を開く</summary><div id="themeGrid" class="theme-grid"></div></details>
     <details class="panel collapse-panel"><summary>ブレイク後検証を開く</summary><div id="trackingList" class="tracking-list"></div></details>
-
     <section id="notes" class="panel notes-panel compact-panel">
       <div class="section-title"><span>Manual Notes</span><h2>今日の判断メモ</h2></div>
       <textarea id="dailyNote" placeholder="今日の地合い、強いセクター、買わない理由、利確/損切りの判断をメモ"></textarea>
       <div class="note-actions"><button id="saveNote" type="button">メモ保存</button><button id="clearNote" type="button" class="ghost-button">クリア</button></div>
     </section>
   </main>
-
   <footer class="footer"><p>投資判断の補助用です。売買前に証券会社画面、企業IR、TDnet、EDINETなど一次情報を確認してください。</p></footer>
-  <script src="dashboard.js?v=20260705-sa-only"></script>
+  <script src="dashboard.js?v=20260705-sector-rs"></script>
   <script src="dashboard-external.js?v=20260705-external"></script>
 </body>
 </html>
