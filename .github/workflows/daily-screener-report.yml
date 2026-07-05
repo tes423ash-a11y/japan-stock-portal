@@ -78,6 +78,9 @@ jobs:
       - name: Build report
         run: python scripts/build_report.py
 
+      - name: Enrich external signals
+        run: python scripts/enrich_external_signals.py
+
       - name: Enrich sector strength
         run: python scripts/enrich_sector_strength.py
 
@@ -95,6 +98,7 @@ jobs:
           print('inputRowsByMarket:', json.dumps(report.get('inputRowsByMarket', {}), ensure_ascii=False))
           print('marketSummary:', json.dumps(report.get('marketSummary', {}), ensure_ascii=False))
           print('summary:', json.dumps(report.get('summary', {}), ensure_ascii=False))
+          print('externalSignals:', json.dumps(report.get('externalSignals', {}), ensure_ascii=False))
           print('sectorStrengthRows:', len(report.get('sectorStrength', [])))
           print('sectorStrengthPreviousAvailable:', report.get('sectorStrengthPreviousAvailable'))
           print('jquantsStatus:', json.dumps(report.get('jquantsStatus', {}), ensure_ascii=False))
@@ -125,3 +129,4 @@ jobs:
             reports/sector_strength_previous.json
             universes/us_sp500.csv
             universes/jp_topix500.csv
+            data/external_signals.csv
