@@ -19,15 +19,39 @@ def avg(xs):
     return round(sum(vals) / len(vals), 1) if vals else 0.0
 
 
+def clamp(value, low, high):
+    return max(low, min(high, value))
+
+
+def market_baselines(candidates):
+    by_market = defaultdict(list)
+    for item in candidates:
+        by_market[item.get("market") or "-"].append(item)
+    result = {}
+    for market, items in by_market.items():
+        result[market] = {
+            "ret20": avg([fnum((i.get("metrics") or {}).get("ret20Pct")) for i in items]),
+            "ret60": avg([fnum((i.get("metrics") or {}).get("ret60Pct")) for i in items]),
+        }
+    return result
+
+
+def rs_score(rs20, rs60):
+    # 50 = market average. 70+ = strong relative strength. 30- = weak.
+    return round(clamp(50 + rs20 * 1.5 + rs60 * 0.6, 0, 100), 1)
+
+
 def main():
     report = json.loads(LATEST.read_text(encoding="utf-8"))
+    candidates = report.get("candidates", [])
+    baselines = market_baselines(candidates)
     prev_rows = []
     if HISTORY.exists():
         prev_rows = json.loads(HISTORY.read_text(encoding="utf-8")).get("sectorStrength", [])
     prev = {r.get("key"): r for r in prev_rows if r.get("key")}
 
     groups = defaultdict(list)
-    for item in report.get("candidates", []):
+    for item in candidates:
         key = f"{item.get('market') or '-'}|{item.get('theme') or '未分類'}"
         groups[key].append(item)
 
@@ -39,6 +63,12 @@ def main():
         old_strength = fnum(prev.get(key, {}).get("strength"))
         change = 0.0 if old_strength is None else round(strength - old_strength, 1)
         label = "new" if old_strength is None else "up" if change > 0 else "down" if change < 0 else "flat"
+        ret20 = avg([fnum((i.get("metrics") or {}).get("ret20Pct")) for i in items])
+        ret60 = avg([fnum((i.get("metrics") or {}).get("ret60Pct")) for i in items])
+        base = baselines.get(market, {"ret20": 0.0, "ret60": 0.0})
+        rs20 = round(ret20 - base.get("ret20", 0.0), 1)
+        rs60 = round(ret60 - base.get("ret60", 0.0), 1)
+        rs = rs_score(rs20, rs60)
         rows.append({
             "key": key,
             "market": market,
@@ -48,8 +78,13 @@ def main():
             "previousStrength": old_strength,
             "strengthChange": change,
             "changeLabel": label,
-            "ret20": avg([fnum((i.get("metrics") or {}).get("ret20Pct")) for i in items]),
-            "ret60": avg([fnum((i.get("metrics") or {}).get("ret60Pct")) for i in items]),
+            "ret20": ret20,
+            "ret60": ret60,
+            "marketRet20": base.get("ret20", 0.0),
+            "marketRet60": base.get("ret60", 0.0),
+            "rs20": rs20,
+            "rs60": rs60,
+            "rsScore": rs,
             "atr": avg([fnum((i.get("metrics") or {}).get("atrPct")) for i in items]),
             "turnover": round(sum(fnum((i.get("metrics") or {}).get("avgTradingValue20Usd")) or 0 for i in items), 0),
             "sCount": sum(1 for i in items if i.get("rank") == "S"),
@@ -60,12 +95,17 @@ def main():
             "leaders": [{"symbol": i.get("symbol"), "name": i.get("name"), "rank": i.get("rank"), "score": i.get("score"), "setupType": i.get("setupType"), "metrics": i.get("metrics", {})} for i in leaders],
         })
 
-    rows = sorted(rows, key=lambda r: (r.get("strengthChange") or 0, r.get("strength") or 0), reverse=True)
+    rows = sorted(rows, key=lambda r: (r.get("rsScore") or 0, r.get("strength") or 0), reverse=True)
     report["sectorStrength"] = rows
+    report["sectorRelativeStrength"] = {
+        "definition": "Sector return minus same-market universe average return",
+        "score": "50 is market average; above 50 means relative strength; below 50 means relative weakness",
+        "baselines": baselines,
+    }
     report["sectorStrengthPreviousAvailable"] = bool(prev_rows)
     LATEST.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     HISTORY.write_text(json.dumps({"generatedAt": report.get("generatedAt"), "sectorStrength": rows}, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps({"sectorStrengthRows": len(rows), "previousAvailable": bool(prev_rows)}, ensure_ascii=False))
+    print(json.dumps({"sectorStrengthRows": len(rows), "previousAvailable": bool(prev_rows), "relativeStrength": report["sectorRelativeStrength"]}, ensure_ascii=False))
 
 
 if __name__ == "__main__":
