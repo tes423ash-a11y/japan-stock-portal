@@ -8,21 +8,19 @@ on:
         required: false
         default: "top_turnover_today"
       screening_top_n:
-        description: "Top turnover count per market. 100 to 300. Example: 100 means JP 100 + US 100."
+        description: "Final selected count per market. Example: 100 means JP 100 + US 100."
         required: false
         default: "100"
       screening_max_symbols:
-        description: "Max symbols to fetch per market before filtering. 100 to 300."
+        description: "Max symbols to fetch per market before final top turnover filtering. 100 to 1000."
         required: false
-        default: "300"
+        default: "1000"
       screening_usdjpy:
         description: "USDJPY used to compare JP turnover with US turnover"
         required: false
         default: "150"
   schedule:
-    # 18:00 JST on JP weekdays. Good for Japan after-close screening.
     - cron: "0 9 * * 1-5"
-    # 07:30 JST Tue-Sat. Good for US after-close screening.
     - cron: "30 22 * * 1-5"
 
 concurrency:
@@ -38,8 +36,10 @@ jobs:
     env:
       SCREENING_MODE: ${{ github.event.inputs.screening_mode || 'top_turnover_today' }}
       SCREENING_TOP_N: ${{ github.event.inputs.screening_top_n || '100' }}
-      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '300' }}
+      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '1000' }}
       SCREENING_USDJPY: ${{ github.event.inputs.screening_usdjpy || '150' }}
+      SP500_SOURCE_URL: https://en.wikipedia.org/wiki/List_of_S%26P_500_companies
+      TOPIX_SOURCE_URLS: https://www.jpx.co.jp/markets/indices/topix/tvdivq00000030ne-att/topixweight_j.csv|https://www.jpx.co.jp/english/markets/indices/topix/tvdivq00000030ne-att/topixweight_e.csv
       JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
       JQUANTS_EMAIL: ${{ secrets.JQUANTS_EMAIL }}
       JQUANTS_PASSWORD: ${{ secrets.JQUANTS_PASSWORD }}
@@ -58,6 +58,22 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Refresh index universes
+        run: |
+          python scripts/update_sp500_universe.py
+          python scripts/update_topix500_universe.py
+
+      - name: Allow 1000 symbol scan
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/build_report.py')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace('top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 100), 100, 300))', 'top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 100), 50, 300))')
+          text = text.replace('max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 300), top_n_per_market, 300))', 'max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 1000), top_n_per_market, 1000))')
+          path.write_text(text, encoding='utf-8')
+          PY
+
       - name: Build report
         run: python scripts/build_report.py
 
@@ -74,6 +90,8 @@ jobs:
           print('turnoverSortMetric:', report.get('turnoverSortMetric'))
           print('topNPerMarket:', report.get('screeningTopNPerMarket'))
           print('maxSymbolsPerMarket:', report.get('screeningMaxSymbolsPerMarket'))
+          print('universeRowsByMarket:', json.dumps(report.get('universeRowsByMarket', {}), ensure_ascii=False))
+          print('inputRowsByMarket:', json.dumps(report.get('inputRowsByMarket', {}), ensure_ascii=False))
           print('marketSummary:', json.dumps(report.get('marketSummary', {}), ensure_ascii=False))
           print('summary:', json.dumps(report.get('summary', {}), ensure_ascii=False))
           print('sectorStrengthRows:', len(report.get('sectorStrength', [])))
@@ -87,7 +105,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add reports/latest.json reports/latest.md reports/sector_strength_previous.json
+          git add reports/latest.json reports/latest.md reports/sector_strength_previous.json universes/us_sp500.csv universes/jp_topix500.csv
           if git diff --cached --quiet; then
             echo "No report changes to commit."
             exit 0
@@ -104,3 +122,5 @@ jobs:
             reports/latest.json
             reports/latest.md
             reports/sector_strength_previous.json
+            universes/us_sp500.csv
+            universes/jp_topix500.csv
