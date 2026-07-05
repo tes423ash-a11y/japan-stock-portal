@@ -4,17 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       screening_mode:
-        description: "watchlists / top_turnover_today / top_turnover / all_universe"
+        description: "watchlists / all_universe / top_turnover_today / top_turnover"
         required: false
-        default: "top_turnover_today"
+        default: "all_universe"
       screening_top_n:
-        description: "Final selected count per market. Example: 100 means JP 100 + US 100."
+        description: "Final selected count per market. 1200 keeps almost all JP/US universe rows."
         required: false
-        default: "100"
+        default: "1200"
       screening_max_symbols:
-        description: "Max symbols to fetch per market before final top turnover filtering. 100 to 1000."
+        description: "Max symbols to fetch per market before filtering. 100 to 1200."
         required: false
-        default: "1000"
+        default: "1200"
       screening_usdjpy:
         description: "USDJPY used to compare JP turnover with US turnover"
         required: false
@@ -33,10 +33,11 @@ permissions:
 jobs:
   build-report:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     env:
-      SCREENING_MODE: ${{ github.event.inputs.screening_mode || 'top_turnover_today' }}
-      SCREENING_TOP_N: ${{ github.event.inputs.screening_top_n || '100' }}
-      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '1000' }}
+      SCREENING_MODE: ${{ github.event.inputs.screening_mode || 'all_universe' }}
+      SCREENING_TOP_N: ${{ github.event.inputs.screening_top_n || '1200' }}
+      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '1200' }}
       SCREENING_USDJPY: ${{ github.event.inputs.screening_usdjpy || '150' }}
       SP500_SOURCE_URL: https://en.wikipedia.org/wiki/List_of_S%26P_500_companies
       TOPIX_SOURCE_URLS: https://www.jpx.co.jp/markets/indices/topix/tvdivq00000030ne-att/topixweight_j.csv|https://www.jpx.co.jp/english/markets/indices/topix/tvdivq00000030ne-att/topixweight_e.csv
@@ -63,14 +64,14 @@ jobs:
           python scripts/update_sp500_universe.py
           python scripts/update_topix500_universe.py
 
-      - name: Allow 1000 symbol scan
+      - name: Allow full universe scan
         run: |
           python - <<'PY'
           from pathlib import Path
           path = Path('scripts/build_report.py')
           text = path.read_text(encoding='utf-8')
-          text = text.replace('top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 100), 100, 300))', 'top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 100), 50, 300))')
-          text = text.replace('max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 300), top_n_per_market, 300))', 'max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 1000), top_n_per_market, 1000))')
+          text = text.replace('top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 100), 100, 300))', 'top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 1200), 50, 1200))')
+          text = text.replace('max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 300), top_n_per_market, 300))', 'max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 1200), top_n_per_market, 1200))')
           path.write_text(text, encoding='utf-8')
           PY
 
