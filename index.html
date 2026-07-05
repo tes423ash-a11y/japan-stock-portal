@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SEPA/VCP 日次スクリーナー</title>
-  <meta name="description" content="日本株・米国株の売買代金上位からVCP/SEPA候補、セクター強弱、押し目候補、高ボラ注意銘柄をスマホで確認する投資ダッシュボード" />
-  <link rel="stylesheet" href="dashboard.css?v=20260705-compact" />
+  <meta name="description" content="日本株・米国株の広い母集団からVCP/SEPA候補、セクター強弱、押し目候補、高ボラ注意銘柄をスマホで確認する投資ダッシュボード" />
+  <link rel="stylesheet" href="dashboard.css?v=20260705-full-universe" />
 </head>
 <body>
   <header class="hero compact-hero">
     <p class="eyebrow">SEPA / VCP Daily Screener</p>
     <h1>日次スクリーナー</h1>
-    <p class="lead">強いセクター → リーダー銘柄 → 候補の順で、日米のモメンタムを短時間で確認します。</p>
+    <p class="lead">TOPIX500相当・S&P500・テーマ株をまとめて評価し、セクターと銘柄候補を絞り込みます。</p>
     <nav class="quick-nav" aria-label="主要セクション">
       <a href="#sector-strength">セクター</a>
       <a href="#candidates">候補</a>
@@ -56,6 +56,7 @@
         <label>ランク<select id="rankFilter"><option value="A">S/A</option><option value="S">Sのみ</option><option value="B">S/A/B</option><option value="all">すべて</option></select></label>
         <label>型<select id="setupFilter"><option value="all">すべて</option><option value="breakout">ブレイク</option><option value="pullback">押し目</option><option value="theme_leader">テーマ</option><option value="high_volatility">高ボラ</option><option value="avoid">除外寄り</option></select></label>
         <label>並び替え<select id="sortSelect"><option value="score">スコア順</option><option value="turnover">売買代金順</option><option value="atr">低ATR順</option><option value="ret60">60日上昇順</option></select></label>
+        <label>表示<select id="displayLimit"><option value="30">30件</option><option value="100">100件</option><option value="300">300件</option><option value="all">全件</option></select></label>
         <button id="reloadReport" type="button">再読み込み</button>
       </div>
       <div id="resultCount" class="status-line compact-status"></div>
@@ -74,6 +75,6 @@
   </main>
 
   <footer class="footer"><p>投資判断の補助用です。売買前に証券会社画面、企業IR、TDnet、EDINETなど一次情報を確認してください。</p></footer>
-  <script src="dashboard.js?v=20260705-compact"></script>
+  <script src="dashboard.js?v=20260705-full-universe"></script>
 </body>
 </html>
