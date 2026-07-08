@@ -1,6 +1,6 @@
 # Daily Screener Report
 
-Generated: 2026-07-07T23:29:04.395882+00:00
+Generated: 2026-07-08T11:05:41.101892+00:00
 
 ## Data Provider Status
 
@@ -13,38 +13,38 @@ Generated: 2026-07-07T23:29:04.395882+00:00
 
 ## Market Summary
 
-- JP: selected 123 / input 123 / S 1 / A 5
+- JP: selected 123 / input 123 / S 2 / A 2
 - US: selected 117 / input 117 / S 1 / A 24
 
 ## Top Candidates
 
-- S / 94 / ブレイク候補 / JP / 9502.T / 中部電力 / TV=91068793.0
-- S / 94 / ブレイク候補 / US / ABNB / Airbnb / TV=573314255.0
-- A / 89 / ブレイク候補 / US / GD / General Dynamics / TV=537787611.0
-- A / 89 / ブレイク候補 / US / JNJ / Johnson & Johnson / TV=2451734832.0
-- A / 88 / 押し目候補 / US / AMD / Advanced Micro Devices / TV=16136758309.0
-- A / 88 / 押し目候補 / US / TSM / Taiwan Semiconductor / TV=6486750316.0
-- A / 88 / ブレイク候補 / US / MS / Morgan Stanley / TV=1368676689.0
-- A / 88 / 押し目候補 / US / AXON / Axon Enterprise / TV=759331387.0
-- A / 88 / ブレイク候補 / US / DUK / Duke Energy / TV=512737424.0
-- A / 87 / ブレイク候補 / JP / 2802.T / 味の素 / TV=223970848.0
-- A / 87 / 押し目候補 / US / GOOGL / Alphabet / TV=13502468723.0
-- A / 87 / ブレイク候補 / US / OKTA / Okta / TV=514084372.0
-- A / 87 / ブレイク候補 / US / JPM / JPMorgan Chase / TV=3432224428.0
-- A / 87 / 押し目候補 / US / GEV / GE Vernova / TV=3652787529.0
-- A / 87 / ブレイク候補 / US / ROK / Rockwell Automation / TV=427118097.0
-- A / 86 / ブレイク候補 / US / AAPL / Apple / TV=21248731337.0
-- A / 86 / ブレイク候補 / US / PANW / Palo Alto Networks / TV=2591631751.0
-- A / 86 / 押し目候補 / US / AFRM / Affirm / TV=375003121.0
-- A / 86 / ブレイク候補 / US / MRK / Merck / TV=1579823975.0
-- A / 85 / 押し目候補 / JP / 8035.T / 東京エレクトロン / TV=2318931757.0
-- A / 85 / ブレイク候補 / JP / 9983.T / ファーストリテイリング / TV=563887290.0
-- A / 85 / ブレイク候補 / JP / 2914.T / 日本たばこ産業 / TV=212949962.0
-- A / 85 / 押し目候補 / US / AMZN / Amazon / TV=15476052948.0
-- A / 85 / ブレイク候補 / US / ANET / Arista Networks / TV=1358154278.0
-- A / 85 / ブレイク候補 / US / RTX / RTX / TV=1099844601.0
-- A / 85 / ブレイク候補 / US / ABBV / AbbVie / TV=2321249401.0
-- A / 84 / ブレイク候補 / JP / 6367.T / ダイキン工業 / TV=201108582.0
-- B / 84 / 押し目候補 / US / AMAT / Applied Materials / TV=7341168644.0
-- A / 84 / ブレイク候補 / US / FTNT / Fortinet / TV=1063832444.0
-- A / 84 / ブレイク候補 / US / HWM / Howmet Aerospace / TV=1027021539.0
+- S / 94 / ブレイク候補 / JP / 9502.T / 中部電力 / TV=93311835.0
+- S / 94 / ブレイク候補 / US / ABNB / Airbnb / TV=573322692.0
+- S / 90 / ブレイク候補 / JP / 2802.T / 味の素 / TV=221552731.0
+- A / 89 / ブレイク候補 / US / GD / General Dynamics / TV=537788248.0
+- A / 89 / ブレイク候補 / US / JNJ / Johnson & Johnson / TV=2451880143.0
+- A / 88 / 押し目候補 / US / AMD / Advanced Micro Devices / TV=16138165715.0
+- A / 88 / 押し目候補 / US / TSM / Taiwan Semiconductor / TV=6487576827.0
+- A / 88 / ブレイク候補 / US / MS / Morgan Stanley / TV=1369419446.0
+- A / 88 / 押し目候補 / US / AXON / Axon Enterprise / TV=759441483.0
+- A / 88 / ブレイク候補 / US / DUK / Duke Energy / TV=512802432.0
+- A / 87 / 押し目候補 / US / GOOGL / Alphabet / TV=13503004293.0
+- A / 87 / ブレイク候補 / US / OKTA / Okta / TV=514280041.0
+- A / 87 / ブレイク候補 / US / JPM / JPMorgan Chase / TV=3437633443.0
+- A / 87 / 押し目候補 / US / GEV / GE Vernova / TV=3654079917.0
+- A / 87 / ブレイク候補 / US / ROK / Rockwell Automation / TV=427278086.0
+- A / 86 / ブレイク候補 / US / AAPL / Apple / TV=21253846090.0
+- A / 86 / ブレイク候補 / US / PANW / Palo Alto Networks / TV=2591830925.0
+- A / 86 / 押し目候補 / US / AFRM / Affirm / TV=375004773.0
+- A / 86 / ブレイク候補 / US / MRK / Merck / TV=1588339965.0
+- A / 85 / 押し目候補 / US / AMZN / Amazon / TV=15477345438.0
+- A / 85 / ブレイク候補 / US / ANET / Arista Networks / TV=1358161344.0
+- A / 85 / ブレイク候補 / US / RTX / RTX / TV=1099964097.0
+- A / 85 / ブレイク候補 / US / ABBV / AbbVie / TV=2338116029.0
+- A / 84 / ブレイク候補 / JP / 9983.T / ファーストリテイリング / TV=570536937.0
+- A / 84 / ブレイク候補 / JP / 2914.T / 日本たばこ産業 / TV=216525464.0
+- B / 84 / 押し目候補 / US / AMAT / Applied Materials / TV=7341433058.0
+- A / 84 / ブレイク候補 / US / FTNT / Fortinet / TV=1063845050.0
+- A / 84 / ブレイク候補 / US / HWM / Howmet Aerospace / TV=1027027488.0
+- A / 84 / ブレイク候補 / US / SO / Southern Company / TV=697616006.0
+- A / 84 / ブレイク候補 / US / LLY / Eli Lilly / TV=4135295960.0
