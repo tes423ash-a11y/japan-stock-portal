@@ -1,6 +1,11 @@
 name: Daily Screener Report
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - ".github/workflows/daily-screener-report.yml"
   workflow_dispatch:
     inputs:
       screening_mode:
@@ -8,15 +13,15 @@ on:
         required: false
         default: "all_universe"
       screening_top_n:
-        description: "Final selected count per market. 1200 keeps almost all JP/US universe rows."
+        description: "Final symbols per market. 500 = about 1000 JP+US symbols total."
         required: false
-        default: "1200"
+        default: "500"
       screening_max_symbols:
-        description: "Max symbols to fetch per market before filtering. 100 to 1200."
+        description: "Max symbols fetched per market before selection."
         required: false
-        default: "1200"
+        default: "550"
       screening_usdjpy:
-        description: "USDJPY used to compare JP turnover with US turnover"
+        description: "USDJPY used only for comparable turnover figures"
         required: false
         default: "150"
   schedule:
@@ -33,17 +38,19 @@ permissions:
 jobs:
   build-report:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     env:
       SCREENING_MODE: ${{ github.event.inputs.screening_mode || 'all_universe' }}
-      SCREENING_TOP_N: ${{ github.event.inputs.screening_top_n || '1200' }}
-      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '1200' }}
+      SCREENING_TOP_N: ${{ github.event.inputs.screening_top_n || '500' }}
+      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '550' }}
       SCREENING_USDJPY: ${{ github.event.inputs.screening_usdjpy || '150' }}
+      YF_CHUNK_SIZE: "80"
+      YF_RETRIES: "2"
+      YF_FALLBACK_LIMIT: "40"
+      YF_PERIOD: "18mo"
       SP500_SOURCE_URL: https://en.wikipedia.org/wiki/List_of_S%26P_500_companies
       TOPIX_SOURCE_URLS: https://www.jpx.co.jp/markets/indices/topix/tvdivq00000030ne-att/topixweight_j.csv|https://www.jpx.co.jp/english/markets/indices/topix/tvdivq00000030ne-att/topixweight_e.csv
       JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
-      JQUANTS_EMAIL: ${{ secrets.JQUANTS_EMAIL }}
-      JQUANTS_PASSWORD: ${{ secrets.JQUANTS_PASSWORD }}
       JQUANTS_REFRESH_TOKEN: ${{ secrets.JQUANTS_REFRESH_TOKEN }}
     steps:
       - name: Checkout
@@ -55,80 +62,88 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
 
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Refresh index universes
+      - name: Refresh 1000-symbol universe
         run: |
           python scripts/update_sp500_universe.py
           python scripts/update_topix500_universe.py
 
-      - name: Allow full universe scan
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('scripts/build_report.py')
-          text = path.read_text(encoding='utf-8')
-          text = text.replace('top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 100), 100, 300))', 'top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 1200), 50, 1200))')
-          text = text.replace('max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 300), top_n_per_market, 300))', 'max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 1200), top_n_per_market, 1200))')
-          path.write_text(text, encoding='utf-8')
-          PY
-
-      - name: Build report
+      - name: Build technical SEPA VCP report
         run: python scripts/build_report.py
 
-      - name: Enrich external signals
+      - name: Enrich external context
         run: python scripts/enrich_external_signals.py
 
-      - name: Enrich sector strength
+      - name: Calculate sector relative strength
         run: python scripts/enrich_sector_strength.py
 
-      - name: Print report diagnostics
+      - name: Update post-detection tracking
+        run: python scripts/update_tracking.py
+
+      - name: Validate report
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           report = json.loads(Path('reports/latest.json').read_text(encoding='utf-8'))
-          print('mode:', report.get('screeningMode'))
-          print('turnoverSortMetric:', report.get('turnoverSortMetric'))
-          print('topNPerMarket:', report.get('screeningTopNPerMarket'))
-          print('maxSymbolsPerMarket:', report.get('screeningMaxSymbolsPerMarket'))
-          print('universeRowsByMarket:', json.dumps(report.get('universeRowsByMarket', {}), ensure_ascii=False))
-          print('inputRowsByMarket:', json.dumps(report.get('inputRowsByMarket', {}), ensure_ascii=False))
+          total = int((report.get('summary') or {}).get('total') or 0)
+          coverage = report.get('coverage') or {}
+          print('schemaVersion:', report.get('schemaVersion'))
+          print('coverage:', json.dumps(coverage, ensure_ascii=False))
           print('marketSummary:', json.dumps(report.get('marketSummary', {}), ensure_ascii=False))
           print('summary:', json.dumps(report.get('summary', {}), ensure_ascii=False))
-          print('externalSignals:', json.dumps(report.get('externalSignals', {}), ensure_ascii=False))
-          print('sectorStrengthRows:', len(report.get('sectorStrength', [])))
-          print('sectorStrengthPreviousAvailable:', report.get('sectorStrengthPreviousAvailable'))
-          print('jquantsStatus:', json.dumps(report.get('jquantsStatus', {}), ensure_ascii=False))
-          print('diagnosticsCount:', len(report.get('jquantsQuoteDiagnostics', [])))
+          print('sectorRows:', len(report.get('sectorStrength', [])))
+          print('trackingSummary:', json.dumps(report.get('trackingSummary', {}), ensure_ascii=False))
+          if total < 100:
+              raise SystemExit(f'Critical report failure: only {total} candidates')
+          if not report.get('generatedAt'):
+              raise SystemExit('Critical report failure: generatedAt missing')
           PY
 
-      - name: Commit generated report
+      - name: Commit generated data
         run: |
-          set -e
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -- scripts/build_report.py
           git status --short
-          git add reports/latest.json reports/latest.md reports/sector_strength_previous.json universes/us_sp500.csv universes/jp_topix500.csv
+          git add \
+            reports/latest.json \
+            reports/latest.md \
+            reports/sector_strength_previous.json \
+            reports/sector_strength_history.json \
+            reports/candidate_tracking.json \
+            universes/us_sp500.csv \
+            universes/jp_topix500.csv
           if git diff --cached --quiet; then
-            echo "No report changes to commit."
+            echo "No generated data changes to commit."
             exit 0
           fi
-          git commit -m "Update daily screener report"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          git commit -m "Update daily 1000-symbol screener report"
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep $((attempt * 4))
+          done
+          echo "Push failed after retries"
+          exit 1
 
       - name: Upload report artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: daily-screener-report
+          retention-days: 14
           path: |
             reports/latest.json
             reports/latest.md
-            reports/sector_strength_previous.json
+            reports/sector_strength_history.json
+            reports/candidate_tracking.json
             universes/us_sp500.csv
             universes/jp_topix500.csv
             data/external_signals.csv
