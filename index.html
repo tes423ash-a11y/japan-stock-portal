@@ -11,73 +11,38 @@
 <body>
   <header class="app-header">
     <div class="brand-row">
-      <div>
-        <p class="eyebrow">Technical SEPA / VCP v3</p>
-        <h1>1000銘柄スクリーナー</h1>
-      </div>
+      <div><p class="eyebrow">Technical SEPA / VCP v3</p><h1>1000銘柄スクリーナー</h1></div>
       <button id="reloadReport" class="primary-button" type="button">更新</button>
     </div>
     <p class="lead">TOPIX500・S&P500を別々に評価し、RS・トレンドテンプレート・VCP・出来高・流動性から実行候補を絞ります。</p>
     <nav class="quick-nav" aria-label="主要セクション">
-      <a href="#command-center">概況</a>
-      <a href="#action-board">実行候補</a>
-      <a href="#sector-strength">セクターRS</a>
-      <a href="#candidates">全候補</a>
-      <a href="#tracking">事後検証</a>
-      <a href="#notes">メモ</a>
+      <a href="#command-center">概況</a><a href="#action-board">実行候補</a><a href="#sector-strength">セクターRS</a><a href="#candidates">全候補</a><a href="#tracking">事後検証</a><a href="#notes">メモ</a>
     </nav>
   </header>
 
   <main>
     <section id="command-center" class="panel command-panel">
-      <div class="section-heading">
-        <div><span>Command Center</span><h2>今日の概況</h2></div>
-        <div id="freshnessBadge" class="freshness-badge">読込中</div>
-      </div>
+      <div class="section-heading"><div><span>Command Center</span><h2>今日の概況</h2></div><div id="freshnessBadge" class="freshness-badge">読込中</div></div>
       <div id="reportStatus" class="status-line">レポートを読み込み中...</div>
       <div id="coverageBanner" class="coverage-banner"></div>
       <div id="summaryCards" class="summary-grid"></div>
       <div id="marketSummary" class="market-summary"></div>
-      <details class="methodology-note">
-        <summary>このスコアの見方・限界</summary>
-        <div id="methodologyText"></div>
-      </details>
+      <details class="methodology-note"><summary>このスコアの見方・限界</summary><div id="methodologyText"></div></details>
     </section>
 
     <section id="action-board" class="panel">
-      <div class="section-heading">
-        <div><span>Action Board</span><h2>今日見る順番</h2></div>
-      </div>
+      <div class="section-heading"><div><span>Action Board</span><h2>今日見る順番</h2></div></div>
       <div id="actionBoard" class="action-board"></div>
     </section>
 
     <section id="sector-strength" class="panel">
-      <div class="section-heading">
-        <div><span>Sector Relative Strength</span><h2>セクターRS</h2></div>
-        <span class="help-text">同一市場内で比較</span>
-      </div>
+      <div class="section-heading"><div><span>Sector Relative Strength</span><h2>セクターRS</h2></div><span class="help-text">同一市場内で比較</span></div>
       <div class="tab-bar" role="tablist" aria-label="市場切替">
-        <button class="tab-button active" type="button" data-sector-market="all">日米</button>
-        <button class="tab-button" type="button" data-sector-market="JP">日本株</button>
-        <button class="tab-button" type="button" data-sector-market="US">米国株</button>
+        <button class="tab-button active" type="button" data-sector-market="all">日米</button><button class="tab-button" type="button" data-sector-market="JP">日本株</button><button class="tab-button" type="button" data-sector-market="US">米国株</button>
       </div>
       <div class="toolbar sector-toolbar">
-        <label>並び替え
-          <select id="sectorSortSelect">
-            <option value="rs">RS順</option>
-            <option value="change5d">5日改善順</option>
-            <option value="breadth">50日線上比率順</option>
-            <option value="ret60">60日上昇順</option>
-            <option value="turnover">売買代金順</option>
-          </select>
-        </label>
-        <label>信頼度
-          <select id="sectorConfidenceFilter">
-            <option value="all">すべて</option>
-            <option value="high">高</option>
-            <option value="medium">中以上</option>
-          </select>
-        </label>
+        <label>並び替え<select id="sectorSortSelect"><option value="rs">RS順</option><option value="change5d">5日改善順</option><option value="breadth">50日線上比率順</option><option value="ret60">60日上昇順</option><option value="turnover">売買代金順</option></select></label>
+        <label>信頼度<select id="sectorConfidenceFilter"><option value="all">すべて</option><option value="high">高</option><option value="medium">中以上</option></select></label>
       </div>
       <div id="sectorLeadership" class="leadership-strip"></div>
       <div id="sectorGrid" class="sector-grid"></div>
@@ -85,17 +50,9 @@
     </section>
 
     <section id="candidates" class="panel">
-      <div class="section-heading">
-        <div><span>Candidate Finder</span><h2>候補を絞り込む</h2></div>
-        <span id="resultCount" class="result-count"></span>
-      </div>
+      <div class="section-heading"><div><span>Candidate Finder</span><h2>候補を絞り込む</h2></div><span id="resultCount" class="result-count"></span></div>
       <div class="quick-filter-row" aria-label="クイックフィルター">
-        <button type="button" data-quick-filter="actionable">実行候補</button>
-        <button type="button" data-quick-filter="nearPivot">ピボット5%以内</button>
-        <button type="button" data-quick-filter="highRs">RS 80以上</button>
-        <button type="button" data-quick-filter="pullback">押し目</button>
-        <button type="button" data-quick-filter="preferred">重点テーマ</button>
-        <button type="button" data-quick-filter="reset" class="ghost-button">解除</button>
+        <button type="button" data-quick-filter="actionable">実行候補</button><button type="button" data-quick-filter="nearPivot">ピボット5%以内</button><button type="button" data-quick-filter="highRs">RS 80以上</button><button type="button" data-quick-filter="pullback">押し目</button><button type="button" data-quick-filter="preferred">重点テーマ</button><button type="button" data-quick-filter="reset" class="ghost-button">解除</button>
       </div>
       <div class="toolbar advanced-toolbar">
         <label>検索<input id="searchInput" type="search" placeholder="銘柄名・コード・セクター・テーマ" /></label>
@@ -115,8 +72,7 @@
 
     <section id="tracking" class="panel">
       <div class="section-heading"><div><span>Post Detection Review</span><h2>検出後の成績</h2></div></div>
-      <div id="trackingSummary" class="summary-grid tracking-summary"></div>
-      <div id="trackingList" class="tracking-list"></div>
+      <div id="trackingSummary" class="summary-grid tracking-summary"></div><div id="trackingList" class="tracking-list"></div>
     </section>
 
     <section id="notes" class="panel notes-panel">
@@ -126,11 +82,8 @@
     </section>
   </main>
 
-  <footer class="footer">
-    <p>テクニカル分析支援ツールです。決算・EPS・売上成長率・材料は未評価です。売買前に企業IR、TDnet、EDINET、証券会社画面を確認してください。</p>
-  </footer>
-
-  <script src="dashboard.js?v=20260710-v3"></script>
+  <footer class="footer"><p>テクニカル分析支援ツールです。決算・EPS・売上成長率・材料は未評価です。売買前に企業IR、TDnet、EDINET、証券会社画面を確認してください。</p></footer>
+  <script type="module" src="dashboard.js?v=20260710-v4"></script>
   <script src="dashboard-external.js?v=20260705-external"></script>
 </body>
 </html>
