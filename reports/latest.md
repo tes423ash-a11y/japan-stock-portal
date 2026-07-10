@@ -1,6 +1,6 @@
 # Daily Technical SEPA/VCP Report
 
-Generated: 2026-07-10T05:02:58.943764+00:00
+Generated: 2026-07-10T11:53:09.413747+00:00
 
 ## Coverage
 
@@ -16,8 +16,9 @@ Generated: 2026-07-10T05:02:58.943764+00:00
 
 ## Top actionable candidates
 
-- A 85 | JP 8591.T オリックス | VCPピボット接近 | RS 82.1 | VCP 23 | Zone 6533.17-6762.98 | Invalidation 6106.38
-- A 83 | JP 6098.T リクルートHD | VCPピボット接近 | RS 82.0 | VCP 19 | Zone 12551.92-12993.45 | Invalidation 11731.95
-- A 81 | JP 8411.T みずほフィナンシャルグループ | VCPピボット接近 | RS 80.8 | VCP 19 | Zone 8508.25-8807.53 | Invalidation 7952.43
-- A 80 | JP 8316.T 三井住友フィナンシャルグループ | VCPピボット接近 | RS 76.8 | VCP 19 | Zone 6935.15-7179.1 | Invalidation 6482.1
+- A 85 | JP 8591.T オリックス | VCPピボット接近 | RS 82.9 | VCP 23 | Zone 6533.17-6762.98 | Invalidation 6106.38
+- A 81 | JP 8411.T みずほフィナンシャルグループ | VCPピボット接近 | RS 80.9 | VCP 19 | Zone 8508.25-8807.53 | Invalidation 7952.43
+- A 81 | JP 8306.T 三菱UFJフィナンシャル・グループ | VCPピボット接近 | RS 76.7 | VCP 19 | Zone 3500.41-3623.54 | Invalidation 3271.74
+- A 80 | JP 8316.T 三井住友フィナンシャルグループ | VCPピボット接近 | RS 77.1 | VCP 19 | Zone 6935.15-7179.1 | Invalidation 6482.1
+- A 79 | JP 6645.T オムロン | 上昇トレンドの押し目 | RS 81.7 | VCP 17 | Zone 5824.33-5970.67 | Invalidation 5443.85
 - A 78 | US IBKR Interactive Brokers | VCPピボット接近 | RS 76.4 | VCP 19 | Zone 97.35-100.78 | Invalidation 90.99
