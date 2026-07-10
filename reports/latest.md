@@ -1,6 +1,6 @@
 # Daily Technical SEPA/VCP Report
 
-Generated: 2026-07-10T11:53:09.413747+00:00
+Generated: 2026-07-10T23:27:20.729264+00:00
 
 ## Coverage
 
@@ -21,4 +21,3 @@ Generated: 2026-07-10T11:53:09.413747+00:00
 - A 81 | JP 8306.T 三菱UFJフィナンシャル・グループ | VCPピボット接近 | RS 76.7 | VCP 19 | Zone 3500.41-3623.54 | Invalidation 3271.74
 - A 80 | JP 8316.T 三井住友フィナンシャルグループ | VCPピボット接近 | RS 77.1 | VCP 19 | Zone 6935.15-7179.1 | Invalidation 6482.1
 - A 79 | JP 6645.T オムロン | 上昇トレンドの押し目 | RS 81.7 | VCP 17 | Zone 5824.33-5970.67 | Invalidation 5443.85
-- A 78 | US IBKR Interactive Brokers | VCPピボット接近 | RS 76.4 | VCP 19 | Zone 97.35-100.78 | Invalidation 90.99
