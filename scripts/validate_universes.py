@@ -9,6 +9,7 @@ REQUIREMENTS = {
     "jp_topix500.csv": 450,
     "us_sp500.csv": 490,
 }
+MIN_COMBINED_PER_MARKET = 500
 
 
 def symbols_in(path: Path) -> set[str]:
@@ -47,10 +48,10 @@ def main() -> None:
         "US": len(us_symbols),
     })
 
-    if len(jp_symbols) < 450:
-        failures.append(f"combined JP universe: {len(jp_symbols)} < 450")
-    if len(us_symbols) < 490:
-        failures.append(f"combined US universe: {len(us_symbols)} < 490")
+    if len(jp_symbols) < MIN_COMBINED_PER_MARKET:
+        failures.append(f"combined JP universe: {len(jp_symbols)} < {MIN_COMBINED_PER_MARKET}")
+    if len(us_symbols) < MIN_COMBINED_PER_MARKET:
+        failures.append(f"combined US universe: {len(us_symbols)} < {MIN_COMBINED_PER_MARKET}")
     if failures:
         raise SystemExit("Universe validation failed: " + "; ".join(failures))
 
