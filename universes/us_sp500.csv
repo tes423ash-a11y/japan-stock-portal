@@ -1,1 +1,504 @@
-symbol,name,market,theme,note
+symbol,name,market,sector,industry,theme,note
+MMM,3M,US,Industrials,Industrial Conglomerates,Industrials,S&P 500 constituent
+AOS,A. O. Smith,US,Industrials,Building Products,Industrials,S&P 500 constituent
+ABT,Abbott Laboratories,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+ABBV,AbbVie,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
+ACN,Accenture,US,Information Technology,IT Consulting & Other Services,Information Technology,S&P 500 constituent
+ADBE,Adobe Inc.,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+AMD,Advanced Micro Devices,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+AES,AES Corporation,US,Utilities,Independent Power Producers & Energy Traders,Utilities,S&P 500 constituent
+AFL,Aflac,US,Financials,Life & Health Insurance,Financials,S&P 500 constituent
+A,Agilent Technologies,US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
+APD,Air Products,US,Materials,Industrial Gases,Materials,S&P 500 constituent
+ABNB,Airbnb,US,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Consumer Discretionary,S&P 500 constituent
+AKAM,Akamai Technologies,US,Information Technology,Internet Services & Infrastructure,Information Technology,S&P 500 constituent
+ALB,Albemarle Corporation,US,Materials,Specialty Chemicals,Materials,S&P 500 constituent
+ARE,Alexandria Real Estate Equities,US,Real Estate,Office REITs,Real Estate,S&P 500 constituent
+ALGN,Align Technology,US,Health Care,Health Care Supplies,Health Care,S&P 500 constituent
+ALLE,Allegion,US,Industrials,Building Products,Industrials,S&P 500 constituent
+LNT,Alliant Energy,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+ALL,Allstate,US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
+GOOGL,Alphabet Inc. (Class A),US,Communication Services,Interactive Media & Services,Communication Services,S&P 500 constituent
+GOOG,Alphabet Inc. (Class C),US,Communication Services,Interactive Media & Services,Communication Services,S&P 500 constituent
+MO,Altria,US,Consumer Staples,Tobacco,Consumer Staples,S&P 500 constituent
+AMZN,Amazon,US,Consumer Discretionary,Broadline Retail,Consumer Discretionary,S&P 500 constituent
+AMCR,Amcor,US,Materials,Paper & Plastic Packaging Products & Materials,Materials,S&P 500 constituent
+AEE,Ameren,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+AEP,American Electric Power,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+AXP,American Express,US,Financials,Consumer Finance,Financials,S&P 500 constituent
+AIG,American International Group,US,Financials,Multi-line Insurance,Financials,S&P 500 constituent
+AMT,American Tower,US,Real Estate,Telecom Tower REITs,Real Estate,S&P 500 constituent
+AWK,American Water Works,US,Utilities,Water Utilities,Utilities,S&P 500 constituent
+AMP,Ameriprise Financial,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+AME,Ametek,US,Industrials,Electrical Components & Equipment,Industrials,S&P 500 constituent
+AMGN,Amgen,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
+APH,Amphenol,US,Information Technology,Electronic Components,Information Technology,S&P 500 constituent
+ADI,Analog Devices,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+AON,Aon plc,US,Financials,Insurance Brokers,Financials,S&P 500 constituent
+APA,APA Corporation,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
+APO,Apollo Global Management,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+AAPL,Apple Inc.,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
+AMAT,Applied Materials,US,Information Technology,Semiconductor Materials & Equipment,Information Technology,S&P 500 constituent
+APP,AppLovin,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+APTV,Aptiv,US,Consumer Discretionary,Automotive Parts & Equipment,Consumer Discretionary,S&P 500 constituent
+ACGL,Arch Capital Group,US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
+ADM,Archer Daniels Midland,US,Consumer Staples,Agricultural Products & Services,Consumer Staples,S&P 500 constituent
+ARES,Ares Management,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+ANET,Arista Networks,US,Information Technology,Communications Equipment,Information Technology,S&P 500 constituent
+AJG,Arthur J. Gallagher & Co.,US,Financials,Insurance Brokers,Financials,S&P 500 constituent
+AIZ,Assurant,US,Financials,Multi-line Insurance,Financials,S&P 500 constituent
+T,AT&T,US,Communication Services,Integrated Telecommunication Services,Communication Services,S&P 500 constituent
+ATO,Atmos Energy,US,Utilities,Gas Utilities,Utilities,S&P 500 constituent
+ADSK,Autodesk,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+ADP,Automatic Data Processing,US,Industrials,Human Resource & Employment Services,Industrials,S&P 500 constituent
+AZO,AutoZone,US,Consumer Discretionary,Automotive Retail,Consumer Discretionary,S&P 500 constituent
+AVB,AvalonBay Communities,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
+AVY,Avery Dennison,US,Materials,Paper & Plastic Packaging Products & Materials,Materials,S&P 500 constituent
+AXON,Axon Enterprise,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+BKR,Baker Hughes,US,Energy,Oil & Gas Equipment & Services,Energy,S&P 500 constituent
+BALL,Ball Corporation,US,Materials,"Metal, Glass & Plastic Containers",Materials,S&P 500 constituent
+BAC,Bank of America,US,Financials,Diversified Banks,Financials,S&P 500 constituent
+BAX,Baxter International,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+BDX,Becton Dickinson,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+BRK-B,Berkshire Hathaway,US,Financials,Multi-Sector Holdings,Financials,S&P 500 constituent
+BBY,Best Buy,US,Consumer Discretionary,Computer & Electronics Retail,Consumer Discretionary,S&P 500 constituent
+TECH,Bio-Techne,US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
+BIIB,Biogen,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
+BLK,BlackRock,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+BX,Blackstone Inc.,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+XYZ,"Block, Inc.",US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
+BNY,BNY Mellon,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+BA,Boeing,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+BKNG,Booking Holdings,US,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Consumer Discretionary,S&P 500 constituent
+BSX,Boston Scientific,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+BMY,Bristol Myers Squibb,US,Health Care,Pharmaceuticals,Health Care,S&P 500 constituent
+AVGO,Broadcom,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+BR,Broadridge Financial Solutions,US,Industrials,Data Processing & Outsourced Services,Industrials,S&P 500 constituent
+BRO,Brown & Brown,US,Financials,Insurance Brokers,Financials,S&P 500 constituent
+BF-B,Brown–Forman,US,Consumer Staples,Distillers & Vintners,Consumer Staples,S&P 500 constituent
+BLDR,Builders FirstSource,US,Industrials,Building Products,Industrials,S&P 500 constituent
+BG,Bunge Global,US,Consumer Staples,Agricultural Products & Services,Consumer Staples,S&P 500 constituent
+BXP,"BXP, Inc.",US,Real Estate,Office REITs,Real Estate,S&P 500 constituent
+CHRW,C.H. Robinson,US,Industrials,Air Freight & Logistics,Industrials,S&P 500 constituent
+CDNS,Cadence Design Systems,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+CPT,Camden Property Trust,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
+COF,Capital One,US,Financials,Consumer Finance,Financials,S&P 500 constituent
+CAH,Cardinal Health,US,Health Care,Health Care Distributors,Health Care,S&P 500 constituent
+CCL,Carnival Corporation,US,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Consumer Discretionary,S&P 500 constituent
+CARR,Carrier Global,US,Industrials,Building Products,Industrials,S&P 500 constituent
+CVNA,Carvana,US,Consumer Discretionary,Automotive Retail,Consumer Discretionary,S&P 500 constituent
+CASY,Casey's,US,Consumer Staples,Food Retail,Consumer Staples,S&P 500 constituent
+CAT,Caterpillar Inc.,US,Industrials,Construction Machinery & Heavy Transportation Equipment,Industrials,S&P 500 constituent
+CBOE,Cboe Global Markets,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
+CBRE,CBRE Group,US,Real Estate,Real Estate Services,Real Estate,S&P 500 constituent
+CDW,CDW Corporation,US,Information Technology,Technology Distributors,Information Technology,S&P 500 constituent
+COR,Cencora,US,Health Care,Health Care Distributors,Health Care,S&P 500 constituent
+CNC,Centene Corporation,US,Health Care,Managed Health Care,Health Care,S&P 500 constituent
+CNP,CenterPoint Energy,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+CF,CF Industries,US,Materials,Fertilizers & Agricultural Chemicals,Materials,S&P 500 constituent
+CRL,Charles River Laboratories,US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
+SCHW,Charles Schwab Corporation,US,Financials,Investment Banking & Brokerage,Financials,S&P 500 constituent
+CHTR,Charter Communications,US,Communication Services,Cable & Satellite,Communication Services,S&P 500 constituent
+CVX,Chevron Corporation,US,Energy,Integrated Oil & Gas,Energy,S&P 500 constituent
+CMG,Chipotle Mexican Grill,US,Consumer Discretionary,Restaurants,Consumer Discretionary,S&P 500 constituent
+CB,Chubb Limited,US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
+CHD,Church & Dwight,US,Consumer Staples,Household Products,Consumer Staples,S&P 500 constituent
+CIEN,Ciena,US,Information Technology,Communications Equipment,Information Technology,S&P 500 constituent
+CI,Cigna,US,Health Care,Health Care Services,Health Care,S&P 500 constituent
+CINF,Cincinnati Financial,US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
+CTAS,Cintas,US,Industrials,Diversified Support Services,Industrials,S&P 500 constituent
+CSCO,Cisco,US,Information Technology,Communications Equipment,Information Technology,S&P 500 constituent
+C,Citigroup,US,Financials,Diversified Banks,Financials,S&P 500 constituent
+CFG,Citizens Financial Group,US,Financials,Regional Banks,Financials,S&P 500 constituent
+CLX,Clorox,US,Consumer Staples,Household Products,Consumer Staples,S&P 500 constituent
+CME,CME Group,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
+CMS,CMS Energy,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+KO,Coca-Cola Company (The),US,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,Consumer Staples,S&P 500 constituent
+CTSH,Cognizant,US,Information Technology,IT Consulting & Other Services,Information Technology,S&P 500 constituent
+COHR,Coherent Corp.,US,Information Technology,Electronic Components,Information Technology,S&P 500 constituent
+COIN,Coinbase,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
+CL,Colgate-Palmolive,US,Consumer Staples,Household Products,Consumer Staples,S&P 500 constituent
+CMCSA,Comcast,US,Communication Services,Cable & Satellite,Communication Services,S&P 500 constituent
+FIX,Comfort Systems USA,US,Industrials,Construction & Engineering,Industrials,S&P 500 constituent
+COP,ConocoPhillips,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
+ED,Consolidated Edison,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+STZ,Constellation Brands,US,Consumer Staples,Distillers & Vintners,Consumer Staples,S&P 500 constituent
+CEG,Constellation Energy,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+COO,Cooper Companies (The),US,Health Care,Health Care Supplies,Health Care,S&P 500 constituent
+CPRT,Copart,US,Industrials,Diversified Support Services,Industrials,S&P 500 constituent
+GLW,Corning Inc.,US,Information Technology,Electronic Components,Information Technology,S&P 500 constituent
+CPAY,Corpay,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
+CTVA,Corteva,US,Materials,Fertilizers & Agricultural Chemicals,Materials,S&P 500 constituent
+CSGP,CoStar Group,US,Real Estate,Real Estate Services,Real Estate,S&P 500 constituent
+COST,Costco,US,Consumer Staples,Consumer Staples Merchandise Retail,Consumer Staples,S&P 500 constituent
+CRH,CRH plc,US,Materials,Construction Materials,Materials,S&P 500 constituent
+CRWD,CrowdStrike,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
+CCI,Crown Castle,US,Real Estate,Telecom Tower REITs,Real Estate,S&P 500 constituent
+CSX,CSX Corporation,US,Industrials,Rail Transportation,Industrials,S&P 500 constituent
+CMI,Cummins,US,Industrials,Construction Machinery & Heavy Transportation Equipment,Industrials,S&P 500 constituent
+CVS,CVS Health,US,Health Care,Health Care Services,Health Care,S&P 500 constituent
+DHR,Danaher Corporation,US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
+DRI,Darden Restaurants,US,Consumer Discretionary,Restaurants,Consumer Discretionary,S&P 500 constituent
+DDOG,Datadog,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+DVA,DaVita,US,Health Care,Health Care Services,Health Care,S&P 500 constituent
+DECK,Deckers Brands,US,Consumer Discretionary,Footwear,Consumer Discretionary,S&P 500 constituent
+DE,Deere & Company,US,Industrials,Agricultural & Farm Machinery,Industrials,S&P 500 constituent
+DELL,Dell Technologies,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
+DAL,Delta Air Lines,US,Industrials,Passenger Airlines,Industrials,S&P 500 constituent
+DVN,Devon Energy,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
+DXCM,Dexcom,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+FANG,Diamondback Energy,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
+DLR,Digital Realty,US,Real Estate,Data Center REITs,Real Estate,S&P 500 constituent
+DG,Dollar General,US,Consumer Staples,Consumer Staples Merchandise Retail,Consumer Staples,S&P 500 constituent
+DLTR,Dollar Tree,US,Consumer Staples,Consumer Staples Merchandise Retail,Consumer Staples,S&P 500 constituent
+D,Dominion Energy,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+DPZ,Domino's,US,Consumer Discretionary,Restaurants,Consumer Discretionary,S&P 500 constituent
+DASH,DoorDash,US,Consumer Discretionary,Specialized Consumer Services,Consumer Discretionary,S&P 500 constituent
+DOV,Dover Corporation,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+DOW,Dow Inc.,US,Materials,Commodity Chemicals,Materials,S&P 500 constituent
+DHI,D. R. Horton,US,Consumer Discretionary,Homebuilding,Consumer Discretionary,S&P 500 constituent
+DTE,DTE Energy,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+DUK,Duke Energy,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+DD,DuPont,US,Materials,Specialty Chemicals,Materials,S&P 500 constituent
+ETN,Eaton Corporation,US,Industrials,Electrical Components & Equipment,Industrials,S&P 500 constituent
+EBAY,eBay Inc.,US,Consumer Discretionary,Broadline Retail,Consumer Discretionary,S&P 500 constituent
+ECHO,EchoStar,US,Communication Services,Wireless Telecommunication Services,Communication Services,S&P 500 constituent
+ECL,Ecolab,US,Materials,Specialty Chemicals,Materials,S&P 500 constituent
+EIX,Edison International,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+EW,Edwards Lifesciences,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+EA,Electronic Arts,US,Communication Services,Interactive Home Entertainment,Communication Services,S&P 500 constituent
+ELV,Elevance Health,US,Health Care,Managed Health Care,Health Care,S&P 500 constituent
+EME,Emcor,US,Industrials,Construction & Engineering,Industrials,S&P 500 constituent
+EMR,Emerson Electric,US,Industrials,Electrical Components & Equipment,Industrials,S&P 500 constituent
+ETR,Entergy,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+EOG,EOG Resources,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
+EQT,EQT Corporation,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
+EFX,Equifax,US,Industrials,Research & Consulting Services,Industrials,S&P 500 constituent
+EQIX,Equinix,US,Real Estate,Data Center REITs,Real Estate,S&P 500 constituent
+EQR,Equity Residential,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
+ERIE,Erie Indemnity,US,Financials,Insurance Brokers,Financials,S&P 500 constituent
+ESS,Essex Property Trust,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
+EL,Estée Lauder Companies (The),US,Consumer Staples,Personal Care Products,Consumer Staples,S&P 500 constituent
+EG,Everest Group,US,Financials,Reinsurance,Financials,S&P 500 constituent
+EVRG,Evergy,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+ES,Eversource Energy,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+EXC,Exelon,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+EXE,Expand Energy,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
+EXPE,Expedia Group,US,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Consumer Discretionary,S&P 500 constituent
+EXPD,Expeditors International,US,Industrials,Air Freight & Logistics,Industrials,S&P 500 constituent
+EXR,Extra Space Storage,US,Real Estate,Self-Storage REITs,Real Estate,S&P 500 constituent
+XOM,ExxonMobil,US,Energy,Integrated Oil & Gas,Energy,S&P 500 constituent
+FFIV,"F5, Inc.",US,Information Technology,Communications Equipment,Information Technology,S&P 500 constituent
+FDS,FactSet,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
+FICO,Fair Isaac,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+FAST,Fastenal,US,Industrials,Trading Companies & Distributors,Industrials,S&P 500 constituent
+FRT,Federal Realty Investment Trust,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
+FDX,FedEx,US,Industrials,Air Freight & Logistics,Industrials,S&P 500 constituent
+FDXF,FedEx Freight,US,Industrials,Cargo Ground Transportation,Industrials,S&P 500 constituent
+FIS,Fidelity National Information Services,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
+FITB,Fifth Third Bancorp,US,Financials,Regional Banks,Financials,S&P 500 constituent
+FSLR,First Solar,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+FE,FirstEnergy,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+FISV,Fiserv,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
+FLEX,Flex Ltd.,US,Information Technology,Electronic Manufacturing Services,Information Technology,S&P 500 constituent
+F,Ford Motor Company,US,Consumer Discretionary,Automobile Manufacturers,Consumer Discretionary,S&P 500 constituent
+FTNT,Fortinet,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
+FTV,Fortive,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+FOXA,Fox Corporation (Class A),US,Communication Services,Broadcasting,Communication Services,S&P 500 constituent
+FOX,Fox Corporation (Class B),US,Communication Services,Broadcasting,Communication Services,S&P 500 constituent
+BEN,Franklin Resources,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+FCX,Freeport-McMoRan,US,Materials,Copper,Materials,S&P 500 constituent
+GRMN,Garmin,US,Consumer Discretionary,Consumer Electronics,Consumer Discretionary,S&P 500 constituent
+IT,Gartner,US,Information Technology,IT Consulting & Other Services,Information Technology,S&P 500 constituent
+GE,GE Aerospace,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+GEHC,GE HealthCare,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+GEV,GE Vernova,US,Industrials,Heavy Electrical Equipment,Industrials,S&P 500 constituent
+GEN,Gen Digital,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
+GNRC,Generac,US,Industrials,Heavy Electrical Equipment,Industrials,S&P 500 constituent
+GD,General Dynamics,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+GIS,General Mills,US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
+GM,General Motors,US,Consumer Discretionary,Automobile Manufacturers,Consumer Discretionary,S&P 500 constituent
+GPC,Genuine Parts Company,US,Consumer Discretionary,Distributors,Consumer Discretionary,S&P 500 constituent
+GILD,Gilead Sciences,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
+GPN,Global Payments,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
+GL,Globe Life,US,Financials,Life & Health Insurance,Financials,S&P 500 constituent
+GDDY,GoDaddy,US,Information Technology,Internet Services & Infrastructure,Information Technology,S&P 500 constituent
+GS,Goldman Sachs,US,Financials,Investment Banking & Brokerage,Financials,S&P 500 constituent
+HAL,Halliburton,US,Energy,Oil & Gas Equipment & Services,Energy,S&P 500 constituent
+HIG,Hartford (The),US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
+HAS,Hasbro,US,Consumer Discretionary,Leisure Products,Consumer Discretionary,S&P 500 constituent
+HCA,HCA Healthcare,US,Health Care,Health Care Facilities,Health Care,S&P 500 constituent
+DOC,Healthpeak Properties,US,Real Estate,Health Care REITs,Real Estate,S&P 500 constituent
+HSIC,Henry Schein,US,Health Care,Health Care Distributors,Health Care,S&P 500 constituent
+HSY,Hershey Company (The),US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
+HPE,Hewlett Packard Enterprise,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
+HLT,Hilton Worldwide,US,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Consumer Discretionary,S&P 500 constituent
+HD,Home Depot (The),US,Consumer Discretionary,Home Improvement Retail,Consumer Discretionary,S&P 500 constituent
+HONA,Honeywell Aerospace,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+HON,Honeywell Technologies,US,Industrials,Industrial Conglomerates,Industrials,S&P 500 constituent
+HRL,Hormel Foods,US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
+HST,Host Hotels & Resorts,US,Real Estate,Hotel & Resort REITs,Real Estate,S&P 500 constituent
+HWM,Howmet Aerospace,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+HPQ,HP Inc.,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
+HUBB,Hubbell Incorporated,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+HUM,Humana,US,Health Care,Managed Health Care,Health Care,S&P 500 constituent
+HBAN,Huntington Bancshares,US,Financials,Regional Banks,Financials,S&P 500 constituent
+HII,Huntington Ingalls Industries,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+IBM,IBM,US,Information Technology,IT Consulting & Other Services,Information Technology,S&P 500 constituent
+IEX,IDEX Corporation,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+IDXX,Idexx Laboratories,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+ITW,Illinois Tool Works,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+INCY,Incyte,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
+IR,Ingersoll Rand,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+PODD,Insulet Corporation,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+INTC,Intel,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+IBKR,Interactive Brokers,US,Financials,Investment Banking & Brokerage,Financials,S&P 500 constituent
+ICE,Intercontinental Exchange,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
+IFF,International Flavors & Fragrances,US,Materials,Specialty Chemicals,Materials,S&P 500 constituent
+IP,International Paper,US,Materials,Paper & Plastic Packaging Products & Materials,Materials,S&P 500 constituent
+INTU,Intuit,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+ISRG,Intuitive Surgical,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+IVZ,Invesco,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+INVH,Invitation Homes,US,Real Estate,Single-Family Residential REITs,Real Estate,S&P 500 constituent
+IQV,IQVIA,US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
+IRM,Iron Mountain,US,Real Estate,Other Specialized REITs,Real Estate,S&P 500 constituent
+JBHT,J.B. Hunt,US,Industrials,Cargo Ground Transportation,Industrials,S&P 500 constituent
+JBL,Jabil,US,Information Technology,Electronic Manufacturing Services,Information Technology,S&P 500 constituent
+JKHY,Jack Henry & Associates,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
+J,Jacobs Solutions,US,Industrials,Construction & Engineering,Industrials,S&P 500 constituent
+JNJ,Johnson & Johnson,US,Health Care,Pharmaceuticals,Health Care,S&P 500 constituent
+JCI,Johnson Controls,US,Industrials,Building Products,Industrials,S&P 500 constituent
+JPM,JPMorgan Chase,US,Financials,Diversified Banks,Financials,S&P 500 constituent
+KVUE,Kenvue,US,Consumer Staples,Personal Care Products,Consumer Staples,S&P 500 constituent
+KDP,Keurig Dr Pepper,US,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,Consumer Staples,S&P 500 constituent
+KEY,KeyCorp,US,Financials,Regional Banks,Financials,S&P 500 constituent
+KEYS,Keysight Technologies,US,Information Technology,Electronic Equipment & Instruments,Information Technology,S&P 500 constituent
+KMB,Kimberly-Clark,US,Consumer Staples,Household Products,Consumer Staples,S&P 500 constituent
+KIM,Kimco Realty,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
+KMI,Kinder Morgan,US,Energy,Oil & Gas Storage & Transportation,Energy,S&P 500 constituent
+KKR,KKR & Co.,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+KLAC,KLA Corporation,US,Information Technology,Semiconductor Materials & Equipment,Information Technology,S&P 500 constituent
+KHC,Kraft Heinz,US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
+KR,Kroger,US,Consumer Staples,Food Retail,Consumer Staples,S&P 500 constituent
+LHX,L3Harris,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+LH,Labcorp,US,Health Care,Health Care Services,Health Care,S&P 500 constituent
+LRCX,Lam Research,US,Information Technology,Semiconductor Materials & Equipment,Information Technology,S&P 500 constituent
+LVS,Las Vegas Sands,US,Consumer Discretionary,Casinos & Gaming,Consumer Discretionary,S&P 500 constituent
+LDOS,Leidos,US,Industrials,Diversified Support Services,Industrials,S&P 500 constituent
+LEN,Lennar,US,Consumer Discretionary,Homebuilding,Consumer Discretionary,S&P 500 constituent
+LII,Lennox International,US,Industrials,Building Products,Industrials,S&P 500 constituent
+LLY,Lilly (Eli),US,Health Care,Pharmaceuticals,Health Care,S&P 500 constituent
+LIN,Linde plc,US,Materials,Industrial Gases,Materials,S&P 500 constituent
+LYV,Live Nation Entertainment,US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
+LMT,Lockheed Martin,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+L,Loews Corporation,US,Financials,Multi-line Insurance,Financials,S&P 500 constituent
+LOW,Lowe's,US,Consumer Discretionary,Home Improvement Retail,Consumer Discretionary,S&P 500 constituent
+LULU,Lululemon Athletica,US,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",Consumer Discretionary,S&P 500 constituent
+LITE,Lumentum,US,Information Technology,Communications Equipment,Information Technology,S&P 500 constituent
+LYB,LyondellBasell,US,Materials,Specialty Chemicals,Materials,S&P 500 constituent
+MTB,M&T Bank,US,Financials,Regional Banks,Financials,S&P 500 constituent
+MPC,Marathon Petroleum,US,Energy,Oil & Gas Refining & Marketing,Energy,S&P 500 constituent
+MAR,Marriott International,US,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Consumer Discretionary,S&P 500 constituent
+MRSH,Marsh McLennan,US,Financials,Insurance Brokers,Financials,S&P 500 constituent
+MLM,Martin Marietta Materials,US,Materials,Construction Materials,Materials,S&P 500 constituent
+MRVL,Marvell Technology,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+MAS,Masco,US,Industrials,Building Products,Industrials,S&P 500 constituent
+MA,Mastercard,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
+MKC,McCormick & Company,US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
+MCD,McDonald's,US,Consumer Discretionary,Restaurants,Consumer Discretionary,S&P 500 constituent
+MCK,McKesson Corporation,US,Health Care,Health Care Distributors,Health Care,S&P 500 constituent
+MDT,Medtronic,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+MRK,Merck & Co.,US,Health Care,Pharmaceuticals,Health Care,S&P 500 constituent
+META,Meta Platforms,US,Communication Services,Interactive Media & Services,Communication Services,S&P 500 constituent
+MET,MetLife,US,Financials,Life & Health Insurance,Financials,S&P 500 constituent
+MTD,Mettler Toledo,US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
+MGM,MGM Resorts,US,Consumer Discretionary,Casinos & Gaming,Consumer Discretionary,S&P 500 constituent
+MCHP,Microchip Technology,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+MU,Micron Technology,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+MSFT,Microsoft,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
+MAA,Mid-America Apartment Communities,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
+MRNA,Moderna,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
+TAP,Molson Coors Beverage Company,US,Consumer Staples,Brewers,Consumer Staples,S&P 500 constituent
+MDLZ,Mondelez International,US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
+MPWR,Monolithic Power Systems,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+MNST,Monster Beverage,US,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,Consumer Staples,S&P 500 constituent
+MCO,Moody's Corporation,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
+MS,Morgan Stanley,US,Financials,Investment Banking & Brokerage,Financials,S&P 500 constituent
+MOS,Mosaic Company (The),US,Materials,Fertilizers & Agricultural Chemicals,Materials,S&P 500 constituent
+MSI,Motorola Solutions,US,Information Technology,Communications Equipment,Information Technology,S&P 500 constituent
+MSCI,MSCI Inc.,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
+NDAQ,"Nasdaq, Inc.",US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
+NTAP,NetApp,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
+NFLX,Netflix,US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
+NEM,Newmont,US,Materials,Gold,Materials,S&P 500 constituent
+NWSA,News Corp (Class A),US,Communication Services,Publishing,Communication Services,S&P 500 constituent
+NWS,News Corp (Class B),US,Communication Services,Publishing,Communication Services,S&P 500 constituent
+NEE,NextEra Energy,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+NKE,"Nike, Inc.",US,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",Consumer Discretionary,S&P 500 constituent
+NI,NiSource,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+NDSN,Nordson Corporation,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+NSC,Norfolk Southern,US,Industrials,Rail Transportation,Industrials,S&P 500 constituent
+NTRS,Northern Trust,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+NOC,Northrop Grumman,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+NCLH,Norwegian Cruise Line Holdings,US,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Consumer Discretionary,S&P 500 constituent
+NRG,NRG Energy,US,Utilities,Independent Power Producers & Energy Traders,Utilities,S&P 500 constituent
+NUE,Nucor,US,Materials,Steel,Materials,S&P 500 constituent
+NVDA,Nvidia,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+NVR,"NVR, Inc.",US,Consumer Discretionary,Homebuilding,Consumer Discretionary,S&P 500 constituent
+NXPI,NXP Semiconductors,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+ORLY,O’Reilly Automotive,US,Consumer Discretionary,Automotive Retail,Consumer Discretionary,S&P 500 constituent
+OXY,Occidental Petroleum,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
+ODFL,Old Dominion,US,Industrials,Cargo Ground Transportation,Industrials,S&P 500 constituent
+OMC,Omnicom Group,US,Communication Services,Advertising,Communication Services,S&P 500 constituent
+ON,ON Semiconductor,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+OKE,Oneok,US,Energy,Oil & Gas Storage & Transportation,Energy,S&P 500 constituent
+ORCL,Oracle Corporation,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+OTIS,Otis Worldwide,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+PCAR,Paccar,US,Industrials,Construction Machinery & Heavy Transportation Equipment,Industrials,S&P 500 constituent
+PKG,Packaging Corporation of America,US,Materials,Paper & Plastic Packaging Products & Materials,Materials,S&P 500 constituent
+PLTR,Palantir Technologies,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+PANW,Palo Alto Networks,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
+PSKY,Paramount Skydance Corporation,US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
+PH,Parker Hannifin,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+PAYX,Paychex,US,Industrials,Human Resource & Employment Services,Industrials,S&P 500 constituent
+PYPL,PayPal,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
+PNR,Pentair,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+PEP,PepsiCo,US,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,Consumer Staples,S&P 500 constituent
+PFE,Pfizer,US,Health Care,Pharmaceuticals,Health Care,S&P 500 constituent
+PCG,PG&E Corporation,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+PM,Philip Morris International,US,Consumer Staples,Tobacco,Consumer Staples,S&P 500 constituent
+PSX,Phillips 66,US,Energy,Oil & Gas Refining & Marketing,Energy,S&P 500 constituent
+PNW,Pinnacle West Capital,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+PNC,PNC Financial Services,US,Financials,Diversified Banks,Financials,S&P 500 constituent
+PPG,PPG Industries,US,Materials,Specialty Chemicals,Materials,S&P 500 constituent
+PPL,PPL Corporation,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+PFG,Principal Financial Group,US,Financials,Life & Health Insurance,Financials,S&P 500 constituent
+PG,Procter & Gamble,US,Consumer Staples,Personal Care Products,Consumer Staples,S&P 500 constituent
+PGR,Progressive Corporation,US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
+PLD,Prologis,US,Real Estate,Industrial REITs,Real Estate,S&P 500 constituent
+PRU,Prudential Financial,US,Financials,Life & Health Insurance,Financials,S&P 500 constituent
+PEG,Public Service Enterprise Group,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+PTC,PTC Inc.,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+PSA,Public Storage,US,Real Estate,Self-Storage REITs,Real Estate,S&P 500 constituent
+PHM,PulteGroup,US,Consumer Discretionary,Homebuilding,Consumer Discretionary,S&P 500 constituent
+PWR,Quanta Services,US,Industrials,Construction & Engineering,Industrials,S&P 500 constituent
+QCOM,Qualcomm,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+DGX,Quest Diagnostics,US,Health Care,Health Care Services,Health Care,S&P 500 constituent
+Q,Qnity Electronics,US,Information Technology,Semiconductor Materials & Equipment,Information Technology,S&P 500 constituent
+RL,Ralph Lauren Corporation,US,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",Consumer Discretionary,S&P 500 constituent
+RJF,Raymond James Financial,US,Financials,Investment Banking & Brokerage,Financials,S&P 500 constituent
+RTX,RTX Corporation,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+O,Realty Income,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
+REG,Regency Centers,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
+REGN,Regeneron Pharmaceuticals,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
+RF,Regions Financial Corporation,US,Financials,Regional Banks,Financials,S&P 500 constituent
+RSG,Republic Services,US,Industrials,Environmental & Facilities Services,Industrials,S&P 500 constituent
+RMD,ResMed,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+RVTY,Revvity,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+HOOD,Robinhood Markets,US,Financials,Investment Banking & Brokerage,Financials,S&P 500 constituent
+ROK,Rockwell Automation,US,Industrials,Electrical Components & Equipment,Industrials,S&P 500 constituent
+ROL,"Rollins, Inc.",US,Industrials,Environmental & Facilities Services,Industrials,S&P 500 constituent
+ROP,Roper Technologies,US,Information Technology,Electronic Equipment & Instruments,Information Technology,S&P 500 constituent
+ROST,Ross Stores,US,Consumer Discretionary,Apparel Retail,Consumer Discretionary,S&P 500 constituent
+RCL,Royal Caribbean Group,US,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Consumer Discretionary,S&P 500 constituent
+SPGI,S&P Global,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
+CRM,Salesforce,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+SNDK,Sandisk,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
+SBAC,SBA Communications,US,Real Estate,Telecom Tower REITs,Real Estate,S&P 500 constituent
+SLB,Schlumberger,US,Energy,Oil & Gas Equipment & Services,Energy,S&P 500 constituent
+STX,Seagate Technology,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
+SRE,Sempra,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+NOW,ServiceNow,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
+SHW,Sherwin-Williams,US,Materials,Specialty Chemicals,Materials,S&P 500 constituent
+SPG,Simon Property Group,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
+SWKS,Skyworks Solutions,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+SJM,J.M. Smucker Company (The),US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
+SW,Smurfit Westrock,US,Materials,Paper & Plastic Packaging Products & Materials,Materials,S&P 500 constituent
+SNA,Snap-on,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+SOLV,Solventum,US,Health Care,Health Care Technology,Health Care,S&P 500 constituent
+SO,Southern Company,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+LUV,Southwest Airlines,US,Industrials,Passenger Airlines,Industrials,S&P 500 constituent
+SWK,Stanley Black & Decker,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+SBUX,Starbucks,US,Consumer Discretionary,Restaurants,Consumer Discretionary,S&P 500 constituent
+STT,State Street Corporation,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+STLD,Steel Dynamics,US,Materials,Steel,Materials,S&P 500 constituent
+STE,Steris,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+SYK,Stryker Corporation,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+SMCI,Supermicro,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
+SYF,Synchrony Financial,US,Financials,Consumer Finance,Financials,S&P 500 constituent
+SNPS,Synopsys,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+SYY,Sysco,US,Consumer Staples,Food Distributors,Consumer Staples,S&P 500 constituent
+TMUS,T-Mobile US,US,Communication Services,Wireless Telecommunication Services,Communication Services,S&P 500 constituent
+TROW,T. Rowe Price,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
+TTWO,Take-Two Interactive,US,Communication Services,Interactive Home Entertainment,Communication Services,S&P 500 constituent
+TPR,"Tapestry, Inc.",US,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",Consumer Discretionary,S&P 500 constituent
+TRGP,Targa Resources,US,Energy,Oil & Gas Storage & Transportation,Energy,S&P 500 constituent
+TGT,Target Corporation,US,Consumer Staples,Consumer Staples Merchandise Retail,Consumer Staples,S&P 500 constituent
+TEL,TE Connectivity,US,Information Technology,Electronic Manufacturing Services,Information Technology,S&P 500 constituent
+TDY,Teledyne Technologies,US,Information Technology,Electronic Equipment & Instruments,Information Technology,S&P 500 constituent
+TER,Teradyne,US,Information Technology,Semiconductor Materials & Equipment,Information Technology,S&P 500 constituent
+TSLA,"Tesla, Inc.",US,Consumer Discretionary,Automobile Manufacturers,Consumer Discretionary,S&P 500 constituent
+TXN,Texas Instruments,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+TPL,Texas Pacific Land Corporation,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
+TXT,Textron,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+TMO,Thermo Fisher Scientific,US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
+TJX,TJX Companies,US,Consumer Discretionary,Apparel Retail,Consumer Discretionary,S&P 500 constituent
+TKO,TKO Group Holdings,US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
+TTD,Trade Desk (The),US,Communication Services,Advertising,Communication Services,S&P 500 constituent
+TSCO,Tractor Supply,US,Consumer Discretionary,Other Specialty Retail,Consumer Discretionary,S&P 500 constituent
+TT,Trane Technologies,US,Industrials,Building Products,Industrials,S&P 500 constituent
+TDG,TransDigm Group,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
+TRV,Travelers Companies (The),US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
+TRMB,Trimble Inc.,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+TFC,Truist Financial,US,Financials,Diversified Banks,Financials,S&P 500 constituent
+TYL,Tyler Technologies,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+TSN,Tyson Foods,US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
+USB,U.S. Bancorp,US,Financials,Diversified Banks,Financials,S&P 500 constituent
+UBER,Uber,US,Industrials,Passenger Ground Transportation,Industrials,S&P 500 constituent
+UDR,"UDR, Inc.",US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
+ULTA,Ulta Beauty,US,Consumer Discretionary,Other Specialty Retail,Consumer Discretionary,S&P 500 constituent
+UNP,Union Pacific Corporation,US,Industrials,Rail Transportation,Industrials,S&P 500 constituent
+UAL,United Airlines Holdings,US,Industrials,Passenger Airlines,Industrials,S&P 500 constituent
+UPS,United Parcel Service,US,Industrials,Air Freight & Logistics,Industrials,S&P 500 constituent
+URI,United Rentals,US,Industrials,Trading Companies & Distributors,Industrials,S&P 500 constituent
+UNH,UnitedHealth Group,US,Health Care,Managed Health Care,Health Care,S&P 500 constituent
+UHS,Universal Health Services,US,Health Care,Health Care Facilities,Health Care,S&P 500 constituent
+VLO,Valero Energy,US,Energy,Oil & Gas Refining & Marketing,Energy,S&P 500 constituent
+VEEV,Veeva Systems,US,Health Care,Health Care Technology,Health Care,S&P 500 constituent
+VTR,Ventas,US,Real Estate,Health Care REITs,Real Estate,S&P 500 constituent
+VLTO,Veralto,US,Industrials,Environmental & Facilities Services,Industrials,S&P 500 constituent
+VRSN,Verisign,US,Information Technology,Internet Services & Infrastructure,Information Technology,S&P 500 constituent
+VRSK,Verisk Analytics,US,Industrials,Research & Consulting Services,Industrials,S&P 500 constituent
+VZ,Verizon,US,Communication Services,Integrated Telecommunication Services,Communication Services,S&P 500 constituent
+VRTX,Vertex Pharmaceuticals,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
+VRT,Vertiv,US,Industrials,Electrical Components & Equipment,Industrials,S&P 500 constituent
+VTRS,Viatris,US,Health Care,Pharmaceuticals,Health Care,S&P 500 constituent
+VICI,Vici Properties,US,Real Estate,Hotel & Resort REITs,Real Estate,S&P 500 constituent
+V,Visa Inc.,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
+VST,Vistra Corp.,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+VMC,Vulcan Materials Company,US,Materials,Construction Materials,Materials,S&P 500 constituent
+WRB,W. R. Berkley Corporation,US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
+GWW,W. W. Grainger,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+WAB,Wabtec,US,Industrials,Construction Machinery & Heavy Transportation Equipment,Industrials,S&P 500 constituent
+WMT,Walmart,US,Consumer Staples,Consumer Staples Merchandise Retail,Consumer Staples,S&P 500 constituent
+DIS,Walt Disney Company (The),US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
+WBD,Warner Bros. Discovery,US,Communication Services,Broadcasting,Communication Services,S&P 500 constituent
+WM,Waste Management,US,Industrials,Environmental & Facilities Services,Industrials,S&P 500 constituent
+WAT,Waters Corporation,US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
+WEC,WEC Energy Group,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+WFC,Wells Fargo,US,Financials,Diversified Banks,Financials,S&P 500 constituent
+WELL,Welltower,US,Real Estate,Health Care REITs,Real Estate,S&P 500 constituent
+WST,West Pharmaceutical Services,US,Health Care,Health Care Supplies,Health Care,S&P 500 constituent
+WDC,Western Digital,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
+WY,Weyerhaeuser,US,Real Estate,Timber REITs,Real Estate,S&P 500 constituent
+WSM,"Williams-Sonoma, Inc.",US,Consumer Discretionary,Homefurnishing Retail,Consumer Discretionary,S&P 500 constituent
+WMB,Williams Companies,US,Energy,Oil & Gas Storage & Transportation,Energy,S&P 500 constituent
+WTW,Willis Towers Watson,US,Financials,Insurance Brokers,Financials,S&P 500 constituent
+WDAY,"Workday, Inc.",US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+WYNN,Wynn Resorts,US,Consumer Discretionary,Casinos & Gaming,Consumer Discretionary,S&P 500 constituent
+XEL,Xcel Energy,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
+XYL,Xylem Inc.,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+YUM,Yum! Brands,US,Consumer Discretionary,Restaurants,Consumer Discretionary,S&P 500 constituent
+ZBRA,Zebra Technologies,US,Information Technology,Electronic Equipment & Instruments,Information Technology,S&P 500 constituent
+ZBH,Zimmer Biomet,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+ZTS,Zoetis,US,Health Care,Pharmaceuticals,Health Care,S&P 500 constituent
