@@ -13,7 +13,7 @@ on:
         required: false
         default: "all_universe"
       screening_top_n:
-        description: "Final symbols per market. 500 = about 1000 JP+US symbols total."
+        description: "Final symbols per market. 500 = 1000 JP+US symbols total."
         required: false
         default: "500"
       screening_max_symbols:
@@ -49,6 +49,7 @@ jobs:
       YF_FALLBACK_LIMIT: "40"
       YF_PERIOD: "18mo"
       SP500_SOURCE_URL: https://en.wikipedia.org/wiki/List_of_S%26P_500_companies
+      TOPIX_INDEX_PAGE_URL: https://www.jpx.co.jp/english/markets/indices/topix/index.html
       TOPIX_SOURCE_URLS: https://www.jpx.co.jp/markets/indices/topix/tvdivq00000030ne-att/topixweight_j.csv|https://www.jpx.co.jp/english/markets/indices/topix/tvdivq00000030ne-att/topixweight_e.csv
       JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
       JQUANTS_REFRESH_TOKEN: ${{ secrets.JQUANTS_REFRESH_TOKEN }}
@@ -72,6 +73,9 @@ jobs:
           python scripts/update_sp500_universe.py
           python scripts/update_topix500_universe.py
 
+      - name: Validate 1000-symbol universe
+        run: python scripts/validate_universes.py
+
       - name: Build technical SEPA VCP report
         run: python scripts/build_report.py
 
@@ -84,22 +88,35 @@ jobs:
       - name: Update post-detection tracking
         run: python scripts/update_tracking.py
 
-      - name: Validate report
+      - name: Validate published report
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
+
           report = json.loads(Path('reports/latest.json').read_text(encoding='utf-8'))
           total = int((report.get('summary') or {}).get('total') or 0)
           coverage = report.get('coverage') or {}
+          input_by_market = report.get('inputRowsByMarket') or {}
+          downloaded = int(coverage.get('downloaded') or 0)
+          coverage_pct = float(coverage.get('coveragePct') or 0)
+
           print('schemaVersion:', report.get('schemaVersion'))
+          print('inputRowsByMarket:', json.dumps(input_by_market, ensure_ascii=False))
           print('coverage:', json.dumps(coverage, ensure_ascii=False))
           print('marketSummary:', json.dumps(report.get('marketSummary', {}), ensure_ascii=False))
           print('summary:', json.dumps(report.get('summary', {}), ensure_ascii=False))
           print('sectorRows:', len(report.get('sectorStrength', [])))
           print('trackingSummary:', json.dumps(report.get('trackingSummary', {}), ensure_ascii=False))
-          if total < 100:
+
+          if int(input_by_market.get('JP') or 0) < 500:
+              raise SystemExit('Critical universe failure: JP input below 500')
+          if int(input_by_market.get('US') or 0) < 500:
+              raise SystemExit('Critical universe failure: US input below 500')
+          if total < 1000:
               raise SystemExit(f'Critical report failure: only {total} candidates')
+          if downloaded < 950 or coverage_pct < 95:
+              raise SystemExit(f'Critical market data failure: downloaded={downloaded}, coverage={coverage_pct}%')
           if not report.get('generatedAt'):
               raise SystemExit('Critical report failure: generatedAt missing')
           PY
@@ -122,7 +139,7 @@ jobs:
             echo "No generated data changes to commit."
             exit 0
           fi
-          git commit -m "Update daily 1000-symbol screener report"
+          git commit -m "Update validated 1000-symbol screener report"
           for attempt in 1 2 3; do
             git pull --rebase origin main
             if git push origin HEAD:main; then
