@@ -32,6 +32,27 @@ def build_themes(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return sorted(rows, key=lambda row: (finite(row.get("strength")) or 0, row.get("count", 0)), reverse=True)
 
 
+def usable_coverage(requested: int, built: list[dict[str, Any]], provider_downloaded: int = 0) -> dict[str, Any]:
+    missing_symbols = sorted({
+        str(item.get("symbol"))
+        for item in built
+        if item.get("symbol") and (item.get("dataQuality") or {}).get("status") == "missing"
+    })
+    usable = sum(1 for item in built if (item.get("dataQuality") or {}).get("status") != "missing")
+    usable = min(requested, usable)
+    coverage_pct = rounded(usable / requested * 100, 1) if requested else 0
+    return {
+        "requested": requested,
+        "providerDownloaded": provider_downloaded,
+        "usable": usable,
+        "downloaded": usable,
+        "missing": max(0, requested - usable),
+        "missingSymbols": missing_symbols,
+        "coveragePct": coverage_pct,
+        "status": "good" if coverage_pct >= 95 else "degraded" if coverage_pct >= 80 else "poor",
+    }
+
+
 def market_summary(universe: list[dict[str, str]], built: list[dict[str, Any]], selected: list[dict[str, Any]]) -> dict[str, Any]:
     ranks = defaultdict(int); setups = defaultdict(int)
     for item in selected:
@@ -46,7 +67,7 @@ def market_summary(universe: list[dict[str, str]], built: list[dict[str, Any]], 
     missing_symbols = [str(item.get("symbol")) for item in built if (item.get("dataQuality") or {}).get("status") == "missing"]
     return {
         "universeRows": len(universe), "builtRows": len(built), "selectedRows": len(selected),
-        "downloadedRows": len(downloaded), "missingRows": len(missing_symbols), "missingSymbols": missing_symbols[:20],
+        "downloadedRows": len(downloaded), "missingRows": len(missing_symbols), "missingSymbols": missing_symbols,
         "asOf": as_of_dates[-1] if as_of_dates else None,
         "sRank": ranks["S"], "aRank": ranks["A"], "bRank": ranks["B"],
         "averageScore": rounded(np.mean([finite(item.get("score")) or 0 for item in selected]), 1) if selected else 0,

@@ -10,7 +10,7 @@ import numpy as np
 from screener_data import REPORT_DIR, clamp, download_history, env_float, env_int, finite, read_input_rows, rounded, split_rows_by_market
 from screener_metrics import build_raw_candidate
 from screener_scoring import enrich_market_candidates
-from screener_report import build_themes, market_summary, top_by_metric, write_markdown
+from screener_report import build_themes, market_summary, top_by_metric, usable_coverage, write_markdown
 
 
 def main() -> None:
@@ -45,9 +45,8 @@ def main() -> None:
         setups[item.get("setupType") or "watch_only"] += 1
 
     requested = len(requested_symbols)
-    downloaded = provider_diagnostics.get("downloaded", 0)
-    coverage_pct = round(downloaded / requested * 100, 1) if requested else 0.0
-    coverage_status = "good" if coverage_pct >= 95 else "degraded" if coverage_pct >= 80 else "poor"
+    built_candidates = built_by_market["JP"] + built_by_market["US"]
+    coverage = usable_coverage(requested, built_candidates, int(provider_diagnostics.get("downloaded", 0)))
     market_summaries = {
         market: market_summary(rows_by_market.get(market, []), built_by_market.get(market, []), selected_by_market.get(market, []))
         for market in ["JP", "US"]
@@ -72,11 +71,7 @@ def main() -> None:
             "status": "not_used_in_bulk_mode",
             "message": "1000銘柄版は日米を同条件で一括取得できるyfinanceを使用。J-Quants認証情報は現在の処理では使用しません。",
         },
-        "coverage": {
-            "requested": requested, "downloaded": downloaded, "missing": requested - downloaded,
-            "missingSymbols": provider_diagnostics.get("missingSymbols", []),
-            "coveragePct": coverage_pct, "status": coverage_status,
-        },
+        "coverage": coverage,
         "methodology": {
             "model": "Technical SEPA/VCP v4",
             "scoreComponents": {"trend": 25, "relativeStrength": 20, "vcp": 25, "volume": 10, "risk": 10, "liquidity": 10},
