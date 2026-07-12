@@ -1,12 +1,12 @@
 # Daily Technical SEPA/VCP Report
 
-Generated: 2026-07-12T13:55:07.472759+00:00
+Generated: 2026-07-12T14:04:43.905588+00:00
 
 ## Coverage
 
 - Requested: 1023
-- Downloaded: 1022
-- Coverage: 99.9%
+- Downloaded: 1021
+- Coverage: 99.8%
 
 ## Methodology
 
