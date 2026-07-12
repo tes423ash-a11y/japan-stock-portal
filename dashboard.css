@@ -50,6 +50,7 @@ main { width:min(1260px,100%); margin:0 auto; padding:14px; }
 .coverage-meter i { display:block; height:100%; border-radius:inherit; background:var(--good); }
 .coverage-meter i.degraded { background:var(--warn); }
 .coverage-meter i.poor { background:var(--bad); }
+.coverage-missing { color:var(--warn); font-size:10px; }
 .fatal-banner { color:#ffd5d8; font-weight:800; }
 .summary-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
 .summary-card { min-width:0; padding:12px; border:1px solid var(--line); border-radius:15px; background:linear-gradient(180deg,rgba(21,39,64,.96),rgba(9,20,35,.96)); }
@@ -189,6 +190,8 @@ td small { color:var(--muted); }
 .bad { color:var(--bad)!important; }
 .neutral { color:var(--muted)!important; }
 .tracking-summary { margin-bottom:10px; }
+.tracking-basis { margin:-2px 0 10px; color:var(--muted); font-size:10px; }
+.tracking-basis p { margin:0; }
 .tracking-list { display:grid; gap:8px; }
 .tracking-card { display:grid; gap:8px; padding:12px; border:1px solid var(--line); border-radius:14px; background:rgba(10,21,37,.72); }
 .tracking-card>div:first-child { display:flex; justify-content:space-between; gap:10px; }

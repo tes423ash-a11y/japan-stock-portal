@@ -153,7 +153,10 @@ def build_rows(candidates: list[dict[str, Any]], field: str) -> list[dict[str, A
                 {
                     "symbol": item.get("symbol"), "name": item.get("name"), "rank": item.get("rank"),
                     "score": item.get("score"), "setupType": item.get("setupType"),
-                    "metrics": item.get("metrics", {}), "tradePlan": item.get("tradePlan", {}),
+                    "metrics": {
+                        "rsRating": (item.get("metrics") or {}).get("rsRating"),
+                        "distanceToPivotPct": (item.get("metrics") or {}).get("distanceToPivotPct"),
+                    },
                 }
                 for item in leaders
             ],

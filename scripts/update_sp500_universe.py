@@ -30,7 +30,7 @@ def existing_count() -> int:
 def write_rows(rows: list[list[str]]) -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", newline="", delete=False, dir=OUT.parent) as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(HEADER)
         writer.writerows(rows)
         temp_path = Path(handle.name)

@@ -50,9 +50,7 @@ jobs:
       YF_PERIOD: "18mo"
       SP500_SOURCE_URL: https://en.wikipedia.org/wiki/List_of_S%26P_500_companies
       TOPIX_INDEX_PAGE_URL: https://www.jpx.co.jp/english/markets/indices/topix/index.html
-      TOPIX_SOURCE_URLS: https://www.jpx.co.jp/markets/indices/topix/tvdivq00000030ne-att/topixweight_j.csv|https://www.jpx.co.jp/english/markets/indices/topix/tvdivq00000030ne-att/topixweight_e.csv
-      JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
-      JQUANTS_REFRESH_TOKEN: ${{ secrets.JQUANTS_REFRESH_TOKEN }}
+      TSE_LISTED_ISSUES_URL: https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,6 +65,11 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Run regression tests
+        run: |
+          python -m unittest discover -s tests -p "test_*.py"
+          node --test tests/dashboard-utils.test.mjs
 
       - name: Refresh 1000-symbol universe
         run: |
@@ -98,8 +101,10 @@ jobs:
           total = int((report.get('summary') or {}).get('total') or 0)
           coverage = report.get('coverage') or {}
           input_by_market = report.get('inputRowsByMarket') or {}
+          candidates = report.get('candidates') or []
           downloaded = int(coverage.get('downloaded') or 0)
           coverage_pct = float(coverage.get('coveragePct') or 0)
+          report_size = Path('reports/latest.json').stat().st_size
 
           print('schemaVersion:', report.get('schemaVersion'))
           print('inputRowsByMarket:', json.dumps(input_by_market, ensure_ascii=False))
@@ -108,7 +113,10 @@ jobs:
           print('summary:', json.dumps(report.get('summary', {}), ensure_ascii=False))
           print('sectorRows:', len(report.get('sectorStrength', [])))
           print('trackingSummary:', json.dumps(report.get('trackingSummary', {}), ensure_ascii=False))
+          print('reportBytes:', report_size)
 
+          if int(report.get('schemaVersion') or 0) < 4:
+              raise SystemExit('Critical schema failure: schemaVersion below 4')
           if int(input_by_market.get('JP') or 0) < 500:
               raise SystemExit('Critical universe failure: JP input below 500')
           if int(input_by_market.get('US') or 0) < 500:
@@ -119,6 +127,37 @@ jobs:
               raise SystemExit(f'Critical market data failure: downloaded={downloaded}, coverage={coverage_pct}%')
           if not report.get('generatedAt'):
               raise SystemExit('Critical report failure: generatedAt missing')
+          if sum(1 for item in candidates if item.get('market') == 'JP') != 500:
+              raise SystemExit('Critical report failure: published JP rows must equal 500')
+          if sum(1 for item in candidates if item.get('market') == 'US') != 500:
+              raise SystemExit('Critical report failure: published US rows must equal 500')
+          unnamed_jp = [
+              item.get('symbol') for item in candidates
+              if item.get('market') == 'JP'
+              and str(item.get('name') or '').strip() in {str(item.get('code') or '').strip(), str(item.get('symbol') or '').replace('.T', '')}
+          ]
+          if unnamed_jp:
+              raise SystemExit(f'Critical metadata failure: unnamed JP rows {unnamed_jp[:10]}')
+          invalid_ranks = [
+              item.get('symbol') for item in candidates
+              if (item.get('rank') == 'S' and float(item.get('score') or 0) < 90)
+              or (item.get('rank') == 'A' and float(item.get('score') or 0) < 80)
+              or (item.get('rank') == 'B' and float(item.get('score') or 0) < 70)
+              or (item.get('rank') == 'C' and float(item.get('score') or 0) < 60)
+          ]
+          if invalid_ranks:
+              raise SystemExit(f'Critical scoring failure: invalid rank thresholds {invalid_ranks[:10]}')
+          deep_vcp = [
+              item.get('symbol') for item in candidates
+              if item.get('setupType') == 'vcp_ready'
+              and float((item.get('metrics') or {}).get('baseDepth60Pct') or 0) > 40
+          ]
+          if deep_vcp:
+              raise SystemExit(f'Critical VCP failure: deep bases marked ready {deep_vcp[:10]}')
+          if report_size > 3_500_000:
+              raise SystemExit(f'Critical payload failure: report is {report_size} bytes')
+          if 'candidatesByMarket' in report or 'topTurnoverByMarket' in report:
+              raise SystemExit('Critical payload failure: duplicate candidate collections present')
           PY
 
       - name: Commit generated data

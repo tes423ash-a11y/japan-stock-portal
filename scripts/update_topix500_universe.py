@@ -9,16 +9,20 @@ from pathlib import Path
 from urllib.parse import urljoin
 
 import requests
+import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "universes" / "jp_topix500.csv"
 HEADER = ["symbol", "name", "market", "sector", "industry", "theme", "note"]
 MIN_VALID_ROWS = 450
+MIN_NAMED_ROWS = 450
 DEFAULT_INDEX_PAGE = "https://www.jpx.co.jp/english/markets/indices/topix/index.html"
+DEFAULT_LISTED_ISSUES_URL = "https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls"
 
 
 def clean(value: object) -> str:
-    return str(value or "").replace("\u3000", " ").strip()
+    text = str(value or "").replace("\u3000", " ").strip()
+    return "" if text.lower() == "nan" else text
 
 
 def pick(row: dict[str, str], names: list[str]) -> str:
@@ -40,17 +44,23 @@ def decode_csv(content: bytes) -> str:
     return content.decode("utf-8", errors="ignore")
 
 
-def existing_count() -> int:
+def is_named(symbol: str, name: str) -> bool:
+    normalized = clean(name).upper()
+    return bool(normalized) and normalized not in {symbol.upper(), symbol.replace(".T", "").upper()}
+
+
+def existing_quality() -> tuple[int, int]:
     if not OUT.exists():
-        return 0
+        return 0, 0
     with OUT.open(newline="", encoding="utf-8-sig") as handle:
-        return sum(1 for row in csv.DictReader(handle) if (row.get("symbol") or "").strip())
+        rows = [row for row in csv.DictReader(handle) if clean(row.get("symbol"))]
+    return len(rows), sum(1 for row in rows if is_named(clean(row.get("symbol")), clean(row.get("name"))))
 
 
 def write_rows(rows: list[list[str]]) -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", newline="", delete=False, dir=OUT.parent) as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(HEADER)
         writer.writerows(rows)
         temp_path = Path(handle.name)
@@ -104,11 +114,55 @@ def parse_source(url: str) -> dict[str, tuple[list[str], float]]:
     return collected
 
 
+def fetch_listed_issue_metadata(url: str) -> dict[str, dict[str, str]]:
+    response = session_get(url)
+    frame = pd.read_excel(io.BytesIO(response.content), dtype=str)
+    metadata: dict[str, dict[str, str]] = {}
+    for _, source in frame.iterrows():
+        row = {clean(key): clean(value) for key, value in source.items()}
+        code = row.get("コード") or row.get("Code") or row.get("Local Code") or ""
+        digits = "".join(character for character in code if character.isdigit())
+        if len(digits) < 4:
+            continue
+        symbol = digits[:4] + ".T"
+        metadata[symbol] = {
+            "name": row.get("銘柄名") or row.get("Issue Name") or row.get("Company Name") or "",
+            "sector": row.get("33業種区分") or row.get("33 Sector Name") or "",
+            "industry": row.get("17業種区分") or row.get("17 Sector Name") or "",
+        }
+    return metadata
+
+
+def apply_listed_issue_metadata(
+    collected: dict[str, tuple[list[str], float]],
+    metadata: dict[str, dict[str, str]],
+) -> dict[str, tuple[list[str], float]]:
+    enriched: dict[str, tuple[list[str], float]] = {}
+    for symbol, (source_row, weight) in collected.items():
+        row = list(source_row)
+        details = metadata.get(symbol) or {}
+        if clean(details.get("name")):
+            row[1] = clean(details.get("name"))
+        if clean(details.get("sector")):
+            row[3] = clean(details.get("sector"))
+            row[5] = clean(details.get("sector"))
+        if clean(details.get("industry")):
+            row[4] = clean(details.get("industry"))
+        enriched[symbol] = (row, weight)
+    return enriched
+
+
 def main() -> None:
     configured = [url.strip() for url in os.getenv("TOPIX_SOURCE_URLS", "").split("|") if url.strip()]
     index_page = os.getenv("TOPIX_INDEX_PAGE_URL", DEFAULT_INDEX_PAGE).strip() or DEFAULT_INDEX_PAGE
     discovered: list[str] = []
     errors: list[str] = []
+    listed_issues_url = os.getenv("TSE_LISTED_ISSUES_URL", DEFAULT_LISTED_ISSUES_URL).strip() or DEFAULT_LISTED_ISSUES_URL
+    listed_metadata: dict[str, dict[str, str]] = {}
+    try:
+        listed_metadata = fetch_listed_issue_metadata(listed_issues_url)
+    except Exception as error:
+        errors.append(f"listed issues: {error.__class__.__name__}: {error}")
     try:
         discovered = discover_csv_urls(index_page)
     except Exception as error:
@@ -126,19 +180,22 @@ def main() -> None:
         except Exception as error:
             errors.append(f"{url}: {error.__class__.__name__}: {error}")
 
+    collected = apply_listed_issue_metadata(collected, listed_metadata)
     ordered = sorted(collected.values(), key=lambda item: item[1], reverse=True)[:500]
     rows = [row for row, _ in ordered]
-    if len(rows) >= MIN_VALID_ROWS:
+    named_rows = sum(1 for row in rows if is_named(row[0], row[1]))
+    if len(rows) >= MIN_VALID_ROWS and named_rows >= MIN_NAMED_ROWS:
         write_rows(rows)
-        print(f"Wrote {len(rows)} TOPIX large/mid-cap symbols with sector metadata")
+        print(f"Wrote {len(rows)} TOPIX large/mid-cap symbols; {named_rows} have company names")
         return
 
-    count = existing_count()
-    if count >= MIN_VALID_ROWS:
-        print(f"TOPIX refresh failed; preserving {count} existing rows. {' | '.join(errors[-3:])}")
+    count, existing_named = existing_quality()
+    if count >= MIN_VALID_ROWS and existing_named >= MIN_NAMED_ROWS:
+        print(f"TOPIX refresh failed; preserving {count} existing rows ({existing_named} named). {' | '.join(errors[-3:])}")
         return
     raise RuntimeError(
-        f"TOPIX universe unavailable: found {len(rows)} rows and existing file has only {count}. "
+        f"TOPIX universe unavailable: found {len(rows)} rows ({named_rows} named); "
+        f"existing file has {count} rows ({existing_named} named). "
         + " | ".join(errors[-3:])
     )
 

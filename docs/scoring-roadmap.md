@@ -1,5 +1,5 @@
 # Scoring Roadmap
 
-MVP: CSV input and dashboard output.
+Implemented: trend template, cross-sectional RS, VCP contraction, volume, ATR risk, liquidity, setup classification and outcome tracking.
 
-Next: moving averages, relative strength, volume contraction, ATR, tracking.
+Next: fundamentals, earnings risk, benchmark regime and swing-point VCP validation. These should remain separate components so missing external data never silently inflates the technical score.

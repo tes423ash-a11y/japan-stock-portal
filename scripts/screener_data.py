@@ -74,14 +74,21 @@ def choose_theme(current: str, incoming: str) -> str:
     return current
 
 
+def is_placeholder_name(value: str, symbol: str) -> bool:
+    name = safe_text(value).upper()
+    code = safe_text(symbol).upper()
+    return not name or name in {code, code.replace(".T", "")}
+
+
 def merge_metadata(current: dict[str, str], incoming: dict[str, str]) -> dict[str, str]:
     result = dict(current)
-    for key in {"name", "market", "sector", "industry", "note"}:
+    symbol = safe_text(result.get("symbol") or incoming.get("symbol"))
+    if is_placeholder_name(result.get("name", ""), symbol) and not is_placeholder_name(incoming.get("name", ""), symbol):
+        result["name"] = safe_text(incoming.get("name"))
+    for key in {"market", "sector", "industry", "note"}:
         if not safe_text(result.get(key)) and safe_text(incoming.get(key)):
             result[key] = safe_text(incoming.get(key))
     result["theme"] = choose_theme(result.get("theme", ""), incoming.get("theme", ""))
-    if not safe_text(result.get("sector")):
-        result["sector"] = safe_text(incoming.get("sector")) or safe_text(incoming.get("theme"))
     if not safe_text(result.get("industry")):
         result["industry"] = safe_text(incoming.get("industry"))
     notes = [safe_text(result.get("note")), safe_text(incoming.get("note"))]
@@ -103,15 +110,22 @@ def read_csv_files(paths: Iterable[Path]) -> list[dict[str, str]]:
                     continue
                 row["symbol"] = symbol
                 row["market"] = market_of(row)
-                row.setdefault("sector", row.get("theme", ""))
-                row.setdefault("industry", "")
-                row.setdefault("theme", row.get("sector", "") or "未分類")
+                row["sector"] = safe_text(row.get("sector"))
+                row["industry"] = safe_text(row.get("industry"))
+                row["theme"] = safe_text(row.get("theme"))
                 if symbol not in merged:
                     merged[symbol] = row
                     order.append(symbol)
                 else:
                     merged[symbol] = merge_metadata(merged[symbol], row)
-    return [merged[symbol] for symbol in order]
+    rows: list[dict[str, str]] = []
+    for symbol in order:
+        row = merged[symbol]
+        row["theme"] = safe_text(row.get("theme")) or safe_text(row.get("sector")) or "未分類"
+        row["sector"] = safe_text(row.get("sector")) or row["theme"]
+        row["industry"] = safe_text(row.get("industry"))
+        rows.append(row)
+    return rows
 
 
 def read_input_rows() -> tuple[list[dict[str, str]], str]:
@@ -209,5 +223,6 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
         "provider": "yfinance_bulk", "requested": len(symbols), "downloaded": len(histories),
         "missing": len(symbols) - len(histories), "batchCount": batch_count, "chunkSize": chunk_size,
         "fallbackUsed": fallback_used, "failedChunks": failed_chunks[:10], "period": period,
+        "missingSymbols": missing[:30],
     }
     return histories, diagnostics

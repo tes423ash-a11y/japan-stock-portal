@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import os
 from collections import defaultdict
 from datetime import datetime, timezone
 from typing import Any
@@ -49,8 +48,13 @@ def main() -> None:
     downloaded = provider_diagnostics.get("downloaded", 0)
     coverage_pct = round(downloaded / requested * 100, 1) if requested else 0.0
     coverage_status = "good" if coverage_pct >= 95 else "degraded" if coverage_pct >= 80 else "poor"
+    market_summaries = {
+        market: market_summary(rows_by_market.get(market, []), built_by_market.get(market, []), selected_by_market.get(market, []))
+        for market in ["JP", "US"]
+    }
     report: dict[str, Any] = {
-        "schemaVersion": 3,
+        "schemaVersion": 4,
+        "rescoredFromExistingData": False,
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "screeningMode": mode,
         "screeningTopNPerMarket": top_n_per_market,
@@ -64,16 +68,26 @@ def main() -> None:
         "universe": "TOPIX500+S&P500+theme overlays",
         "providerStatus": provider_diagnostics,
         "jquantsStatus": {
-            "enabled": bool(os.getenv("JQUANTS_API_KEY") or os.getenv("JQUANTS_REFRESH_TOKEN")),
+            "enabled": False,
             "status": "not_used_in_bulk_mode",
-            "message": "1000銘柄規模ではレート制限を避けるため一括取得可能なyfinanceを使用。J-Quantsは将来のJP一括取得対応用。",
+            "message": "1000銘柄版は日米を同条件で一括取得できるyfinanceを使用。J-Quants認証情報は現在の処理では使用しません。",
         },
-        "coverage": {"requested": requested, "downloaded": downloaded, "missing": requested - downloaded, "coveragePct": coverage_pct, "status": coverage_status},
+        "coverage": {
+            "requested": requested, "downloaded": downloaded, "missing": requested - downloaded,
+            "missingSymbols": provider_diagnostics.get("missingSymbols", []),
+            "coveragePct": coverage_pct, "status": coverage_status,
+        },
         "methodology": {
-            "model": "Technical SEPA/VCP v3",
+            "model": "Technical SEPA/VCP v4",
             "scoreComponents": {"trend": 25, "relativeStrength": 20, "vcp": 25, "volume": 10, "risk": 10, "liquidity": 10},
             "themeInScore": False,
-            "limitations": ["決算・EPS・売上成長率は未取得", "ニュース材料は未評価", "ピボットと無効化水準は機械計算のためチャート確認必須"],
+            "limitations": [
+                "決算・EPS・売上成長率は未取得",
+                "ニュース材料と次回決算日は未評価",
+                "VCPは固定期間の値幅収縮による一次判定",
+                "ピボットと無効化水準は機械計算のためチャート確認必須",
+                "追跡成績は検出日の終値を基準に日次終値で更新",
+            ],
         },
         "summary": {
             "total": len(candidates), "sRank": ranks["S"], "aRank": ranks["A"], "bRank": ranks["B"],
@@ -82,10 +96,9 @@ def main() -> None:
             "extended": setups["extended"], "avoid": setups["avoid"],
             "averageScore": rounded(np.mean([finite(item.get("score")) or 0 for item in candidates]), 1) if candidates else 0,
         },
-        "marketSummary": {market: market_summary(rows_by_market.get(market, []), built_by_market.get(market, []), selected_by_market.get(market, [])) for market in ["JP", "US"]},
+        "marketSummary": market_summaries,
+        "marketDataAsOf": {market: summary.get("asOf") for market, summary in market_summaries.items()},
         "candidates": candidates,
-        "candidatesByMarket": {market: sorted(items, key=lambda item: finite(item.get("score")) or 0, reverse=True) for market, items in selected_by_market.items()},
-        "topTurnoverByMarket": {market: top_by_metric(items, min(100, len(items)), turnover_metric) for market, items in selected_by_market.items()},
         "themes": build_themes(candidates),
         "tracking": [],
     }

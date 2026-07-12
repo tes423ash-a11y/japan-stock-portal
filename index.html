@@ -6,12 +6,12 @@
   <meta name="theme-color" content="#08111f" />
   <title>SEPA/VCP 1000銘柄スクリーナー</title>
   <meta name="description" content="TOPIX500・S&P500を中心に約1000銘柄を毎日分析する、テクニカルSEPA/VCP・セクターRSダッシュボード" />
-  <link rel="stylesheet" href="dashboard.css?v=20260710-v3" />
+  <link rel="stylesheet" href="dashboard.css?v=20260711-v4" />
 </head>
 <body>
   <header class="app-header">
     <div class="brand-row">
-      <div><p class="eyebrow">Technical SEPA / VCP v3</p><h1>1000銘柄スクリーナー</h1></div>
+      <div><p class="eyebrow">Technical SEPA / VCP v4</p><h1>1000銘柄スクリーナー</h1></div>
       <button id="reloadReport" class="primary-button" type="button">更新</button>
     </div>
     <p class="lead">TOPIX500・S&P500を別々に評価し、RS・トレンドテンプレート・VCP・出来高・流動性から実行候補を絞ります。</p>
@@ -38,7 +38,7 @@
     <section id="sector-strength" class="panel">
       <div class="section-heading"><div><span>Sector Relative Strength</span><h2>セクターRS</h2></div><span class="help-text">同一市場内で比較</span></div>
       <div class="tab-bar" role="tablist" aria-label="市場切替">
-        <button class="tab-button active" type="button" data-sector-market="all">日米</button><button class="tab-button" type="button" data-sector-market="JP">日本株</button><button class="tab-button" type="button" data-sector-market="US">米国株</button>
+        <button class="tab-button active" type="button" role="tab" aria-selected="true" data-sector-market="all">日米</button><button class="tab-button" type="button" role="tab" aria-selected="false" data-sector-market="JP">日本株</button><button class="tab-button" type="button" role="tab" aria-selected="false" data-sector-market="US">米国株</button>
       </div>
       <div class="toolbar sector-toolbar">
         <label>並び替え<select id="sectorSortSelect"><option value="rs">RS順</option><option value="change5d">5日改善順</option><option value="breadth">50日線上比率順</option><option value="ret60">60日上昇順</option><option value="turnover">売買代金順</option></select></label>
@@ -72,7 +72,7 @@
 
     <section id="tracking" class="panel">
       <div class="section-heading"><div><span>Post Detection Review</span><h2>検出後の成績</h2></div></div>
-      <div id="trackingSummary" class="summary-grid tracking-summary"></div><div id="trackingList" class="tracking-list"></div>
+      <div id="trackingSummary" class="summary-grid tracking-summary"></div><div id="trackingBasis" class="tracking-basis"></div><div id="trackingList" class="tracking-list"></div>
     </section>
 
     <section id="notes" class="panel notes-panel">
@@ -83,7 +83,7 @@
   </main>
 
   <footer class="footer"><p>テクニカル分析支援ツールです。決算・EPS・売上成長率・材料は未評価です。売買前に企業IR、TDnet、EDINET、証券会社画面を確認してください。</p></footer>
-  <script type="module" src="dashboard.js?v=20260710-v4"></script>
+  <script type="module" src="dashboard.js?v=20260711-v4"></script>
   <script src="dashboard-external.js?v=20260705-external"></script>
 </body>
 </html>

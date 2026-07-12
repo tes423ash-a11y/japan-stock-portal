@@ -1,0 +1,19 @@
+symbol,name,market,sector,industry,theme,note
+ASML,ASML Holding,US,Information Technology,Semiconductor Equipment,Semiconductor,non-S&P theme overlay; ADR
+TSM,Taiwan Semiconductor,US,Information Technology,Semiconductors,Semiconductor,non-S&P theme overlay; ADR
+ARM,Arm Holdings,US,Information Technology,Semiconductors,Semiconductor,non-S&P theme overlay; ADR
+ZS,Zscaler,US,Information Technology,Cybersecurity,Cybersecurity,non-S&P theme overlay
+NET,Cloudflare,US,Information Technology,Cloud Software,Cybersecurity,non-S&P theme overlay
+OKTA,Okta,US,Information Technology,Cybersecurity,Cybersecurity,non-S&P theme overlay
+S,SentinelOne,US,Information Technology,Cybersecurity,Cybersecurity,non-S&P theme overlay
+SOFI,SoFi Technologies,US,Financials,Consumer Finance,Fintech,non-S&P theme overlay
+AFRM,Affirm,US,Financials,Consumer Finance,Fintech,non-S&P theme overlay
+SQ,Block,US,Financials,Transaction & Payment Processing,Fintech,non-S&P theme overlay
+RKLB,Rocket Lab,US,Industrials,Aerospace & Defense,Space,non-S&P theme overlay
+ASTS,AST SpaceMobile,US,Communication Services,Wireless Telecommunication Services,Space,non-S&P theme overlay
+LUNR,Intuitive Machines,US,Industrials,Aerospace & Defense,Space,non-S&P theme overlay
+OKLO,Oklo,US,Utilities,Independent Power Producers,Nuclear,non-S&P theme overlay
+SNOW,Snowflake,US,Information Technology,Cloud Software,Software,non-S&P theme overlay
+MDB,MongoDB,US,Information Technology,Application Software,Software,non-S&P theme overlay
+SHOP,Shopify,US,Consumer Discretionary,Broadline Retail,Internet,non-S&P theme overlay
+MELI,MercadoLibre,US,Consumer Discretionary,Broadline Retail,Internet,non-S&P theme overlay
