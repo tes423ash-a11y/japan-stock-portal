@@ -102,7 +102,7 @@ jobs:
           coverage = report.get('coverage') or {}
           input_by_market = report.get('inputRowsByMarket') or {}
           candidates = report.get('candidates') or []
-          downloaded = int(coverage.get('downloaded') or 0)
+          usable = int(coverage.get('usable') or coverage.get('downloaded') or 0)
           coverage_pct = float(coverage.get('coveragePct') or 0)
           report_size = Path('reports/latest.json').stat().st_size
 
@@ -123,8 +123,16 @@ jobs:
               raise SystemExit('Critical universe failure: US input below 500')
           if total < 1000:
               raise SystemExit(f'Critical report failure: only {total} candidates')
-          if downloaded < 950 or coverage_pct < 95:
-              raise SystemExit(f'Critical market data failure: downloaded={downloaded}, coverage={coverage_pct}%')
+          if usable < 950 or coverage_pct < 95:
+              raise SystemExit(f'Critical market data failure: usable={usable}, coverage={coverage_pct}%')
+          market_missing = {
+              str(symbol)
+              for row in (report.get('marketSummary') or {}).values()
+              for symbol in (row.get('missingSymbols') or [])
+          }
+          coverage_missing = {str(symbol) for symbol in (coverage.get('missingSymbols') or [])}
+          if market_missing != coverage_missing:
+              raise SystemExit(f'Critical coverage failure: top={sorted(coverage_missing)}, market={sorted(market_missing)}')
           if not report.get('generatedAt'):
               raise SystemExit('Critical report failure: generatedAt missing')
           if sum(1 for item in candidates if item.get('market') == 'JP') != 500:

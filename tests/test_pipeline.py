@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from screener_data import read_csv_files  # noqa: E402
-from screener_report import market_summary  # noqa: E402
+from screener_report import market_summary, usable_coverage  # noqa: E402
 from screener_scoring import rank_candidate, score_vcp, setup_type  # noqa: E402
 from update_topix500_universe import apply_listed_issue_metadata  # noqa: E402
 from update_tracking import update_extremes  # noqa: E402
@@ -72,6 +72,16 @@ class ScoringTests(unittest.TestCase):
 
 
 class ReportingTests(unittest.TestCase):
+    def test_top_level_coverage_counts_only_usable_candidates(self) -> None:
+        full = {"symbol": "A", "dataQuality": {"status": "full"}}
+        missing = {"symbol": "B", "dataQuality": {"status": "missing"}}
+        coverage = usable_coverage(2, [full, missing], provider_downloaded=2)
+        self.assertEqual(coverage["providerDownloaded"], 2)
+        self.assertEqual(coverage["usable"], 1)
+        self.assertEqual(coverage["downloaded"], 1)
+        self.assertEqual(coverage["missingSymbols"], ["B"])
+        self.assertEqual(coverage["coveragePct"], 50.0)
+
     def test_market_coverage_counts_downloaded_rows(self) -> None:
         universe = [{"symbol": "A"}, {"symbol": "B"}]
         full = {"symbol": "A", "rank": "A", "score": 80, "setupType": "vcp_ready", "dataQuality": {"status": "full", "asOf": "2026-07-10"}}

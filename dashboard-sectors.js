@@ -23,13 +23,14 @@ export function renderSummary() {
 
 export function renderCoverage() {
   const coverage = state.report.coverage || {};
+  const usable = coverage.usable ?? coverage.downloaded ?? 0;
   const percent = number(coverage.coveragePct) ?? 0;
   const status = coverage.status || (percent >= 95 ? 'good' : percent >= 80 ? 'degraded' : 'poor');
   const missingSymbols = (coverage.missingSymbols || []).slice(0, 8);
   setHtml('coverageBanner', `
-    <div class="coverage-copy"><strong>データ取得 ${escapeHtml(coverage.downloaded ?? 0)} / ${escapeHtml(coverage.requested ?? 0)}</strong><span>${format(percent, '%')} ・ 欠損 ${escapeHtml(coverage.missing ?? 0)}銘柄</span></div>
-    <div class="coverage-meter" aria-label="データ取得率"><i class="${escapeHtml(status)}" style="width:${Math.max(0, Math.min(100, percent))}%"></i></div>
-    ${missingSymbols.length ? `<small class="coverage-missing">未取得: ${missingSymbols.map(escapeHtml).join(' / ')}</small>` : ''}
+    <div class="coverage-copy"><strong>採点可能 ${escapeHtml(usable)} / ${escapeHtml(coverage.requested ?? 0)}</strong><span>${format(percent, '%')} ・ 採点不可 ${escapeHtml(coverage.missing ?? 0)}銘柄</span></div>
+    <div class="coverage-meter" aria-label="採点可能データ率"><i class="${escapeHtml(status)}" style="width:${Math.max(0, Math.min(100, percent))}%"></i></div>
+    ${missingSymbols.length ? `<small class="coverage-missing">採点不可: ${missingSymbols.map(escapeHtml).join(' / ')}</small>` : ''}
   `);
   const fresh = freshnessInfo();
   setHtml('freshnessBadge', `<span class="freshness-dot ${fresh.className}"></span>${escapeHtml(fresh.label)}`);
@@ -44,7 +45,7 @@ export function renderMarketSummary() {
         <div><span>${marketLabel(market)}</span><strong>${row.selectedRows ?? 0}</strong></div>
         <dl>
           <div><dt>基準日</dt><dd>${formatDate(row.asOf)}</dd></div>
-          <div><dt>取得率</dt><dd>${format(row.coveragePct, '%')}</dd></div>
+          <div><dt>採点可能率</dt><dd>${format(row.coveragePct, '%')}</dd></div>
           <div><dt>S/A/B</dt><dd>${row.sRank ?? 0}/${row.aRank ?? 0}/${row.bRank ?? 0}</dd></div>
           <div><dt>履歴十分</dt><dd>${row.fullHistoryRows ?? 0}</dd></div>
           <div><dt>平均点</dt><dd>${format(row.averageScore)}</dd></div>
