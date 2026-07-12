@@ -10,27 +10,44 @@ REQUIREMENTS = {
     "us_sp500.csv": 490,
 }
 MIN_COMBINED_PER_MARKET = 500
+MIN_METADATA_ROWS = {
+    "jp_topix500.csv": 450,
+    "us_sp500.csv": 490,
+}
+
+
+def rows_in(path: Path) -> list[dict[str, str]]:
+    if not path.exists():
+        return []
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        return [row for row in csv.DictReader(handle) if (row.get("symbol") or "").strip()]
 
 
 def symbols_in(path: Path) -> set[str]:
-    if not path.exists():
-        return set()
-    with path.open(newline="", encoding="utf-8-sig") as handle:
-        return {
-            (row.get("symbol") or "").strip().upper()
-            for row in csv.DictReader(handle)
-            if (row.get("symbol") or "").strip()
-        }
+    return {(row.get("symbol") or "").strip().upper() for row in rows_in(path)}
+
+
+def has_metadata(row: dict[str, str]) -> bool:
+    symbol = (row.get("symbol") or "").strip().upper()
+    name = (row.get("name") or "").strip().upper()
+    sector = (row.get("sector") or "").strip()
+    return bool(name and sector and name not in {symbol, symbol.replace(".T", "")})
 
 
 def main() -> None:
     failures: list[str] = []
     counts: dict[str, int] = {}
     for filename, minimum in REQUIREMENTS.items():
-        count = len(symbols_in(UNIVERSE_DIR / filename))
+        path = UNIVERSE_DIR / filename
+        count = len(symbols_in(path))
         counts[filename] = count
         if count < minimum:
             failures.append(f"{filename}: {count} < {minimum}")
+        metadata_count = sum(1 for row in rows_in(path) if has_metadata(row))
+        metadata_minimum = MIN_METADATA_ROWS.get(filename, 0)
+        counts[f"{filename}:metadata"] = metadata_count
+        if metadata_count < metadata_minimum:
+            failures.append(f"{filename} metadata: {metadata_count} < {metadata_minimum}")
 
     all_symbols: set[str] = set()
     jp_symbols: set[str] = set()

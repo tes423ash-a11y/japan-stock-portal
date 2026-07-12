@@ -1,7 +1,7 @@
 import {
   state, valueOf, escapeHtml, number, format, money, marketLabel, setupLabel,
   rankClass, phaseLabel, confidenceLabel, setHtml, scoreTone, changeClass,
-  changeText, freshnessInfo, sparkline
+  changeText, freshnessInfo, sparkline, formatDate
 } from './dashboard-utils.js';
 
 export function renderSummary() {
@@ -25,9 +25,11 @@ export function renderCoverage() {
   const coverage = state.report.coverage || {};
   const percent = number(coverage.coveragePct) ?? 0;
   const status = coverage.status || (percent >= 95 ? 'good' : percent >= 80 ? 'degraded' : 'poor');
+  const missingSymbols = (coverage.missingSymbols || []).slice(0, 8);
   setHtml('coverageBanner', `
     <div class="coverage-copy"><strong>データ取得 ${escapeHtml(coverage.downloaded ?? 0)} / ${escapeHtml(coverage.requested ?? 0)}</strong><span>${format(percent, '%')} ・ 欠損 ${escapeHtml(coverage.missing ?? 0)}銘柄</span></div>
     <div class="coverage-meter" aria-label="データ取得率"><i class="${escapeHtml(status)}" style="width:${Math.max(0, Math.min(100, percent))}%"></i></div>
+    ${missingSymbols.length ? `<small class="coverage-missing">未取得: ${missingSymbols.map(escapeHtml).join(' / ')}</small>` : ''}
   `);
   const fresh = freshnessInfo();
   setHtml('freshnessBadge', `<span class="freshness-dot ${fresh.className}"></span>${escapeHtml(fresh.label)}`);
@@ -41,10 +43,12 @@ export function renderMarketSummary() {
       <article class="market-card">
         <div><span>${marketLabel(market)}</span><strong>${row.selectedRows ?? 0}</strong></div>
         <dl>
+          <div><dt>基準日</dt><dd>${formatDate(row.asOf)}</dd></div>
           <div><dt>取得率</dt><dd>${format(row.coveragePct, '%')}</dd></div>
           <div><dt>S/A/B</dt><dd>${row.sRank ?? 0}/${row.aRank ?? 0}/${row.bRank ?? 0}</dd></div>
           <div><dt>履歴十分</dt><dd>${row.fullHistoryRows ?? 0}</dd></div>
           <div><dt>平均点</dt><dd>${format(row.averageScore)}</dd></div>
+          <div><dt>欠損</dt><dd>${row.missingRows ?? 0}</dd></div>
         </dl>
       </article>`;
   }).join(''));
@@ -55,7 +59,7 @@ export function renderMethodology() {
   const components = methodology.scoreComponents || {};
   const limitations = methodology.limitations || [];
   setHtml('methodologyText', `
-    <p><strong>${escapeHtml(methodology.model || 'Technical SEPA/VCP')}</strong>。テーマ人気は総合点に加算せず、テクニカル優位性と分離しています。</p>
+    <p><strong>${escapeHtml(methodology.model || 'Technical SEPA/VCP')}</strong>。S/A/B/Cはテクニカル一次判定です。テーマ人気は総合点に加算せず、テクニカル優位性と分離しています。</p>
     <div class="method-chips">${Object.entries(components).map(([key, score]) => `<span>${escapeHtml(key)} ${escapeHtml(score)}点</span>`).join('')}</div>
     <ul>${limitations.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`);
 }

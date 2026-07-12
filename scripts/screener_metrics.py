@@ -136,6 +136,7 @@ def build_raw_candidate(row: dict[str, str], frame: pd.DataFrame | None, usd_jpy
     if avg_trading_value20_usd < 10_000_000: warnings.append("流動性低め")
     if ma200 and price < ma200: warnings.append("200日線下")
     if pivot_distance is not None and pivot_distance > 5: warnings.append("買い場超過")
+    if base_depth is not None and base_depth > 40: warnings.append("ベース深さ過大")
     base.update({
         "price": rounded(price, 2), "pivot": rounded(pivot, 2), "metrics": metrics, "warnings": warnings,
         "dataQuality": {"status": quality_status, "bars": bars, "asOf": latest_date.isoformat(), "staleDays": stale_days},

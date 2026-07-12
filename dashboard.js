@@ -1,11 +1,16 @@
-import { state, $, setText, setHtml, setQuickFilter } from './dashboard-utils.js';
+import { state, $, formatDate, formatTimestamp, setText, setHtml, setQuickFilter } from './dashboard-utils.js';
 import { renderSummary, renderCoverage, renderMarketSummary, renderMethodology, renderActionBoard, renderSectors } from './dashboard-sectors.js';
 import { renderCandidates, renderRiskTable, renderThemes } from './dashboard-candidate-list.js';
 import { renderTracking, focusSymbol, filterSector } from './dashboard-tracking.js';
 
 function renderAll() {
   const report = state.report;
-  setText('reportStatus', `生成 ${report.generatedAt || '不明'} / ${report.screeningMode || '-'} / Technical SEPA/VCP v${report.schemaVersion || 1}`);
+  const asOf = report.marketDataAsOf || {};
+  const buildLabel = report.rescoredFromExistingData ? '既存終値データを再採点' : '価格履歴を新規取得';
+  setText(
+    'reportStatus',
+    `データ基準 日本株 ${formatDate(asOf.JP)} / 米国株 ${formatDate(asOf.US)} ・ 生成 ${formatTimestamp(report.generatedAt)} ・ ${buildLabel} ・ ${report.screeningMode || '-'} ・ Technical SEPA/VCP v${report.schemaVersion || 1}`
+  );
   renderCoverage();
   renderSummary();
   renderMarketSummary();
@@ -61,7 +66,11 @@ function bindControls() {
   document.querySelectorAll('[data-sector-market]').forEach(button => button.addEventListener('click', () => {
     state.sectorMarket = button.dataset.sectorMarket || 'all';
     state.expandedSector = '';
-    document.querySelectorAll('[data-sector-market]').forEach(item => item.classList.toggle('active', item === button));
+    document.querySelectorAll('[data-sector-market]').forEach(item => {
+      const active = item === button;
+      item.classList.toggle('active', active);
+      item.setAttribute('aria-selected', String(active));
+    });
     renderSectors();
   }));
 

@@ -41,11 +41,15 @@ def score_vcp(metrics: dict[str, Any]) -> int:
     score = 8 if metrics.get("contractionSequence") else 0
     range15 = finite(metrics.get("range15Pct")); tight10 = finite(metrics.get("tightness10Pct")); dry = finite(metrics.get("volumeDryUp5vs50"))
     pivot_distance = finite(metrics.get("distanceToPivotPct")); close_location = finite(metrics.get("closeLocation20Pct"))
+    base_depth = finite(metrics.get("baseDepth60Pct")); atr_pct = finite(metrics.get("atrPct"))
     if range15 is not None: score += 6 if range15 <= 7 else 4 if range15 <= 10 else 2 if range15 <= 14 else 0
     if tight10 is not None and tight10 <= 7: score += 3
     if dry is not None: score += 5 if dry <= .7 else 3 if dry <= .9 else 1 if dry <= 1.05 else 0
     if pivot_distance is not None: score += 4 if -5 <= pivot_distance <= 2 else 2 if -10 <= pivot_distance <= 4 else 0
     if close_location is not None and close_location >= 70: score += 2
+    if base_depth is not None: score -= 8 if base_depth > 45 else 5 if base_depth > 40 else 2 if base_depth > 35 else 0
+    if range15 is not None and range15 > 15: score -= 2
+    if atr_pct is not None: score -= 3 if atr_pct > 10 else 1 if atr_pct > 8 else 0
     return int(clamp(score, 0, 25))
 
 
@@ -80,11 +84,17 @@ def setup_type(metrics: dict[str, Any], trend_count: int, vcp: int, rs_rating: f
     price = finite(metrics.get("price")); ma20 = finite(metrics.get("ma20")); ma50 = finite(metrics.get("ma50")); ma200 = finite(metrics.get("ma200"))
     slope = finite(metrics.get("ma200Slope20dPct")); distance = finite(metrics.get("distanceToPivotPct")); volume_ratio = finite(metrics.get("latestVolumeRatio20"))
     dry = finite(metrics.get("volumeDryUp5vs50")); extended20 = finite(metrics.get("extendedFromMa20Pct"))
+    base_depth = finite(metrics.get("baseDepth60Pct")); range15 = finite(metrics.get("range15Pct"))
     if quality == "missing" or price is None: return "data_issue"
     if turnover < 2_000_000: return "avoid"
     if ma200 is not None and price < ma200 and (slope is None or slope <= 0): return "avoid"
     if distance is not None and (distance > 5 or (extended20 is not None and extended20 > 12)): return "extended"
-    if trend_count >= 7 and vcp >= 18 and distance is not None and -5 <= distance < 0: return "vcp_ready"
+    vcp_shape_ready = (
+        bool(metrics.get("contractionSequence"))
+        and (base_depth is None or base_depth <= 40)
+        and (range15 is None or range15 <= 15)
+    )
+    if trend_count >= 7 and vcp >= 18 and vcp_shape_ready and distance is not None and -5 <= distance < 0: return "vcp_ready"
     if trend_count >= 7 and distance is not None and 0 <= distance <= 4 and (volume_ratio or 0) >= 1.35: return "breakout_ready"
     near20 = ma20 is not None and -1.5 <= ((price / ma20) - 1) * 100 <= 3.5
     near50 = ma50 is not None and -1.5 <= ((price / ma50) - 1) * 100 <= 3.5
@@ -140,10 +150,10 @@ def trade_plan(metrics: dict[str, Any], setup: str) -> dict[str, Any]:
 
 def rank_candidate(score: int, setup: str, rs: float, trend: int, vcp: int, atr: float | None, turnover: float, quality: str) -> str:
     if quality in {"missing","limited"} or setup in {"avoid","data_issue"}: return "D"
-    if score >= 88 and rs >= 85 and trend >= 7 and vcp >= 18 and setup in {"vcp_ready","breakout_ready"} and (atr is None or atr <= 6) and turnover >= 20_000_000: return "S"
-    if score >= 78 and rs >= 75 and trend >= 6 and setup in {"vcp_ready","breakout_ready","pullback_ready"} and (atr is None or atr <= 8) and turnover >= 10_000_000: return "A"
-    if score >= 65 and trend >= 5 and setup not in {"extended","avoid"}: return "B"
-    if score >= 50: return "C"
+    if score >= 90 and rs >= 85 and trend >= 7 and vcp >= 18 and setup in {"vcp_ready","breakout_ready"} and (atr is None or atr <= 6) and turnover >= 20_000_000: return "S"
+    if score >= 80 and rs >= 75 and trend >= 6 and setup in {"vcp_ready","breakout_ready","pullback_ready"} and (atr is None or atr <= 8) and turnover >= 10_000_000: return "A"
+    if score >= 70 and trend >= 5 and setup not in {"extended","avoid"}: return "B"
+    if score >= 60: return "C"
     return "D"
 
 
@@ -161,7 +171,7 @@ def enrich_market_candidates(candidates: list[dict[str, Any]]) -> list[dict[str,
         available = [(value,weight) for value,weight in weighted if value is not None]
         rs_rating = sum(value*weight for value,weight in available)/sum(weight for _,weight in available) if available else 1
         metrics.update({f"rs{horizon}Rating":rounded(rs_values[horizon],1) for horizon in horizons}); metrics["rsRating"] = rounded(rs_rating,1)
-        trend_count, reasons = trend_template(metrics); trend_score = round(trend_count/8*25); vcp = score_vcp(metrics)
+        trend_count, trend_checks = trend_template(metrics); trend_score = round(trend_count/8*25); vcp = score_vcp(metrics)
         rs_score = int(round(clamp((rs_rating-35)/64*20,0,20))); turnover = finite(metrics.get("avgTradingValue20Usd")) or 0
         liquidity = liquidity_score(turnover); risk = risk_score(finite(metrics.get("atrPct"))); volume = volume_score(metrics)
         quality = safe_text((item.get("dataQuality") or {}).get("status")) or "missing"
@@ -174,11 +184,11 @@ def enrich_market_candidates(candidates: list[dict[str, Any]]) -> list[dict[str,
         plan = trade_plan(metrics,setup); warnings = list(item.get("warnings") or [])
         if rs_rating < 60: warnings.append("RS不足")
         if setup in {"vcp_ready","breakout_ready"} and (finite(metrics.get("latestVolumeRatio20")) or 0) < 1.35: warnings.append("出来高確認待ち")
-        reasons = reasons[:4] + [f"RS {rs_rating:.0f}",f"VCP {vcp}/25",f"ピボット距離 {finite(metrics.get('distanceToPivotPct')) or 0:.1f}%"]
+        reasons = trend_checks + [f"RS {rs_rating:.0f}",f"VCP {vcp}/25",f"ピボット距離 {finite(metrics.get('distanceToPivotPct')) or 0:.1f}%"]
         item.update({
             "rank":rank,"score":score,"technicalScore":score,"setupType":setup,"setup":setup_label(setup),"action":action_for_setup(setup),
             "componentScores":{"trend":trend_score,"rs":rs_score,"vcp":vcp,"volume":volume,"risk":risk,"liquidity":liquidity},
-            "trendTemplate":{"passed":trend_count,"total":8,"checks":reasons[:4]},"vcpScore":vcp,"tradePlan":plan,
+            "trendTemplate":{"passed":trend_count,"total":8,"checks":trend_checks},"vcpScore":vcp,"tradePlan":plan,
             "stop":plan.get("stop"),"target1":plan.get("target1"),"target2":plan.get("target2"),"rr":2 if plan.get("target1") else None,
             "riskLabel":"低ボラ" if (finite(metrics.get("atrPct")) or 99)<=3.5 else "許容" if (finite(metrics.get("atrPct")) or 99)<=6 else "高ボラ",
             "warnings":list(dict.fromkeys(warnings)),"reasons":reasons,

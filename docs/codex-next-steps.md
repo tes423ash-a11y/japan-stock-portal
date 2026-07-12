@@ -1,17 +1,12 @@
 # Codex Next Steps
 
-Ask Codex to improve the MVP in this order:
+Recommended follow-up order:
 
-1. Add real daily price data loading.
-2. Calculate 50/150/200 day moving averages.
-3. Calculate 52-week high and low distance.
-4. Calculate volume averages and ATR.
-5. Add VCP contraction score.
-6. Add breakout tracking history.
-7. Improve theme strength aggregation.
+1. Add an official earnings calendar and mark candidates inside the earnings-risk window.
+2. Add EPS, revenue and margin acceleration as a separate fundamental score.
+3. Add index-relative price lines and benchmark regime filters.
+4. Improve VCP detection from fixed windows to swing-point contractions.
+5. Store sufficient OHLC history to evaluate breakout trigger, stop and 2R order correctly.
+6. Add walk-forward outcome statistics by setup, market and score band.
 
-Suggested prompt:
-
-```text
-@codex improve the daily screener MVP. Keep the dashboard JSON schema stable and implement real indicator scoring in scripts/build_report.py.
-```
+Keep facts, technical inference and manually enriched context in separate fields.

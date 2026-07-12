@@ -23,8 +23,28 @@ export function escapeHtml(value) {
 }
 
 export function number(value) {
+  if (value === null || value === undefined) return null;
+  if (typeof value === 'string' && value.trim() === '') return null;
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : null;
+}
+
+export function formatTimestamp(value) {
+  const parsed = value ? new Date(value) : null;
+  if (!parsed || Number.isNaN(parsed.getTime())) return '日時不明';
+  return new Intl.DateTimeFormat('ja-JP', {
+    timeZone: 'Asia/Tokyo', year: 'numeric', month: 'numeric', day: 'numeric',
+    hour: '2-digit', minute: '2-digit', hour12: false
+  }).format(parsed) + ' JST';
+}
+
+export function formatDate(value) {
+  if (!value) return '-';
+  const parsed = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime())) return String(value);
+  return new Intl.DateTimeFormat('ja-JP', {
+    timeZone: 'UTC', year: 'numeric', month: 'numeric', day: 'numeric'
+  }).format(parsed);
 }
 
 export function format(value, suffix = '') {
@@ -174,7 +194,9 @@ export function setQuickFilter(name) {
   state.quickFilter = name === 'reset' ? '' : name;
   state.visibleLimit = 40;
   document.querySelectorAll('[data-quick-filter]').forEach(button => {
-    button.classList.toggle('active', button.dataset.quickFilter === state.quickFilter);
+    const active = button.dataset.quickFilter === state.quickFilter;
+    button.classList.toggle('active', active);
+    if (button.dataset.quickFilter !== 'reset') button.setAttribute('aria-pressed', String(active));
   });
 }
 

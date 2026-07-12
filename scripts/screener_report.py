@@ -37,12 +37,21 @@ def market_summary(universe: list[dict[str, str]], built: list[dict[str, Any]], 
     for item in selected:
         ranks[item.get("rank") or "D"] += 1
         setups[item.get("setupType") or "watch_only"] += 1
+    downloaded = [item for item in built if (item.get("dataQuality") or {}).get("status") != "missing"]
+    as_of_dates = sorted({
+        str((item.get("dataQuality") or {}).get("asOf"))
+        for item in downloaded
+        if (item.get("dataQuality") or {}).get("asOf")
+    })
+    missing_symbols = [str(item.get("symbol")) for item in built if (item.get("dataQuality") or {}).get("status") == "missing"]
     return {
         "universeRows": len(universe), "builtRows": len(built), "selectedRows": len(selected),
+        "downloadedRows": len(downloaded), "missingRows": len(missing_symbols), "missingSymbols": missing_symbols[:20],
+        "asOf": as_of_dates[-1] if as_of_dates else None,
         "sRank": ranks["S"], "aRank": ranks["A"], "bRank": ranks["B"],
         "averageScore": rounded(np.mean([finite(item.get("score")) or 0 for item in selected]), 1) if selected else 0,
         "fullHistoryRows": sum(1 for item in selected if (item.get("dataQuality") or {}).get("status") == "full"),
-        "coveragePct": rounded(len(built) / len(universe) * 100, 1) if universe else 0,
+        "coveragePct": rounded(len(downloaded) / len(universe) * 100, 1) if universe else 0,
         "setupCounts": dict(setups),
     }
 
