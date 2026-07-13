@@ -1,5 +1,6 @@
 export const state = {
   report: { candidates: [], themes: [], tracking: [], summary: {}, marketSummary: {} },
+  activeMarket: 'all',
   sectorMarket: 'all',
   expandedSector: '',
   visibleLimit: 40,
@@ -59,6 +60,14 @@ export function money(value) {
 
 export function marketLabel(market) {
   return market === 'JP' ? '日本株' : market === 'US' ? '米国株' : market || '-';
+}
+
+export function activeMarketLabel() {
+  return state.activeMarket === 'JP' ? '日本株' : state.activeMarket === 'US' ? '米国株' : '日米';
+}
+
+export function inActiveMarket(item) {
+  return state.activeMarket === 'all' || item?.market === state.activeMarket;
 }
 
 export function setupLabel(type) {

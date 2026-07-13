@@ -2,88 +2,149 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#08111f" />
   <title>SEPA/VCP 1000銘柄スクリーナー</title>
-  <meta name="description" content="TOPIX500・S&P500を中心に約1000銘柄を毎日分析する、テクニカルSEPA/VCP・セクターRSダッシュボード" />
-  <link rel="stylesheet" href="dashboard.css?v=20260711-v4" />
+  <meta name="description" content="TOPIX500・S&amp;P500を中心に約1000銘柄を毎日分析する、テクニカルSEPA/VCP・セクターRSダッシュボード" />
+  <link rel="stylesheet" href="dashboard.css?v=20260714-v5" />
 </head>
-<body>
+<body data-active-page="overview">
   <header class="app-header">
     <div class="brand-row">
-      <div><p class="eyebrow">Technical SEPA / VCP v4</p><h1>1000銘柄スクリーナー</h1></div>
-      <button id="reloadReport" class="primary-button" type="button">更新</button>
+      <div>
+        <p class="eyebrow">Technical SEPA / VCP v4</p>
+        <h1>1000銘柄スクリーナー</h1>
+      </div>
+      <button id="reloadReport" class="primary-button reload-button" type="button" aria-label="最新レポートに更新">更新</button>
     </div>
-    <p class="lead">TOPIX500・S&P500を別々に評価し、RS・トレンドテンプレート・VCP・出来高・流動性から実行候補を絞ります。</p>
-    <nav class="quick-nav" aria-label="主要セクション">
-      <a href="#command-center">概況</a><a href="#action-board">実行候補</a><a href="#sector-strength">セクターRS</a><a href="#candidates">全候補</a><a href="#tracking">事後検証</a><a href="#notes">メモ</a>
-    </nav>
+    <p class="lead">TOPIX500・S&amp;P500を別々に評価し、RS・トレンドテンプレート・VCP・出来高・流動性から実行候補を絞ります。</p>
+
+    <div class="app-control-row">
+      <div class="market-control">
+        <span class="control-label">表示市場</span>
+        <div id="globalMarketSwitch" class="market-switch" role="group" aria-label="表示市場を切り替え">
+          <button class="market-switch-button active" type="button" data-market-switch="all" aria-pressed="true">日米</button>
+          <button class="market-switch-button" type="button" data-market-switch="JP" aria-pressed="false">日本株</button>
+          <button class="market-switch-button" type="button" data-market-switch="US" aria-pressed="false">米国株</button>
+        </div>
+      </div>
+      <div class="page-glance" aria-live="polite">
+        <div><strong id="activePageLabel">概況</strong><span id="pagePosition">1 / 5</span></div>
+        <div id="pageProgress" class="page-progress" aria-hidden="true">
+          <i class="active" data-page-dot="overview"></i><i data-page-dot="candidates"></i><i data-page-dot="sectors"></i><i data-page-dot="plan"></i><i data-page-dot="review"></i>
+        </div>
+        <small>左右にスワイプ</small>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <section id="command-center" class="panel command-panel">
-      <div class="section-heading"><div><span>Command Center</span><h2>今日の概況</h2></div><div id="freshnessBadge" class="freshness-badge">読込中</div></div>
-      <div id="reportStatus" class="status-line">レポートを読み込み中...</div>
-      <div id="coverageBanner" class="coverage-banner"></div>
-      <div id="summaryCards" class="summary-grid"></div>
-      <div id="marketSummary" class="market-summary"></div>
-      <details class="methodology-note"><summary>このスコアの見方・限界</summary><div id="methodologyText"></div></details>
-    </section>
+  <main class="page-viewport" aria-label="スクリーナーダッシュボード">
+    <div id="pageRail" class="page-rail">
+      <section id="page-overview" class="app-page active" data-page="overview" aria-label="概況">
+        <div class="page-content">
+          <section id="command-center" class="panel command-panel">
+            <div class="section-heading"><div><span>Command Center</span><h2>今日の概況</h2></div><div id="freshnessBadge" class="freshness-badge">読込中</div></div>
+            <div id="reportStatus" class="status-line">レポートを読み込み中...</div>
+            <div id="coverageBanner" class="coverage-banner"></div>
+            <div id="summaryCards" class="summary-grid"></div>
+            <div id="marketSummary" class="market-summary"></div>
+            <details class="methodology-note"><summary>このスコアの見方・限界</summary><div id="methodologyText"></div></details>
+          </section>
 
-    <section id="action-board" class="panel">
-      <div class="section-heading"><div><span>Action Board</span><h2>今日見る順番</h2></div></div>
-      <div id="actionBoard" class="action-board"></div>
-    </section>
+          <section id="action-board" class="panel">
+            <div class="section-heading"><div><span>Action Board</span><h2>今日見る順番</h2></div><span id="actionMarketLabel" class="context-chip">日米</span></div>
+            <div id="actionBoard" class="action-board"></div>
+          </section>
+        </div>
+      </section>
 
-    <section id="sector-strength" class="panel">
-      <div class="section-heading"><div><span>Sector Relative Strength</span><h2>セクターRS</h2></div><span class="help-text">同一市場内で比較</span></div>
-      <div class="tab-bar" role="tablist" aria-label="市場切替">
-        <button class="tab-button active" type="button" role="tab" aria-selected="true" data-sector-market="all">日米</button><button class="tab-button" type="button" role="tab" aria-selected="false" data-sector-market="JP">日本株</button><button class="tab-button" type="button" role="tab" aria-selected="false" data-sector-market="US">米国株</button>
-      </div>
-      <div class="toolbar sector-toolbar">
-        <label>並び替え<select id="sectorSortSelect"><option value="rs">RS順</option><option value="change5d">5日改善順</option><option value="breadth">50日線上比率順</option><option value="ret60">60日上昇順</option><option value="turnover">売買代金順</option></select></label>
-        <label>信頼度<select id="sectorConfidenceFilter"><option value="all">すべて</option><option value="high">高</option><option value="medium">中以上</option></select></label>
-      </div>
-      <div id="sectorLeadership" class="leadership-strip"></div>
-      <div id="sectorGrid" class="sector-grid"></div>
-      <details class="collapse-panel"><summary>全セクター表を開く</summary><div id="sectorTable" class="table-wrap"></div></details>
-    </section>
+      <section id="page-candidates" class="app-page" data-page="candidates" aria-label="候補銘柄">
+        <div class="page-content">
+          <section id="candidates" class="panel">
+            <div class="section-heading"><div><span>Candidate Finder</span><h2>候補を絞り込む</h2></div><span id="resultCount" class="result-count"></span></div>
+            <div class="quick-filter-row" aria-label="クイックフィルター">
+              <button type="button" data-quick-filter="actionable">実行候補</button><button type="button" data-quick-filter="nearPivot">ピボット5%以内</button><button type="button" data-quick-filter="highRs">RS 80以上</button><button type="button" data-quick-filter="pullback">押し目</button><button type="button" data-quick-filter="preferred">重点テーマ</button><button type="button" data-quick-filter="reset" class="ghost-button">解除</button>
+            </div>
+            <div class="toolbar advanced-toolbar">
+              <label>検索<input id="searchInput" type="search" placeholder="銘柄名・コード・セクター・テーマ" /></label>
+              <label>市場<select id="marketFilter"><option value="all">日米</option><option value="JP">日本株</option><option value="US">米国株</option></select></label>
+              <label>ランク<select id="rankFilter"><option value="SA">S/A</option><option value="SAB">S/A/B</option><option value="S">Sのみ</option><option value="all">全ランク</option></select></label>
+              <label>セットアップ<select id="setupFilter"><option value="all">すべて</option><option value="ready">実行候補</option><option value="vcp_ready">VCP</option><option value="breakout_ready">ブレイク</option><option value="pullback_ready">押し目</option><option value="trend_watch">トレンド監視</option><option value="extended">買い場超過</option></select></label>
+              <label>最低RS<select id="rsFilter"><option value="0">指定なし</option><option value="70">70</option><option value="80">80</option><option value="90">90</option></select></label>
+              <label>最大ATR<select id="atrFilter"><option value="999">指定なし</option><option value="8">8%</option><option value="6">6%</option><option value="4">4%</option></select></label>
+              <label>並び替え<select id="sortSelect"><option value="score">総合スコア</option><option value="rs">RS</option><option value="vcp">VCP</option><option value="pivot">ピボット近さ</option><option value="turnover">売買代金</option><option value="atr">低ATR</option></select></label>
+            </div>
+            <div id="candidateList" class="candidate-list"></div>
+            <div class="load-more-row"><button id="loadMore" type="button">さらに表示</button></div>
+          </section>
+        </div>
+      </section>
 
-    <section id="candidates" class="panel">
-      <div class="section-heading"><div><span>Candidate Finder</span><h2>候補を絞り込む</h2></div><span id="resultCount" class="result-count"></span></div>
-      <div class="quick-filter-row" aria-label="クイックフィルター">
-        <button type="button" data-quick-filter="actionable">実行候補</button><button type="button" data-quick-filter="nearPivot">ピボット5%以内</button><button type="button" data-quick-filter="highRs">RS 80以上</button><button type="button" data-quick-filter="pullback">押し目</button><button type="button" data-quick-filter="preferred">重点テーマ</button><button type="button" data-quick-filter="reset" class="ghost-button">解除</button>
-      </div>
-      <div class="toolbar advanced-toolbar">
-        <label>検索<input id="searchInput" type="search" placeholder="銘柄名・コード・セクター・テーマ" /></label>
-        <label>市場<select id="marketFilter"><option value="all">日米</option><option value="JP">日本株</option><option value="US">米国株</option></select></label>
-        <label>ランク<select id="rankFilter"><option value="SA">S/A</option><option value="SAB">S/A/B</option><option value="S">Sのみ</option><option value="all">全ランク</option></select></label>
-        <label>セットアップ<select id="setupFilter"><option value="all">すべて</option><option value="ready">実行候補</option><option value="vcp_ready">VCP</option><option value="breakout_ready">ブレイク</option><option value="pullback_ready">押し目</option><option value="trend_watch">トレンド監視</option><option value="extended">買い場超過</option></select></label>
-        <label>最低RS<select id="rsFilter"><option value="0">指定なし</option><option value="70">70</option><option value="80">80</option><option value="90">90</option></select></label>
-        <label>最大ATR<select id="atrFilter"><option value="999">指定なし</option><option value="8">8%</option><option value="6">6%</option><option value="4">4%</option></select></label>
-        <label>並び替え<select id="sortSelect"><option value="score">総合スコア</option><option value="rs">RS</option><option value="vcp">VCP</option><option value="pivot">ピボット近さ</option><option value="turnover">売買代金</option><option value="atr">低ATR</option></select></label>
-      </div>
-      <div id="candidateList" class="candidate-list"></div>
-      <div class="load-more-row"><button id="loadMore" type="button">さらに表示</button></div>
-    </section>
+      <section id="page-sectors" class="app-page" data-page="sectors" aria-label="セクターRS">
+        <div class="page-content">
+          <section id="sector-strength" class="panel">
+            <div class="section-heading"><div><span>Sector Relative Strength</span><h2>セクターRS</h2></div><span class="help-text">同一市場内で比較</span></div>
+            <div class="tab-bar" role="tablist" aria-label="市場切替">
+              <button class="tab-button active" type="button" role="tab" aria-selected="true" data-sector-market="all">日米</button><button class="tab-button" type="button" role="tab" aria-selected="false" data-sector-market="JP">日本株</button><button class="tab-button" type="button" role="tab" aria-selected="false" data-sector-market="US">米国株</button>
+            </div>
+            <div class="toolbar sector-toolbar">
+              <label>並び替え<select id="sectorSortSelect"><option value="rs">RS順</option><option value="change5d">5日改善順</option><option value="breadth">50日線上比率順</option><option value="ret60">60日上昇順</option><option value="turnover">売買代金順</option></select></label>
+              <label>信頼度<select id="sectorConfidenceFilter"><option value="all">すべて</option><option value="high">高</option><option value="medium">中以上</option></select></label>
+            </div>
+            <div id="sectorLeadership" class="leadership-strip"></div>
+            <div id="sectorGrid" class="sector-grid"></div>
+            <details class="collapse-panel"><summary>全セクター表を開く</summary><div id="sectorTable" class="table-wrap"></div></details>
+          </section>
+        </div>
+      </section>
 
-    <details id="risk-plan" class="panel collapse-panel"><summary>売買計画テーブル</summary><div id="riskTable" class="table-wrap"></div></details>
-    <details class="panel collapse-panel"><summary>テーマ別ランキング</summary><div id="themeGrid" class="theme-grid"></div></details>
+      <section id="page-plan" class="app-page" data-page="plan" aria-label="売買計画">
+        <div class="page-content">
+          <details id="risk-plan" class="panel collapse-panel" open><summary>売買計画テーブル</summary><div id="riskTable" class="table-wrap"></div></details>
+          <details id="theme-rankings" class="panel collapse-panel" open><summary>テーマ別ランキング</summary><div id="themeGrid" class="theme-grid"></div></details>
+        </div>
+      </section>
 
-    <section id="tracking" class="panel">
-      <div class="section-heading"><div><span>Post Detection Review</span><h2>検出後の成績</h2></div></div>
-      <div id="trackingSummary" class="summary-grid tracking-summary"></div><div id="trackingBasis" class="tracking-basis"></div><div id="trackingList" class="tracking-list"></div>
-    </section>
+      <section id="page-review" class="app-page" data-page="review" aria-label="事後検証とメモ">
+        <div class="page-content">
+          <section id="tracking" class="panel">
+            <div class="section-heading"><div><span>Post Detection Review</span><h2>検出後の成績</h2></div></div>
+            <div id="trackingSummary" class="summary-grid tracking-summary"></div><div id="trackingBasis" class="tracking-basis"></div><div id="trackingList" class="tracking-list"></div>
+          </section>
 
-    <section id="notes" class="panel notes-panel">
-      <div class="section-heading"><div><span>Manual Notes</span><h2>今日の判断メモ</h2></div></div>
-      <textarea id="dailyNote" placeholder="地合い、強いセクター、見送る理由、エントリー条件、利確・損切りの判断を記録"></textarea>
-      <div class="note-actions"><button id="saveNote" type="button">保存</button><button id="clearNote" type="button" class="ghost-button">クリア</button></div>
-    </section>
+          <section id="notes" class="panel notes-panel">
+            <div class="section-heading"><div><span>Manual Notes</span><h2>今日の判断メモ</h2></div></div>
+            <textarea id="dailyNote" placeholder="地合い、強いセクター、見送る理由、エントリー条件、利確・損切りの判断を記録"></textarea>
+            <div class="note-actions"><button id="saveNote" type="button">保存</button><button id="clearNote" type="button" class="ghost-button">クリア</button></div>
+          </section>
+
+          <footer class="footer"><p>テクニカル分析支援ツールです。決算・EPS・売上成長率・材料は未評価です。売買前に企業IR、TDnet、EDINET、証券会社画面を確認してください。</p></footer>
+        </div>
+      </section>
+    </div>
   </main>
 
-  <footer class="footer"><p>テクニカル分析支援ツールです。決算・EPS・売上成長率・材料は未評価です。売買前に企業IR、TDnet、EDINET、証券会社画面を確認してください。</p></footer>
-  <script type="module" src="dashboard.js?v=20260711-v4"></script>
+  <nav class="bottom-nav" aria-label="ページ切替">
+    <div class="bottom-nav-inner">
+      <button class="page-nav-button active" type="button" data-page-target="overview" aria-current="page" aria-controls="page-overview">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z" /></svg><span>概況</span>
+      </button>
+      <button class="page-nav-button" type="button" data-page-target="candidates" aria-controls="page-candidates">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h10" /></svg><span>候補</span>
+      </button>
+      <button class="page-nav-button" type="button" data-page-target="sectors" aria-controls="page-sectors">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 18 5-6 4 3 7-9M16 6h4v4" /></svg><span>セクター</span>
+      </button>
+      <button class="page-nav-button" type="button" data-page-target="plan" aria-controls="page-plan">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4" /></svg><span>売買</span>
+      </button>
+      <button class="page-nav-button" type="button" data-page-target="review" aria-controls="page-review">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v14H5zM8 15l3-3 2 2 3-5" /></svg><span>記録</span>
+      </button>
+    </div>
+  </nav>
+
+  <script type="module" src="dashboard.js?v=20260714-v5"></script>
   <script src="dashboard-external.js?v=20260705-external"></script>
 </body>
 </html>
