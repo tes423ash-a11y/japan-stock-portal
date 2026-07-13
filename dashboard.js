@@ -1,8 +1,8 @@
-import { state, $, formatDate, formatTimestamp, setText, setHtml, setQuickFilter } from './dashboard-utils.js';
-import { renderSummary, renderCoverage, renderMarketSummary, renderMethodology, renderActionBoard, renderSectors } from './dashboard-sectors.js';
-import { renderCandidates, renderRiskTable, renderThemes } from './dashboard-candidate-list.js';
-import { renderTracking, focusSymbol, filterSector } from './dashboard-tracking.js';
-import { setupPageNavigation } from './dashboard-navigation.js';
+import { state, $, formatDate, formatTimestamp, setText, setHtml, setQuickFilter } from './dashboard-utils.js?v=20260714-v5-1';
+import { renderSummary, renderCoverage, renderMarketSummary, renderMethodology, renderActionBoard, renderSectors } from './dashboard-sectors.js?v=20260714-v5-1';
+import { renderCandidates, renderRiskTable, renderThemes } from './dashboard-candidate-list.js?v=20260714-v5-1';
+import { renderTracking, focusSymbol, filterSector } from './dashboard-tracking.js?v=20260714-v5-1';
+import { setupPageNavigation } from './dashboard-navigation.js?v=20260714-v5-1';
 
 const MARKET_STORAGE_KEY = 'vcp-sepa-active-market-v1';
 const VALID_MARKETS = new Set(['all', 'JP', 'US']);

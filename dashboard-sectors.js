@@ -2,7 +2,7 @@ import {
   state, READY_SETUPS, valueOf, escapeHtml, number, format, money, marketLabel, activeMarketLabel, inActiveMarket, setupLabel,
   rankClass, phaseLabel, confidenceLabel, setHtml, scoreTone, changeClass,
   changeText, freshnessInfo, sparkline, formatDate
-} from './dashboard-utils.js';
+} from './dashboard-utils.js?v=20260714-v5-1';
 
 export function renderSummary() {
   const candidates = (state.report.candidates || []).filter(inActiveMarket);
