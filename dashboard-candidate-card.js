@@ -1,4 +1,4 @@
-import { escapeHtml, number, format, money, marketLabel, setupLabel, rankClass } from './dashboard-utils.js';
+import { escapeHtml, number, format, money, marketLabel, setupLabel, rankClass } from './dashboard-utils.js?v=20260714-v5-1';
 
 function scoreBreakdown(item) {
   const scores = item.componentScores || {};

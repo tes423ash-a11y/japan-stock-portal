@@ -1,5 +1,5 @@
-import { state, $, READY_SETUPS, escapeHtml, number, format, marketLabel, inActiveMarket, setupLabel, setText, setHtml, filteredCandidates } from './dashboard-utils.js';
-import { candidateCard } from './dashboard-candidate-card.js';
+import { state, $, READY_SETUPS, escapeHtml, number, format, marketLabel, inActiveMarket, setupLabel, setText, setHtml, filteredCandidates } from './dashboard-utils.js?v=20260714-v5-1';
+import { candidateCard } from './dashboard-candidate-card.js?v=20260714-v5-1';
 
 export function renderCandidates() {
   const all = filteredCandidates();

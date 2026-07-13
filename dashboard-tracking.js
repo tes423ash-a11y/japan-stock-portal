@@ -1,5 +1,5 @@
-import { state, $, escapeHtml, format, inActiveMarket, marketLabel, number, setHtml, setQuickFilter } from './dashboard-utils.js';
-import { renderCandidates, renderRiskTable } from './dashboard-candidate-list.js';
+import { state, $, escapeHtml, format, inActiveMarket, marketLabel, number, setHtml, setQuickFilter } from './dashboard-utils.js?v=20260714-v5-1';
+import { renderCandidates, renderRiskTable } from './dashboard-candidate-list.js?v=20260714-v5-1';
 
 export function renderTracking() {
   const allRows = state.report.tracking || [];
