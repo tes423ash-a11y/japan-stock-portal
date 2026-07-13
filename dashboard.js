@@ -2,6 +2,10 @@ import { state, $, formatDate, formatTimestamp, setText, setHtml, setQuickFilter
 import { renderSummary, renderCoverage, renderMarketSummary, renderMethodology, renderActionBoard, renderSectors } from './dashboard-sectors.js';
 import { renderCandidates, renderRiskTable, renderThemes } from './dashboard-candidate-list.js';
 import { renderTracking, focusSymbol, filterSector } from './dashboard-tracking.js';
+import { setupPageNavigation } from './dashboard-navigation.js';
+
+const MARKET_STORAGE_KEY = 'vcp-sepa-active-market-v1';
+const VALID_MARKETS = new Set(['all', 'JP', 'US']);
 
 function renderAll() {
   const report = state.report;
@@ -21,6 +25,47 @@ function renderAll() {
   renderRiskTable();
   renderThemes();
   renderTracking();
+}
+
+function renderMarketDependentViews() {
+  renderCoverage();
+  renderSummary();
+  renderMarketSummary();
+  renderActionBoard();
+  renderSectors();
+  renderCandidates();
+  renderRiskTable();
+  renderThemes();
+  renderTracking();
+}
+
+function syncMarketControls() {
+  document.querySelectorAll('[data-market-switch]').forEach(button => {
+    const active = button.dataset.marketSwitch === state.activeMarket;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  document.querySelectorAll('[data-sector-market]').forEach(button => {
+    const active = button.dataset.sectorMarket === state.activeMarket;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-selected', String(active));
+  });
+  const marketFilter = $('marketFilter');
+  if (marketFilter) marketFilter.value = state.activeMarket;
+}
+
+function setActiveMarket(market, options = {}) {
+  const normalized = VALID_MARKETS.has(market) ? market : 'all';
+  const changed = state.activeMarket !== normalized;
+  state.activeMarket = normalized;
+  state.sectorMarket = normalized;
+  state.expandedSector = '';
+  state.visibleLimit = 40;
+  syncMarketControls();
+  if (options.persist !== false) {
+    try { localStorage.setItem(MARKET_STORAGE_KEY, normalized); } catch {}
+  }
+  if (changed || options.forceRender) renderMarketDependentViews();
 }
 
 async function loadReport() {
@@ -44,7 +89,7 @@ async function loadReport() {
 }
 
 function bindControls() {
-  ['searchInput', 'marketFilter', 'rankFilter', 'setupFilter', 'rsFilter', 'atrFilter', 'sortSelect'].forEach(id => {
+  ['searchInput', 'rankFilter', 'setupFilter', 'rsFilter', 'atrFilter', 'sortSelect'].forEach(id => {
     const element = $(id);
     if (!element) return;
     const handler = () => {
@@ -56,23 +101,16 @@ function bindControls() {
     element.addEventListener('change', handler);
   });
 
+  $('marketFilter')?.addEventListener('change', event => setActiveMarket(event.target.value));
+  document.querySelectorAll('[data-market-switch]').forEach(button => button.addEventListener('click', () => setActiveMarket(button.dataset.marketSwitch || 'all')));
+  document.querySelectorAll('[data-sector-market]').forEach(button => button.addEventListener('click', () => setActiveMarket(button.dataset.sectorMarket || 'all')));
+
   ['sectorSortSelect', 'sectorConfidenceFilter'].forEach(id => $(id)?.addEventListener('change', renderSectors));
   $('reloadReport')?.addEventListener('click', loadReport);
   $('loadMore')?.addEventListener('click', () => {
     state.visibleLimit += 40;
     renderCandidates();
   });
-
-  document.querySelectorAll('[data-sector-market]').forEach(button => button.addEventListener('click', () => {
-    state.sectorMarket = button.dataset.sectorMarket || 'all';
-    state.expandedSector = '';
-    document.querySelectorAll('[data-sector-market]').forEach(item => {
-      const active = item === button;
-      item.classList.toggle('active', active);
-      item.setAttribute('aria-selected', String(active));
-    });
-    renderSectors();
-  }));
 
   document.addEventListener('click', event => {
     const quick = event.target.closest('[data-quick-filter]');
@@ -91,6 +129,7 @@ function bindControls() {
     }
     const filter = event.target.closest('[data-filter-sector]');
     if (filter) {
+      setActiveMarket(filter.dataset.filterMarket || 'all');
       filterSector(filter.dataset.filterSector || '', filter.dataset.filterMarket || 'all');
       return;
     }
@@ -118,7 +157,11 @@ function bindControls() {
 }
 
 function init() {
+  setupPageNavigation();
   bindControls();
+  let savedMarket = 'all';
+  try { savedMarket = localStorage.getItem(MARKET_STORAGE_KEY) || 'all'; } catch {}
+  setActiveMarket(savedMarket, { persist: false });
   loadReport();
 }
 

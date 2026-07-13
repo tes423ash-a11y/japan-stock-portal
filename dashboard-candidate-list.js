@@ -1,10 +1,12 @@
-import { state, $, READY_SETUPS, escapeHtml, number, format, marketLabel, setupLabel, setText, setHtml, filteredCandidates } from './dashboard-utils.js';
+import { state, $, READY_SETUPS, escapeHtml, number, format, marketLabel, inActiveMarket, setupLabel, setText, setHtml, filteredCandidates } from './dashboard-utils.js';
 import { candidateCard } from './dashboard-candidate-card.js';
 
 export function renderCandidates() {
   const all = filteredCandidates();
   const visible = all.slice(0, state.visibleLimit);
-  setText('resultCount', `${all.length}件 / 全${state.report.candidates?.length ?? 0}件`);
+  const marketTotal = (state.report.candidates || []).filter(inActiveMarket).length;
+  const total = state.report.candidates?.length ?? 0;
+  setText('resultCount', state.activeMarket === 'all' ? `${all.length}件 / 全${total}件` : `${all.length}件 / 対象${marketTotal}件`);
   setHtml('candidateList', visible.length ? visible.map(candidateCard).join('') : '<p class="empty">条件に合う候補がありません。</p>');
   const loadMore = $('loadMore');
   if (loadMore) {
@@ -23,7 +25,8 @@ export function renderRiskTable() {
 }
 
 export function renderThemes() {
-  const themes = state.report.themeStrength?.length ? state.report.themeStrength : state.report.themes || [];
+  const allThemes = state.report.themeStrength?.length ? state.report.themeStrength : state.report.themes || [];
+  const themes = state.activeMarket === 'all' ? allThemes : allThemes.filter(theme => !theme.market || theme.market === state.activeMarket);
   setHtml('themeGrid', themes.slice(0, 40).map(theme => {
     const label = theme.name || theme.theme || '未分類';
     const score = theme.rsScore ?? theme.strength ?? 0;

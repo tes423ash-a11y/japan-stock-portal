@@ -1,13 +1,23 @@
 import {
-  state, valueOf, escapeHtml, number, format, money, marketLabel, setupLabel,
+  state, READY_SETUPS, valueOf, escapeHtml, number, format, money, marketLabel, activeMarketLabel, inActiveMarket, setupLabel,
   rankClass, phaseLabel, confidenceLabel, setHtml, scoreTone, changeClass,
   changeText, freshnessInfo, sparkline, formatDate
 } from './dashboard-utils.js';
 
 export function renderSummary() {
-  const summary = state.report.summary || {};
+  const candidates = (state.report.candidates || []).filter(inActiveMarket);
+  const summary = state.activeMarket === 'all' ? state.report.summary || {} : {
+    total: candidates.length,
+    actionable: candidates.filter(item => READY_SETUPS.has(item.setupType) && ['S', 'A', 'B'].includes(item.rank)).length,
+    sRank: candidates.filter(item => item.rank === 'S').length,
+    aRank: candidates.filter(item => item.rank === 'A').length,
+    vcpReady: candidates.filter(item => item.setupType === 'vcp_ready').length,
+    breakoutReady: candidates.filter(item => item.setupType === 'breakout_ready').length,
+    pullbackReady: candidates.filter(item => item.setupType === 'pullback_ready').length,
+    extended: candidates.filter(item => item.setupType === 'extended').length
+  };
   const cards = [
-    ['分析数', summary.total ?? 0, '約1000銘柄'],
+    ['分析数', summary.total ?? 0, state.activeMarket === 'all' ? '約1000銘柄' : `${activeMarketLabel()}の対象`],
     ['実行候補', summary.actionable ?? 0, 'VCP・BO・押し目'],
     ['Sランク', summary.sRank ?? 0, '最優先'],
     ['Aランク', summary.aRank ?? 0, '優先監視'],
@@ -22,7 +32,15 @@ export function renderSummary() {
 }
 
 export function renderCoverage() {
-  const coverage = state.report.coverage || {};
+  const marketRow = state.report.marketSummary?.[state.activeMarket] || {};
+  const coverage = state.activeMarket === 'all' ? state.report.coverage || {} : {
+    usable: marketRow.downloadedRows ?? marketRow.selectedRows ?? 0,
+    requested: marketRow.universeRows ?? marketRow.builtRows ?? marketRow.selectedRows ?? 0,
+    missing: marketRow.missingRows ?? 0,
+    missingSymbols: marketRow.missingSymbols || [],
+    coveragePct: marketRow.coveragePct ?? 0,
+    status: (number(marketRow.coveragePct) ?? 0) >= 95 ? 'good' : (number(marketRow.coveragePct) ?? 0) >= 80 ? 'degraded' : 'poor'
+  };
   const usable = coverage.usable ?? coverage.downloaded ?? 0;
   const percent = number(coverage.coveragePct) ?? 0;
   const status = coverage.status || (percent >= 95 ? 'good' : percent >= 80 ? 'degraded' : 'poor');
@@ -40,8 +58,9 @@ export function renderMarketSummary() {
   const summary = state.report.marketSummary || {};
   setHtml('marketSummary', ['JP', 'US'].map(market => {
     const row = summary[market] || {};
+    const active = state.activeMarket === 'all' || state.activeMarket === market;
     return `
-      <article class="market-card">
+      <article class="market-card ${active ? 'active-market' : 'muted-market'}">
         <div><span>${marketLabel(market)}</span><strong>${row.selectedRows ?? 0}</strong></div>
         <dl>
           <div><dt>基準日</dt><dd>${formatDate(row.asOf)}</dd></div>
@@ -79,7 +98,9 @@ function actionBucket(title, subtitle, rows, tone) {
 }
 
 export function renderActionBoard() {
-  const candidates = state.report.candidates || [];
+  const candidates = (state.report.candidates || []).filter(inActiveMarket);
+  const marketContext = document.getElementById('actionMarketLabel');
+  if (marketContext) marketContext.textContent = activeMarketLabel();
   const byScore = rows => [...rows].sort((a, b) => (number(b.score) ?? 0) - (number(a.score) ?? 0));
   const rows = type => byScore(candidates.filter(item => item.setupType === type && ['S', 'A', 'B'].includes(item.rank)));
   setHtml('actionBoard', [
@@ -92,7 +113,7 @@ export function renderActionBoard() {
 
 function sectorRows() {
   let rows = [...(state.report.sectorStrength || [])];
-  if (state.sectorMarket !== 'all') rows = rows.filter(row => row.market === state.sectorMarket);
+  if (state.activeMarket !== 'all') rows = rows.filter(row => row.market === state.activeMarket);
   const confidence = valueOf('sectorConfidenceFilter') || 'all';
   if (confidence === 'high') rows = rows.filter(row => row.confidence === 'high');
   if (confidence === 'medium') rows = rows.filter(row => ['high', 'medium'].includes(row.confidence));
