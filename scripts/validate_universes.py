@@ -6,12 +6,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 UNIVERSE_DIR = ROOT / "universes"
 REQUIREMENTS = {
+    "jp_tse_all.csv": 3_000,
     "jp_topix500.csv": 450,
+    "us_all_listed.csv": 1_500,
     "us_sp500.csv": 490,
 }
-MIN_COMBINED_PER_MARKET = 500
+MIN_COMBINED_PER_MARKET = {"JP": 3_000, "US": 1_500}
 MIN_METADATA_ROWS = {
+    "jp_tse_all.csv": 3_000,
     "jp_topix500.csv": 450,
+    "us_all_listed.csv": 1_500,
     "us_sp500.csv": 490,
 }
 
@@ -65,10 +69,10 @@ def main() -> None:
         "US": len(us_symbols),
     })
 
-    if len(jp_symbols) < MIN_COMBINED_PER_MARKET:
-        failures.append(f"combined JP universe: {len(jp_symbols)} < {MIN_COMBINED_PER_MARKET}")
-    if len(us_symbols) < MIN_COMBINED_PER_MARKET:
-        failures.append(f"combined US universe: {len(us_symbols)} < {MIN_COMBINED_PER_MARKET}")
+    if len(jp_symbols) < MIN_COMBINED_PER_MARKET["JP"]:
+        failures.append(f"combined JP universe: {len(jp_symbols)} < {MIN_COMBINED_PER_MARKET['JP']}")
+    if len(us_symbols) < MIN_COMBINED_PER_MARKET["US"]:
+        failures.append(f"combined US universe: {len(us_symbols)} < {MIN_COMBINED_PER_MARKET['US']}")
     if failures:
         raise SystemExit("Universe validation failed: " + "; ".join(failures))
 

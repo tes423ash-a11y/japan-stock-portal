@@ -10,6 +10,7 @@ Top-level fields:
 - `candidates`
 - `themes`
 - `tracking`
+- `sharedScreening`
 
 Candidate fields used by the dashboard:
 
@@ -32,3 +33,12 @@ Candidate fields used by the dashboard:
 - `reasons`
 
 Keep this schema stable when adding real data providers.
+
+Shared base feeds:
+
+- `reports/shared/manifest.json`
+- `reports/shared/jp-base.json`
+- `reports/shared/us-base.json`
+- `reports/shared/technical-top.json`
+
+The base feeds contain one compact row for every screened symbol. Price-history download and base-indicator calculation are shared; each consumer may apply a different final strategy ranking without downloading the same market data again.

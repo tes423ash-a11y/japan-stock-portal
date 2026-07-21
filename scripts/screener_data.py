@@ -12,7 +12,18 @@ import yfinance as yf
 
 ROOT = Path(__file__).resolve().parents[1]
 WATCHLISTS = [ROOT / "watchlists" / "jp_candidates.csv", ROOT / "watchlists" / "us_candidates.csv"]
-UNIVERSE_FILES = sorted((ROOT / "universes").glob("*.csv"))
+
+
+def universe_file_priority(path: Path) -> tuple[int, str]:
+    name = path.name.lower()
+    if any(label in name for label in ("liquid", "theme", "extra")):
+        return 0, name
+    if any(label in name for label in ("topix500", "sp500")):
+        return 1, name
+    return 2, name
+
+
+UNIVERSE_FILES = sorted((ROOT / "universes").glob("*.csv"), key=universe_file_priority)
 REPORT_DIR = ROOT / "reports"
 GENERIC_THEMES = {"", "TOPIX500", "S&P500", "Uncategorized", "未分類"}
 PREFERRED_THEME_WORDS = (
@@ -219,6 +230,7 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
         except Exception:
             continue
 
+    missing = [symbol for symbol in symbols if symbol not in histories]
     diagnostics = {
         "provider": "yfinance_bulk", "requested": len(symbols), "downloaded": len(histories),
         "missing": len(symbols) - len(histories), "batchCount": batch_count, "chunkSize": chunk_size,

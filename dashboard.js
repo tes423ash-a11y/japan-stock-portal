@@ -1,8 +1,8 @@
-import { state, $, formatDate, formatTimestamp, setText, setHtml, setQuickFilter } from './dashboard-utils.js?v=20260714-v5-1';
-import { renderSummary, renderCoverage, renderMarketSummary, renderMethodology, renderActionBoard, renderSectors } from './dashboard-sectors.js?v=20260714-v5-1';
-import { renderCandidates, renderRiskTable, renderThemes } from './dashboard-candidate-list.js?v=20260714-v5-1';
-import { renderTracking, focusSymbol, filterSector } from './dashboard-tracking.js?v=20260714-v5-1';
-import { setupPageNavigation } from './dashboard-navigation.js?v=20260714-v5-1';
+import { state, $, formatDate, formatTimestamp, setText, setHtml, setQuickFilter } from './dashboard-utils.js?v=20260722-v6';
+import { renderSummary, renderCoverage, renderMarketSummary, renderMethodology, renderActionBoard, renderSectors } from './dashboard-sectors.js?v=20260722-v6';
+import { renderCandidates, renderRiskTable, renderThemes } from './dashboard-candidate-list.js?v=20260722-v6';
+import { renderTracking, focusSymbol, filterSector } from './dashboard-tracking.js?v=20260722-v6';
+import { setupPageNavigation } from './dashboard-navigation.js?v=20260722-v6';
 
 const MARKET_STORAGE_KEY = 'vcp-sepa-active-market-v1';
 const VALID_MARKETS = new Set(['all', 'JP', 'US']);
@@ -13,7 +13,7 @@ function renderAll() {
   const buildLabel = report.rescoredFromExistingData ? '既存終値データを再採点' : '価格履歴を新規取得';
   setText(
     'reportStatus',
-    `データ基準 日本株 ${formatDate(asOf.JP)} / 米国株 ${formatDate(asOf.US)} ・ 生成 ${formatTimestamp(report.generatedAt)} ・ ${buildLabel} ・ ${report.screeningMode || '-'} ・ Technical SEPA/VCP v${report.schemaVersion || 1}`
+    `全市場走査 日本株 ${(report.inputRowsByMarket || {}).JP ?? '-'} / 米国株 ${(report.inputRowsByMarket || {}).US ?? '-'} ・ 基準日 ${formatDate(asOf.JP)} / ${formatDate(asOf.US)} ・ 生成 ${formatTimestamp(report.generatedAt)} ・ ${buildLabel} ・ Technical SEPA/VCP v${report.schemaVersion || 1}`
   );
   renderCoverage();
   renderSummary();

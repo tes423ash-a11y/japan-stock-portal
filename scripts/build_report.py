@@ -11,18 +11,38 @@ from screener_data import REPORT_DIR, clamp, download_history, env_float, env_in
 from screener_metrics import build_raw_candidate
 from screener_scoring import enrich_market_candidates
 from screener_report import build_themes, market_summary, top_by_metric, usable_coverage, write_markdown
+from shared_feed import write_shared_feeds
+
+
+MODEL = "Technical SEPA/VCP v4"
+
+
+def market_limits() -> tuple[dict[str, int], dict[str, int]]:
+    default_top_n = int(clamp(env_int("SCREENING_TOP_N", 500), 50, 1_000))
+    legacy_maximum = env_int("SCREENING_MAX_SYMBOLS", 8_000)
+    top_n = {
+        "JP": int(clamp(env_int("SCREENING_TOP_N_JP", default_top_n), 50, 1_000)),
+        "US": int(clamp(env_int("SCREENING_TOP_N_US", default_top_n), 50, 1_000)),
+    }
+    maximums = {
+        "JP": int(clamp(env_int("SCREENING_MAX_SYMBOLS_JP", legacy_maximum), top_n["JP"], 5_000)),
+        "US": int(clamp(env_int("SCREENING_MAX_SYMBOLS_US", legacy_maximum), top_n["US"], 8_000)),
+    }
+    return top_n, maximums
 
 
 def main() -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     rows, mode = read_input_rows()
-    top_n_per_market = int(clamp(env_int("SCREENING_TOP_N", 500), 50, 600))
-    max_symbols_per_market = int(clamp(env_int("SCREENING_MAX_SYMBOLS", 550), top_n_per_market, 600))
+    top_n_by_market, max_symbols_by_market = market_limits()
     usd_jpy = env_float("SCREENING_USDJPY", 150.0)
     turnover_metric = "latestTradingValueUsd" if mode == "top_turnover_today" else "avgTradingValue20Usd"
 
     universe_by_market = split_rows_by_market(rows)
-    rows_by_market = {market: items[:max_symbols_per_market] for market, items in universe_by_market.items()}
+    rows_by_market = {
+        market: items[:max_symbols_by_market.get(market, len(items))]
+        for market, items in universe_by_market.items()
+    }
     requested_symbols = [row["symbol"] for market in ["JP", "US"] for row in rows_by_market.get(market, [])]
     histories, provider_diagnostics = download_history(requested_symbols)
 
@@ -33,9 +53,13 @@ def main() -> None:
         built = enrich_market_candidates(raw)
         built_by_market[market] = built
         if mode in {"top_turnover", "top_turnover_today"}:
-            selected_by_market[market] = top_by_metric(built, top_n_per_market, turnover_metric)
+            selected_by_market[market] = top_by_metric(built, top_n_by_market[market], turnover_metric)
         else:
-            selected_by_market[market] = sorted(built, key=lambda item: finite(item.get("score")) or 0, reverse=True)[:top_n_per_market]
+            selected_by_market[market] = sorted(
+                built,
+                key=lambda item: (finite(item.get("score")) or 0, finite((item.get("metrics") or {}).get("rsRating")) or 0),
+                reverse=True,
+            )[:top_n_by_market[market]]
 
     selected = selected_by_market["JP"] + selected_by_market["US"]
     candidates = sorted(selected, key=lambda item: (finite(item.get("score")) or 0, finite((item.get("metrics") or {}).get("rsRating")) or 0), reverse=True)
@@ -51,20 +75,33 @@ def main() -> None:
         market: market_summary(rows_by_market.get(market, []), built_by_market.get(market, []), selected_by_market.get(market, []))
         for market in ["JP", "US"]
     }
+    generated_at = datetime.now(timezone.utc).isoformat()
+    shared_manifest = write_shared_feeds(
+        REPORT_DIR,
+        generated_at,
+        MODEL,
+        built_by_market,
+        selected_by_market,
+        market_summaries,
+        int(clamp(env_int("SCREENING_SHARED_TOP_N", 120), 20, 500)),
+    )
     report: dict[str, Any] = {
         "schemaVersion": 4,
         "rescoredFromExistingData": False,
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "generatedAt": generated_at,
         "screeningMode": mode,
-        "screeningTopNPerMarket": top_n_per_market,
-        "screeningMaxSymbolsPerMarket": max_symbols_per_market,
+        "screeningTopNPerMarket": top_n_by_market["JP"] if len(set(top_n_by_market.values())) == 1 else None,
+        "screeningTopNByMarket": top_n_by_market,
+        "screeningMaxSymbolsPerMarket": max(max_symbols_by_market.values()),
+        "screeningMaxSymbolsByMarket": max_symbols_by_market,
         "universeRows": len(rows),
         "universeRowsByMarket": {market: len(items) for market, items in universe_by_market.items()},
         "inputRows": requested,
         "inputRowsByMarket": {market: len(items) for market, items in rows_by_market.items()},
         "usdJpyForTurnover": usd_jpy,
         "turnoverSortMetric": turnover_metric,
-        "universe": "TOPIX500+S&P500+theme overlays",
+        "universe": "TSE domestic common stocks + US major-market eligible common stocks + priority theme overlays",
+        "sharedScreening": shared_manifest,
         "providerStatus": provider_diagnostics,
         "jquantsStatus": {
             "enabled": False,
@@ -73,7 +110,7 @@ def main() -> None:
         },
         "coverage": coverage,
         "methodology": {
-            "model": "Technical SEPA/VCP v4",
+            "model": MODEL,
             "scoreComponents": {"trend": 25, "relativeStrength": 20, "vcp": 25, "volume": 10, "risk": 10, "liquidity": 10},
             "themeInScore": False,
             "limitations": [

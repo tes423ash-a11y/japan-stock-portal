@@ -2,7 +2,7 @@ import {
   state, READY_SETUPS, valueOf, escapeHtml, number, format, money, marketLabel, activeMarketLabel, inActiveMarket, setupLabel,
   rankClass, phaseLabel, confidenceLabel, setHtml, scoreTone, changeClass,
   changeText, freshnessInfo, sparkline, formatDate
-} from './dashboard-utils.js?v=20260714-v5-1';
+} from './dashboard-utils.js?v=20260722-v6';
 
 export function renderSummary() {
   const candidates = (state.report.candidates || []).filter(inActiveMarket);
@@ -17,7 +17,7 @@ export function renderSummary() {
     extended: candidates.filter(item => item.setupType === 'extended').length
   };
   const cards = [
-    ['分析数', summary.total ?? 0, state.activeMarket === 'all' ? '約1000銘柄' : `${activeMarketLabel()}の対象`],
+    ['公開候補', summary.total ?? 0, state.activeMarket === 'all' ? '全母集団から上位1000' : `${activeMarketLabel()}の上位`],
     ['実行候補', summary.actionable ?? 0, 'VCP・BO・押し目'],
     ['Sランク', summary.sRank ?? 0, '最優先'],
     ['Aランク', summary.aRank ?? 0, '優先監視'],
@@ -46,7 +46,7 @@ export function renderCoverage() {
   const status = coverage.status || (percent >= 95 ? 'good' : percent >= 80 ? 'degraded' : 'poor');
   const missingSymbols = (coverage.missingSymbols || []).slice(0, 8);
   setHtml('coverageBanner', `
-    <div class="coverage-copy"><strong>採点可能 ${escapeHtml(usable)} / ${escapeHtml(coverage.requested ?? 0)}</strong><span>${format(percent, '%')} ・ 採点不可 ${escapeHtml(coverage.missing ?? 0)}銘柄</span></div>
+    <div class="coverage-copy"><strong>全市場走査 ${escapeHtml(usable)} / ${escapeHtml(coverage.requested ?? 0)}</strong><span>${format(percent, '%')} ・ 採点不可 ${escapeHtml(coverage.missing ?? 0)}銘柄</span></div>
     <div class="coverage-meter" aria-label="採点可能データ率"><i class="${escapeHtml(status)}" style="width:${Math.max(0, Math.min(100, percent))}%"></i></div>
     ${missingSymbols.length ? `<small class="coverage-missing">採点不可: ${missingSymbols.map(escapeHtml).join(' / ')}</small>` : ''}
   `);
@@ -61,9 +61,10 @@ export function renderMarketSummary() {
     const active = state.activeMarket === 'all' || state.activeMarket === market;
     return `
       <article class="market-card ${active ? 'active-market' : 'muted-market'}">
-        <div><span>${marketLabel(market)}</span><strong>${row.selectedRows ?? 0}</strong></div>
+        <div><span>${marketLabel(market)} 上位公開</span><strong>${row.selectedRows ?? 0}</strong></div>
         <dl>
           <div><dt>基準日</dt><dd>${formatDate(row.asOf)}</dd></div>
+          <div><dt>母集団走査</dt><dd>${row.downloadedRows ?? row.builtRows ?? 0} / ${row.universeRows ?? 0}</dd></div>
           <div><dt>採点可能率</dt><dd>${format(row.coveragePct, '%')}</dd></div>
           <div><dt>S/A/B</dt><dd>${row.sRank ?? 0}/${row.aRank ?? 0}/${row.bRank ?? 0}</dd></div>
           <div><dt>履歴十分</dt><dd>${row.fullHistoryRows ?? 0}</dd></div>
