@@ -1,4 +1,4 @@
-# VCP/SEPA Daily Dashboard
+# Full-Market VCP/SEPA Daily Dashboard
 
 スマホで見るための投資ダッシュボードです。
 
@@ -66,7 +66,9 @@ screening_usdjpy: 150
 
 ### all_universe
 
-通常運用です。JPXのTOPIXウェイト上位500銘柄とS&P 500にテーマ補完銘柄を加えた母集団を読み、日米それぞれ500銘柄、合計1000銘柄を公開レポートに残します。公開前に母集団数・会社名・業種・価格取得率を検証します。
+通常運用です。東証の内国普通株と、米国主要市場の流動性基準を通過した普通株をまとめて一次走査します。その後、同一市場内RSとSEPA/VCPスコアで日米それぞれ上位500銘柄、合計1000銘柄だけを画面へ公開します。
+
+つまり「1000銘柄しか見ない」のではなく、全母集団を走査してから上位1000銘柄へ絞る構成です。画面の軽さを保ったまま、母集団からの取りこぼしを減らします。
 
 ## CSV形式
 
@@ -88,12 +90,24 @@ MU,Micron Technology,US,HBM・メモリ,AIメモリ主役候補
 ## データソース
 
 - 日本株の会社名・業種: JPX「東証上場銘柄一覧」
-- 日本株の母集団: JPX「TOPIX Component Stocks Weight」上位500
-- 米国株の母集団・GICS業種: S&P 500構成銘柄表
+- 日本株の母集団: JPX「東証上場銘柄一覧」のプライム・スタンダード・グロース内国株式
+- 米国株の母集団: Nasdaq Stock Screenerの主要市場銘柄から、普通株・最低流動性条件を通過したもの
+- 日米の公式大型株メタデータ補完: TOPIX構成銘柄・S&P 500構成銘柄
 - 日米の価格・出来高: yfinanceによる日足一括取得
 
-1000銘柄版では日米を同じ取得方式にそろえるため、J-Quants認証情報は現在使用しません。J-Quants用Secretsの追加は不要です。
+全市場走査では日米を同じ取得方式にそろえるため、J-Quants認証情報は現在使用しません。J-Quants用Secretsの追加は不要です。
 画面の「採点可能率」は、価格通信が返っただけでなく、テクニカル指標を構築できた銘柄だけを数えます。
+
+## 共通スクリーニングデータ
+
+毎回の全市場走査結果は、ほかの投資画面から再利用できる共通データとして分離して出力します。
+
+- `reports/shared/manifest.json`: 基準日、走査数、利用先ファイル
+- `reports/shared/jp-base.json`: 日本株の全走査済み基本指標
+- `reports/shared/us-base.json`: 米国株の全走査済み基本指標
+- `reports/shared/technical-top.json`: モバイル画面向け軽量上位候補
+
+価格履歴の取得と移動平均・RS・出来高・ATR等の基本計算はここで一度だけ実行し、各サイトは目的別の最終判定だけを行います。別々のサイトが同じ価格データを何度も取得しないため、更新時刻のずれと取得制限を抑えられます。
 
 ## レポート生成
 
@@ -114,6 +128,7 @@ python scripts/update_tracking.py
 
 - `reports/latest.json`
 - `reports/latest.md`
+- `reports/shared/*.json`
 
 価格取得元が一時的にレート制限されている間に、既存の終値データへ新しい採点・会社名・業種ロジックだけを安全に適用する場合は、生成日時を更新せずに次を実行します。
 
@@ -129,7 +144,8 @@ python scripts/rescore_existing_report.py
 
 - `screening_mode`: `watchlists` / `top_turnover_today` / `top_turnover` / `all_universe`
 - `screening_top_n`: 各市場ごとに公開する件数。標準500。
-- `screening_max_symbols`: 各市場ごとに取得する最大銘柄数。標準550。
+- `screening_max_symbols_jp`: 日本株で取得する最大銘柄数。標準5000。
+- `screening_max_symbols_us`: 米国株で取得する最大銘柄数。標準8000。
 - `screening_usdjpy`: 日本株の売買代金をUSD換算するための仮レート。
 
 ## 現在のスコアリング

@@ -17,9 +17,17 @@ on:
         required: false
         default: "500"
       screening_max_symbols:
-        description: "Max symbols fetched per market before selection."
+        description: "Legacy fallback maximum per market."
         required: false
-        default: "550"
+        default: "8000"
+      screening_max_symbols_jp:
+        description: "Maximum Japanese symbols screened before the best 500 are published."
+        required: false
+        default: "5000"
+      screening_max_symbols_us:
+        description: "Maximum U.S. symbols screened before the best 500 are published."
+        required: false
+        default: "8000"
       screening_usdjpy:
         description: "USDJPY used only for comparable turnover figures"
         required: false
@@ -38,15 +46,18 @@ permissions:
 jobs:
   build-report:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     env:
       SCREENING_MODE: ${{ github.event.inputs.screening_mode || 'all_universe' }}
       SCREENING_TOP_N: ${{ github.event.inputs.screening_top_n || '500' }}
-      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '550' }}
+      SCREENING_MAX_SYMBOLS: ${{ github.event.inputs.screening_max_symbols || '8000' }}
+      SCREENING_MAX_SYMBOLS_JP: ${{ github.event.inputs.screening_max_symbols_jp || '5000' }}
+      SCREENING_MAX_SYMBOLS_US: ${{ github.event.inputs.screening_max_symbols_us || '8000' }}
+      SCREENING_SHARED_TOP_N: "120"
       SCREENING_USDJPY: ${{ github.event.inputs.screening_usdjpy || '150' }}
       YF_CHUNK_SIZE: "80"
       YF_RETRIES: "2"
-      YF_FALLBACK_LIMIT: "40"
+      YF_FALLBACK_LIMIT: "100"
       YF_PERIOD: "18mo"
       SP500_SOURCE_URL: https://en.wikipedia.org/wiki/List_of_S%26P_500_companies
       TOPIX_INDEX_PAGE_URL: https://www.jpx.co.jp/english/markets/indices/topix/index.html
@@ -71,12 +82,13 @@ jobs:
           python -m unittest discover -s tests -p "test_*.py"
           node --test tests/dashboard-utils.test.mjs
 
-      - name: Refresh 1000-symbol universe
+      - name: Refresh full listed-market universe
         run: |
+          python scripts/update_all_universes.py
           python scripts/update_sp500_universe.py
           python scripts/update_topix500_universe.py
 
-      - name: Validate 1000-symbol universe
+      - name: Validate full listed-market universe
         run: python scripts/validate_universes.py
 
       - name: Build technical SEPA VCP report
@@ -105,6 +117,10 @@ jobs:
           usable = int(coverage.get('usable') or coverage.get('downloaded') or 0)
           coverage_pct = float(coverage.get('coveragePct') or 0)
           report_size = Path('reports/latest.json').stat().st_size
+          shared_sizes = {
+              path.name: path.stat().st_size
+              for path in Path('reports/shared').glob('*.json')
+          }
 
           print('schemaVersion:', report.get('schemaVersion'))
           print('inputRowsByMarket:', json.dumps(input_by_market, ensure_ascii=False))
@@ -114,16 +130,18 @@ jobs:
           print('sectorRows:', len(report.get('sectorStrength', [])))
           print('trackingSummary:', json.dumps(report.get('trackingSummary', {}), ensure_ascii=False))
           print('reportBytes:', report_size)
+          print('sharedBytes:', json.dumps(shared_sizes, ensure_ascii=False))
 
           if int(report.get('schemaVersion') or 0) < 4:
               raise SystemExit('Critical schema failure: schemaVersion below 4')
-          if int(input_by_market.get('JP') or 0) < 500:
-              raise SystemExit('Critical universe failure: JP input below 500')
-          if int(input_by_market.get('US') or 0) < 500:
-              raise SystemExit('Critical universe failure: US input below 500')
+          if int(input_by_market.get('JP') or 0) < 3000:
+              raise SystemExit('Critical universe failure: JP input below 3000')
+          if int(input_by_market.get('US') or 0) < 1500:
+              raise SystemExit('Critical universe failure: US input below 1500')
           if total < 1000:
               raise SystemExit(f'Critical report failure: only {total} candidates')
-          if usable < 950 or coverage_pct < 95:
+          minimum_usable = int((int(input_by_market.get('JP') or 0) + int(input_by_market.get('US') or 0)) * .9)
+          if usable < minimum_usable or coverage_pct < 90:
               raise SystemExit(f'Critical market data failure: usable={usable}, coverage={coverage_pct}%')
           market_missing = {
               str(symbol)
@@ -164,6 +182,12 @@ jobs:
               raise SystemExit(f'Critical VCP failure: deep bases marked ready {deep_vcp[:10]}')
           if report_size > 3_500_000:
               raise SystemExit(f'Critical payload failure: report is {report_size} bytes')
+          oversized_shared = {name: size for name, size in shared_sizes.items() if size > 12_000_000}
+          if oversized_shared:
+              raise SystemExit(f'Critical shared-feed failure: oversized files {oversized_shared}')
+          manifest = json.loads(Path('reports/shared/manifest.json').read_text(encoding='utf-8'))
+          if manifest.get('architecture') != 'shared-base-metrics-with-strategy-specific-ranking':
+              raise SystemExit('Critical shared-feed failure: architecture marker missing')
           if 'candidatesByMarket' in report or 'topTurnoverByMarket' in report:
               raise SystemExit('Critical payload failure: duplicate candidate collections present')
           PY
@@ -180,8 +204,11 @@ jobs:
             reports/sector_strength_previous.json \
             reports/sector_strength_history.json \
             reports/candidate_tracking.json \
+            reports/shared \
             universes/us_sp500.csv \
-            universes/jp_topix500.csv
+            universes/jp_topix500.csv \
+            universes/us_all_listed.csv \
+            universes/jp_tse_all.csv
           if git diff --cached --quiet; then
             echo "No generated data changes to commit."
             exit 0
@@ -208,6 +235,9 @@ jobs:
             reports/latest.md
             reports/sector_strength_history.json
             reports/candidate_tracking.json
+            reports/shared
             universes/us_sp500.csv
             universes/jp_topix500.csv
+            universes/us_all_listed.csv
+            universes/jp_tse_all.csv
             data/external_signals.csv
