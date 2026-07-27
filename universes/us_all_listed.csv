@@ -314,7 +314,6 @@ AVEX,AEVEX Corp. Class A Common Stock,US,Industrials,Aerospace,Industrials,Nasda
 AVGO,Broadcom Inc. Common Stock,US,Technology,Semiconductors,Technology,Nasdaq Stock Screener eligible common stock
 AVIR,Atea Pharmaceuticals Inc. Common Stock,US,Health Care,Biotechnology: Pharmaceutical Preparations,Health Care,Nasdaq Stock Screener eligible common stock
 AVLN,Avalyn Pharma Inc. Common Stock,US,Health Care,Biotechnology: Pharmaceutical Preparations,Health Care,Nasdaq Stock Screener eligible common stock
-AVNS,Avanos Medical Inc. Common Stock,US,Health Care,Industrial Specialties,Health Care,Nasdaq Stock Screener eligible common stock
 AVNT,Avient Corporation Common Stock,US,Industrials,Major Chemicals,Industrials,Nasdaq Stock Screener eligible common stock
 AVNW,Aviat Networks Inc. Common Stock,US,Technology,Radio And Television Broadcasting And Communications Equipment,Technology,Nasdaq Stock Screener eligible common stock
 AVO,Mission Produce Inc. Common Stock,US,Consumer Staples,Farming/Seeds/Milling,Consumer Staples,Nasdaq Stock Screener eligible common stock
@@ -432,6 +431,7 @@ BILI,Bilibili Inc. American Depositary Shares,US,Technology,EDP Services,Technol
 BILL,BILL Holdings Inc. Common Stock,US,Technology,EDP Services,Technology,Nasdaq Stock Screener eligible common stock
 BIO,Bio-Rad Laboratories Inc. Class A Common Stock,US,Industrials,Biotechnology: Laboratory Analytical Instruments,Industrials,Nasdaq Stock Screener eligible common stock
 BIOA,BioAge Labs Inc. Common Stock,US,Health Care,Biotechnology: Pharmaceutical Preparations,Health Care,Nasdaq Stock Screener eligible common stock
+BIOT,Instinct Bio Technical Company Holdings Inc. Ordinary Shares,US,Consumer Discretionary,Package Goods/Cosmetics,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 BIPC,Brookfield Infrastructure Corporation Brookfield Infrastructure Corporation,US,Utilities,Oil & Gas Production,Utilities,Nasdaq Stock Screener eligible common stock
 BIRK,Birkenstock Holding plc Ordinary Shares,US,Consumer Discretionary,Shoe Manufacturing,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 BJ,BJ's Wholesale Club Holdings Inc. Common Stock,US,Consumer Discretionary,Department/Specialty Retail Stores,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
@@ -873,7 +873,6 @@ DASH,DoorDash Inc. Class A Common Stock,US,Technology,EDP Services,Technology,Na
 DAVE,Dave Inc. Class A Common Stock,US,Finance,Finance: Consumer Services,Finance,Nasdaq Stock Screener eligible common stock
 DB,Deutsche Bank AG Common Stock,US,Finance,Major Banks,Finance,Nasdaq Stock Screener eligible common stock
 DBD,Diebold Nixdorf Incorporated Common stock,US,Miscellaneous,Office Equipment/Supplies/Services,Miscellaneous,Nasdaq Stock Screener eligible common stock
-DBGI,Digital Brands Group Inc. Common Stock,US,Consumer Discretionary,Clothing/Shoe/Accessory Stores,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 DBI,Designer Brands Inc. Class A Common Stock,US,Consumer Discretionary,Clothing/Shoe/Accessory Stores,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 DBRG,DigitalBridge Group Inc.,US,Real Estate,Real Estate Investment Trusts,Real Estate,Nasdaq Stock Screener eligible common stock
 DBVT,DBV Technologies S.A. American Depositary Shares,US,Health Care,Biotechnology: Biological Products (No Diagnostic Substances),Health Care,Nasdaq Stock Screener eligible common stock
@@ -1164,7 +1163,6 @@ FER,Ferrovial N.V. Ordinary Shares,US,Industrials,Military/Government/Technical,
 FERG,Ferguson Enterprises Inc. Common Stock,US,Miscellaneous,Miscellaneous,Miscellaneous,Nasdaq Stock Screener eligible common stock
 FET,Forum Energy Technologies Inc. Common Stock,US,Consumer Discretionary,Oil and Gas Field Machinery,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 FF,FutureFuel Corp. Common shares,US,Industrials,Major Chemicals,Industrials,Nasdaq Stock Screener eligible common stock
-FFAI,Faraday Future Intelligent Electric Inc. Class A Common Stock,US,Industrials,Auto Manufacturing,Industrials,Nasdaq Stock Screener eligible common stock
 FFBC,First Financial Bancorp. Common Stock,US,Finance,Major Banks,Finance,Nasdaq Stock Screener eligible common stock
 FFIN,First Financial Bankshares Inc. Common Stock,US,Finance,Major Banks,Finance,Nasdaq Stock Screener eligible common stock
 FFIV,F5 Inc. Common Stock,US,Telecommunications,Computer Communications Equipment,Telecommunications,Nasdaq Stock Screener eligible common stock
@@ -1349,6 +1347,7 @@ GMAB,Genmab A/S ADS,US,Health Care,Biotechnology: Pharmaceutical Preparations,He
 GME,GameStop Corporation Common Stock,US,Consumer Discretionary,Electronics Distribution,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 GMED,Globus Medical Inc. Class A Common Stock,US,Health Care,Medical/Dental Instruments,Health Care,Nasdaq Stock Screener eligible common stock
 GMRS,GMR Solutions Inc. Class A Common Stock,US,Consumer Discretionary,Transportation Services,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
+GMTL,Guardian Metal Resources PLC ADS,US,Basic Materials,Metal Mining,Basic Materials,Nasdaq Stock Screener eligible common stock
 GNK,Genco Shipping & Trading Limited Ordinary Shares New (Marshall Islands),US,Consumer Discretionary,Marine Transportation,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 GNL,Global Net Lease Inc. Common Stock,US,Real Estate,Real Estate Investment Trusts,Real Estate,Nasdaq Stock Screener eligible common stock
 GNRC,Generac Holdlings Inc. Common Stock,US,Consumer Discretionary,Metal Fabrications,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
@@ -2528,7 +2527,7 @@ PYPL,PayPal Holdings Inc. Common Stock,US,Industrials,Diversified Commercial Ser
 PYXS,Pyxis Oncology Inc. Common Stock,US,Health Care,Biotechnology: Pharmaceutical Preparations,Health Care,Nasdaq Stock Screener eligible common stock
 PZZA,Papa John's International Inc. Common Stock,US,Consumer Discretionary,Restaurants,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 Q,Qnity Electronics Inc. Common Stock,US,Technology,Semiconductors,Technology,Nasdaq Stock Screener eligible common stock
-QBTS,D-Wave Quantum Inc. Common Shares,US,Technology,EDP Services,Technology,Nasdaq Stock Screener eligible common stock
+QBTS,D-Wave Quantum Inc. Common Stock,US,Technology,EDP Services,Technology,Nasdaq Stock Screener eligible common stock
 QCOM,QUALCOMM Incorporated Common Stock,US,Technology,Radio And Television Broadcasting And Communications Equipment,Technology,Nasdaq Stock Screener eligible common stock
 QCRH,QCR Holdings Inc. Common Stock,US,Finance,Major Banks,Finance,Nasdaq Stock Screener eligible common stock
 QDEL,QuidelOrtho Corporation Common Stock,US,Health Care,Biotechnology: In Vitro & In Vivo Diagnostic Substances,Health Care,Nasdaq Stock Screener eligible common stock
@@ -2729,6 +2728,7 @@ SCI,Service Corporation International Common Stock,US,Consumer Discretionary,Oth
 SCL,Stepan Company Common Stock,US,Consumer Discretionary,Package Goods/Cosmetics,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 SCM,Stellus Capital Investment Corporation Common Stock,US,Finance,Finance/Investors Services,Finance,Nasdaq Stock Screener eligible common stock
 SCSC,ScanSource Inc. Common Stock,US,Technology,Retail: Computer Software & Peripheral Equipment,Technology,Nasdaq Stock Screener eligible common stock
+SCTX,Scribe Therapeutics Inc. Common Stock,US,Health Care,Biotechnology: Biological Products (No Diagnostic Substances),Health Care,Nasdaq Stock Screener eligible common stock
 SCZM,Santacruz Silver Mining Ltd. Common Shares,US,未分類,,未分類,Nasdaq Stock Screener eligible common stock
 SD,SandRidge Energy Inc. Common Stock,US,Energy,Oil & Gas Production,Energy,Nasdaq Stock Screener eligible common stock
 SDGR,Schrodinger Inc. Common Stock,US,Health Care,Biotechnology: Pharmaceutical Preparations,Health Care,Nasdaq Stock Screener eligible common stock
@@ -3075,7 +3075,7 @@ TREE,LendingTree Inc. Common Stock,US,Finance,Finance: Consumer Services,Finance
 TREX,Trex Company Inc. Common Stock,US,Basic Materials,Forest Products,Basic Materials,Nasdaq Stock Screener eligible common stock
 TRGP,Targa Resources Inc. Common Stock,US,Utilities,Natural Gas Distribution,Utilities,Nasdaq Stock Screener eligible common stock
 TRI,Thomson Reuters Corporation Common Shares,US,Consumer Discretionary,Publishing,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
-TRIN,Trinity Capital Inc. Common Stock,US,Finance,Finance: Consumer Services,Finance,Nasdaq Stock Screener eligible common stock
+TRIN,Trinity Capital Inc. Common Stock,US,未分類,,未分類,Nasdaq Stock Screener eligible common stock
 TRIP,TripAdvisor Inc. Common Stock,US,Technology,Computer Software: Programming Data Processing,Technology,Nasdaq Stock Screener eligible common stock
 TRLV,Trulieve Cannabis Corp. Subordinate Voting Shares,US,Health Care,Medicinal Chemicals and Botanical Products,Health Care,Nasdaq Stock Screener eligible common stock
 TRMB,Trimble Inc. Common Stock,US,Industrials,Industrial Machinery/Components,Industrials,Nasdaq Stock Screener eligible common stock
