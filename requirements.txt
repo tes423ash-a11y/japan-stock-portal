@@ -3,5 +3,5 @@ numpy>=1.26.0
 requests>=2.32.0
 yfinance==0.2.66
 curl_cffi==0.13.0
-lxml>=5.2.0
+lxml>=6.1.1
 xlrd>=2.0.1
