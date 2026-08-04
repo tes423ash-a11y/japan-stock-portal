@@ -62,6 +62,16 @@ def session_date(item: dict[str, Any] | None, fallback: str) -> str:
         return fallback
 
 
+def normalized_detection_date(detected_at: str, current_session: str) -> str:
+    """Keep a record from appearing to have been detected after its market bar."""
+    try:
+        detected = date.fromisoformat(str(detected_at))
+        current = date.fromisoformat(str(current_session))
+    except ValueError:
+        return current_session
+    return min(detected, current).isoformat()
+
+
 def update_extremes(record: dict[str, Any], gain: float) -> None:
     previous_gain = number(record.get("maxGainPct"))
     previous_drawdown = number(record.get("maxDrawdownPct"))
@@ -84,9 +94,12 @@ def main() -> None:
         symbol = record.get("symbol")
         item = current_by_symbol.get(symbol)
         current_session = session_date(item, report_date)
-        detected_at = str(record.get("detectedAt") or current_session)
+        detected_at = normalized_detection_date(str(record.get("detectedAt") or current_session), current_session)
+        if record.get("detectedAt") != detected_at:
+            record["detectedAt"] = detected_at
+            record["id"] = f"{symbol}|{detected_at}"
         try:
-            age = (date.fromisoformat(current_session) - date.fromisoformat(detected_at)).days
+            age = max(0, (date.fromisoformat(current_session) - date.fromisoformat(detected_at)).days)
         except ValueError:
             age = 999
         if age > 180:
@@ -146,6 +159,8 @@ def main() -> None:
             "plannedEntryPrice": rounded(plan.get("entryReference"), 2),
             "outcomeBasis": "daily_close_from_detection",
             "initialStop": rounded(plan.get("stop"), 2),
+            "initialTarget1": rounded(plan.get("target1"), 2),
+            "initialTarget2": rounded(plan.get("target2"), 2),
             "initialRiskPct": rounded(risk, 1),
             "currentPrice": rounded(item.get("price"), 2),
             "currentGainPct": 0.0,
@@ -161,7 +176,7 @@ def main() -> None:
         "tracking": sum(1 for row in updated if row.get("status") == "追跡中"),
         "twoR": sum(1 for row in updated if row.get("status") in {"2R達成", "3R達成"}),
         "stopped": sum(1 for row in updated if row.get("status") == "損切り到達"),
-        "basis": "検出日の終値を基準に日次終値で更新",
+        "basis": "画面の速報値は検出日終値基準。検証ラボは次取引日始値・売買コスト込みで別計算。",
     }
     TRACKING.write_text(json.dumps({"schemaVersion": TRACKING_SCHEMA_VERSION, "records": updated}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     LATEST.write_text(json.dumps(report, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

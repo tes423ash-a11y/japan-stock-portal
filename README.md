@@ -11,6 +11,7 @@
 - セクターRS: 日米を分け、公式業種内の相対力を確認
 - 売買計画: ピボット、損切り、利確、RRを一覧表示
 - ブレイク後検証: 検出後の最大上昇、最大下落、成功/失敗を記録
+- 前向き検証ラボ: 次取引日始値・売買コスト込みの期待値R、累積R、形状別成績
 - 今日の判断メモ: スマホ内にメモ保存
 
 ## データの流れ
@@ -25,6 +26,18 @@ reports/latest.json
 index.html + dashboard.js
 ↓
 スマホでダッシュボード確認
+```
+
+前向き検証は別系統で生成します。
+
+```text
+reports/candidate_tracking.json
+↓
+scripts/build_validation_report.py
+↓
+reports/validation.json
+↓
+validation.html + validation.js
 ```
 
 ## Screening Mode
@@ -122,12 +135,16 @@ python scripts/build_report.py
 python scripts/enrich_external_signals.py
 python scripts/enrich_sector_strength.py
 python scripts/update_tracking.py
+python scripts/build_validation_report.py
+python scripts/security_audit.py
 ```
 
 生成されるファイル:
 
 - `reports/latest.json`
 - `reports/latest.md`
+- `reports/validation.json`
+- `reports/security-audit.json`
 - `reports/shared/*.json`
 
 価格取得元が一時的にレート制限されている間に、既存の終値データへ新しい採点・会社名・業種ロジックだけを安全に適用する場合は、生成日時を更新せずに次を実行します。
@@ -171,6 +188,19 @@ python scripts/rescore_existing_report.py
 python -m unittest discover -s tests -p "test_*.py"
 node --test tests/dashboard-utils.test.mjs
 ```
+
+## 前向き検証の前提
+
+- 検出日の終値では約定せず、次の取引セッション始値でエントリー
+- 標準で片道5bpの手数料と10bpのスリッページを控除
+- 同じ日足で損切り・利確の両方に触れた場合は損切りを優先
+- 20取引日で未決済なら終値でクローズ
+- 検出済み銘柄は現在の母集団から消えても追跡レコードを保持
+- 過去時点の完全な上場母集団がない場合は、長期バックテストではなく前向き検証と明示
+
+## OSS・セキュリティ
+
+検証画面のチャートには `lightweight-charts` 5.2.0を固定版でローカル配置しています。外部CDNへの実行時通信はありません。採用・見送り理由とライセンス審査は `docs/oss-import-audit.md`、自動監査結果は `reports/security-audit.json` を参照してください。
 
 ## 注意
 

@@ -190,6 +190,7 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
     chunk_size = int(clamp(env_int("YF_CHUNK_SIZE", 80), 20, 150))
     retries = int(clamp(env_int("YF_RETRIES", 2), 1, 4))
     pause = env_float("YF_CHUNK_PAUSE_SECONDS", 0.7)
+    timeout = clamp(env_float("YF_TIMEOUT_SECONDS", 20), 5, 60)
     period = safe_text(os.getenv("YF_PERIOD", "18mo")) or "18mo"
     histories: dict[str, pd.DataFrame] = {}
     failed_chunks: list[dict[str, Any]] = []
@@ -201,7 +202,7 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
         last_error = ""
         for attempt in range(1, retries + 1):
             try:
-                downloaded = yf.download(tickers=chunk, period=period, interval="1d", group_by="ticker", auto_adjust=True, progress=False, threads=True)
+                downloaded = yf.download(tickers=chunk, period=period, interval="1d", group_by="ticker", auto_adjust=True, progress=False, threads=True, timeout=timeout)
                 if downloaded is not None and not downloaded.empty:
                     break
             except Exception as error:
@@ -222,7 +223,7 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
     fallback_used = 0
     for symbol in missing[:fallback_limit]:
         try:
-            single = yf.download(tickers=symbol, period=period, interval="1d", auto_adjust=True, progress=False, threads=False)
+            single = yf.download(tickers=symbol, period=period, interval="1d", auto_adjust=True, progress=False, threads=False, timeout=timeout)
             sub = normalize_download_frame(single, symbol, 1)
             if not sub.empty:
                 histories[symbol] = sub
@@ -235,6 +236,6 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
         "provider": "yfinance_bulk", "requested": len(symbols), "downloaded": len(histories),
         "missing": len(symbols) - len(histories), "batchCount": batch_count, "chunkSize": chunk_size,
         "fallbackUsed": fallback_used, "failedChunks": failed_chunks[:10], "period": period,
-        "missingSymbols": missing[:30],
+        "missingSymbols": missing[:30], "timeoutSeconds": timeout,
     }
     return histories, diagnostics
