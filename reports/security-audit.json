@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-04T15:54:53.109050+00:00",
+  "summary": {
+    "high": 0,
+    "medium": 0,
+    "scannedFiles": 36,
+    "vendorIntegrity": true
+  },
+  "allowedDomains": [
+    {
+      "domain": "api.nasdaq.com",
+      "files": [
+        "scripts/update_all_universes.py"
+      ]
+    },
+    {
+      "domain": "disclosure2.edinet-fsa.go.jp",
+      "files": [
+        "script.js"
+      ]
+    },
+    {
+      "domain": "en.wikipedia.org",
+      "files": [
+        ".github/workflows/daily-screener-report.yml",
+        "scripts/update_sp500_universe.py"
+      ]
+    },
+    {
+      "domain": "finance.yahoo.co.jp",
+      "files": [
+        "script.js"
+      ]
+    },
+    {
+      "domain": "jp.tradingview.com",
+      "files": [
+        "script.js",
+        "sepa.js"
+      ]
+    },
+    {
+      "domain": "kabutan.jp",
+      "files": [
+        "script.js"
+      ]
+    },
+    {
+      "domain": "www.jpx.co.jp",
+      "files": [
+        ".github/workflows/daily-screener-report.yml",
+        "scripts/update_all_universes.py",
+        "scripts/update_topix500_universe.py"
+      ]
+    },
+    {
+      "domain": "www.nasdaq.com",
+      "files": [
+        "scripts/update_all_universes.py"
+      ]
+    },
+    {
+      "domain": "www.release.tdnet.info",
+      "files": [
+        "script.js"
+      ]
+    },
+    {
+      "domain": "www.tradingview.com",
+      "files": [
+        "validation.html"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "requirement": "pandas>=2.2.0",
+      "exactPin": false
+    },
+    {
+      "requirement": "numpy>=1.26.0",
+      "exactPin": false
+    },
+    {
+      "requirement": "requests>=2.32.0",
+      "exactPin": false
+    },
+    {
+      "requirement": "yfinance==0.2.66",
+      "exactPin": true
+    },
+    {
+      "requirement": "curl_cffi==0.13.0",
+      "exactPin": true
+    },
+    {
+      "requirement": "lxml>=5.2.0",
+      "exactPin": false
+    },
+    {
+      "requirement": "xlrd>=2.0.1",
+      "exactPin": false
+    }
+  ],
+  "vendor": {
+    "name": "lightweight-charts",
+    "version": "5.2.0",
+    "license": "Apache-2.0",
+    "sha256": "c0992580867c4912cc9385b3c2728315bcc1a76c7f1087dca908430fccdf31d7",
+    "expectedSha256": "c0992580867c4912cc9385b3c2728315bcc1a76c7f1087dca908430fccdf31d7"
+  },
+  "findings": []
+}

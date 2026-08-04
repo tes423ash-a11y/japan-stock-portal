@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#07111f" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>前向き検証ラボ | 株式スクリーナー</title>
+  <meta name="description" content="次取引日始値、手数料、スリッページ、未来参照防止、上場廃止監視を明示したSEPA/VCP候補の前向き検証ダッシュボード" />
+  <link rel="stylesheet" href="validation.css?v=20260805-v1" />
+</head>
+<body>
+  <header class="lab-header">
+    <div class="header-row">
+      <div><p class="eyebrow">Forward Validation / Cost Adjusted</p><h1>前向き検証ラボ</h1></div>
+      <a class="back-link" href="index.html">スクリーナーへ</a>
+    </div>
+    <p class="lead">候補検出後の結果を、次の取引セッション始値から現実寄りの条件で検証します。勝率より期待値Rと検証品質を優先します。</p>
+    <div class="header-meta"><span id="generatedAt">読込中</span><button id="reloadValidation" type="button">更新</button></div>
+  </header>
+
+  <main>
+    <section class="panel hero-panel">
+      <div class="section-heading"><div><span>Validation Gate</span><h2>まず検証品質を見る</h2></div><span id="qualityStatus" class="quality-badge">確認中</span></div>
+      <div id="qualityBanner" class="quality-banner"></div><div id="assumptionGrid" class="assumption-grid"></div>
+    </section>
+    <section class="panel">
+      <div class="section-heading"><div><span>Net Performance</span><h2>コスト控除後の成績</h2></div><span class="context-note">独立トレード集計</span></div>
+      <div id="summaryGrid" class="summary-grid"></div><div class="chart-shell"><div id="cumulativeChart" aria-label="累積Rチャート"></div><p id="chartEmpty" class="empty-message"></p></div>
+    </section>
+    <section class="panel two-column">
+      <div><div class="section-heading compact"><div><span>Market</span><h2>市場別</h2></div></div><div id="marketBreakdown" class="breakdown-list"></div></div>
+      <div><div class="section-heading compact"><div><span>Setup</span><h2>形状別</h2></div></div><div id="setupBreakdown" class="breakdown-list"></div></div>
+    </section>
+    <section class="panel">
+      <div class="section-heading"><div><span>Trade Ledger</span><h2>検証レコード</h2></div><span id="tradeCount" class="context-note"></span></div>
+      <div class="filter-row" role="group" aria-label="検証レコード絞り込み"><button type="button" class="active" data-filter="all">すべて</button><button type="button" data-filter="closed">決済済み</button><button type="button" data-filter="open">保有中</button><button type="button" data-filter="issue">未検証</button></div>
+      <div id="tradeList" class="trade-list"></div>
+    </section>
+  </main>
+
+  <footer><p>この画面は投資助言ではありません。前向きレコードが十分に蓄積するまで期待値は暫定値です。</p><p>Interactive charts by <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">TradingView</a>.</p></footer>
+  <script src="vendor/lightweight-charts/lightweight-charts.standalone.production.js?v=5.2.0"></script>
+  <script type="module" src="validation.js?v=20260805-v1"></script>
+</body>
+</html>

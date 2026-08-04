@@ -21,7 +21,8 @@ from screener_scoring import rank_candidate, score_vcp, setup_type  # noqa: E402
 from shared_feed import compact_candidate, write_shared_feeds  # noqa: E402
 from update_all_universes import parse_jp_frame, rows_from_nasdaq  # noqa: E402
 from update_topix500_universe import apply_listed_issue_metadata  # noqa: E402
-from update_tracking import update_extremes  # noqa: E402
+from trade_simulation import SimulationConfig, simulate_long_trade  # noqa: E402
+from update_tracking import normalized_detection_date, update_extremes  # noqa: E402
 
 
 class MetadataMergeTests(unittest.TestCase):
@@ -188,6 +189,9 @@ class ReportingTests(unittest.TestCase):
 
 
 class TrackingTests(unittest.TestCase):
+    def test_future_detection_date_is_clamped_to_market_session(self) -> None:
+        self.assertEqual(normalized_detection_date("2026-08-03", "2026-07-31"), "2026-07-31")
+
     def test_extremes_keep_zero_as_starting_point(self) -> None:
         losing = {"maxGainPct": 0.0, "maxDrawdownPct": 0.0}
         update_extremes(losing, -3.2)
@@ -198,6 +202,48 @@ class TrackingTests(unittest.TestCase):
         update_extremes(winning, 4.1)
         self.assertEqual(winning["maxGainPct"], 4.1)
         self.assertEqual(winning["maxDrawdownPct"], 0.0)
+
+
+class TradeSimulationTests(unittest.TestCase):
+    def bars(self, rows: list[tuple[str, float, float, float, float]]) -> pd.DataFrame:
+        return pd.DataFrame(
+            [{"Open": open_, "High": high, "Low": low, "Close": close} for _, open_, high, low, close in rows],
+            index=pd.to_datetime([session for session, *_ in rows]),
+        )
+
+    def test_signal_bar_is_never_used_for_entry(self) -> None:
+        frame = self.bars([
+            ("2026-07-01", 90, 120, 80, 100),
+            ("2026-07-02", 100, 104, 98, 102),
+            ("2026-07-03", 103, 112, 102, 110),
+        ])
+        result = simulate_long_trade(
+            frame,
+            "2026-07-01",
+            95,
+            110,
+            config=SimulationConfig(fee_bps_per_side=5, slippage_bps_per_side=10, max_hold_sessions=20),
+        )
+        self.assertEqual(result["entryDate"], "2026-07-02")
+        self.assertAlmostEqual(result["entryPrice"], 100.1, places=4)
+        self.assertEqual(result["exitReason"], "target")
+        self.assertLess(result["netReturnPct"], result["grossReturnPct"])
+
+    def test_ambiguous_daily_bar_assumes_stop_before_target(self) -> None:
+        frame = self.bars([
+            ("2026-07-01", 100, 101, 99, 100),
+            ("2026-07-02", 100, 112, 94, 105),
+        ])
+        result = simulate_long_trade(frame, "2026-07-01", 95, 110)
+        self.assertTrue(result["closed"])
+        self.assertEqual(result["exitReason"], "ambiguous_bar_stop_first")
+        self.assertLess(result["rMultiple"], 0)
+
+    def test_trade_waits_when_next_session_is_not_available(self) -> None:
+        frame = self.bars([("2026-07-01", 100, 101, 99, 100)])
+        result = simulate_long_trade(frame, "2026-07-01", 95, 110)
+        self.assertEqual(result["status"], "pending_next_session")
+        self.assertFalse(result["closed"])
 
 
 if __name__ == "__main__":

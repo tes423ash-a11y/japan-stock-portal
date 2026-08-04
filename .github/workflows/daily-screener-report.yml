@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - "scripts/**"
+      - "tests/**"
+      - "validation.*"
+      - "vendor/lightweight-charts/**"
+      - "requirements.txt"
       - ".github/workflows/daily-screener-report.yml"
   workflow_dispatch:
     inputs:
@@ -41,7 +45,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build-report:
@@ -59,17 +63,22 @@ jobs:
       YF_RETRIES: "2"
       YF_FALLBACK_LIMIT: "100"
       YF_PERIOD: "18mo"
+      YF_TIMEOUT_SECONDS: "20"
+      VALIDATION_FEE_BPS_PER_SIDE: "5"
+      VALIDATION_SLIPPAGE_BPS_PER_SIDE: "10"
+      VALIDATION_MAX_HOLD_SESSIONS: "20"
+      VALIDATION_TARGET_R: "2"
       SP500_SOURCE_URL: https://en.wikipedia.org/wiki/List_of_S%26P_500_companies
       TOPIX_INDEX_PAGE_URL: https://www.jpx.co.jp/english/markets/indices/topix/index.html
       TSE_LISTED_ISSUES_URL: https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.11"
           cache: pip
@@ -81,6 +90,9 @@ jobs:
         run: |
           python -m unittest discover -s tests -p "test_*.py"
           node --test tests/dashboard-utils.test.mjs
+
+      - name: Audit source, network domains and vendored assets
+        run: python scripts/security_audit.py
 
       - name: Refresh full listed-market universe
         run: |
@@ -102,6 +114,9 @@ jobs:
 
       - name: Update post-detection tracking
         run: python scripts/update_tracking.py
+
+      - name: Build cost-adjusted forward validation
+        run: python scripts/build_validation_report.py
 
       - name: Validate published report
         run: |
@@ -190,20 +205,67 @@ jobs:
               raise SystemExit('Critical shared-feed failure: architecture marker missing')
           if 'candidatesByMarket' in report or 'topTurnoverByMarket' in report:
               raise SystemExit('Critical payload failure: duplicate candidate collections present')
+          validation = json.loads(Path('reports/validation.json').read_text(encoding='utf-8'))
+          if validation.get('schemaVersion') != 1:
+              raise SystemExit('Critical validation failure: unexpected schema')
+          if (validation.get('methodology') or {}).get('signalTiming') is None:
+              raise SystemExit('Critical validation failure: execution timing missing')
+          audit = json.loads(Path('reports/security-audit.json').read_text(encoding='utf-8'))
+          if int((audit.get('summary') or {}).get('high') or 0):
+              raise SystemExit('Critical security failure: high-severity finding')
           PY
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: daily-screener-report
+          retention-days: 14
+          path: |
+            reports/latest.json
+            reports/latest.md
+            reports/sector_strength_previous.json
+            reports/sector_strength_history.json
+            reports/candidate_tracking.json
+            reports/validation.json
+            reports/security-audit.json
+            reports/shared
+            universes/us_sp500.csv
+            universes/jp_topix500.csv
+            universes/us_all_listed.csv
+            universes/jp_tse_all.csv
+            data/external_signals.csv
+
+  publish-report:
+    needs: build-report
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Download validated report artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: daily-screener-report
+          path: .
 
       - name: Commit generated data
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git status --short
           git add \
             reports/latest.json \
             reports/latest.md \
             reports/sector_strength_previous.json \
             reports/sector_strength_history.json \
             reports/candidate_tracking.json \
+            reports/validation.json \
+            reports/security-audit.json \
             reports/shared \
             universes/us_sp500.csv \
             universes/jp_topix500.csv \
@@ -213,7 +275,7 @@ jobs:
             echo "No generated data changes to commit."
             exit 0
           fi
-          git commit -m "Update validated 1000-symbol screener report"
+          git commit -m "Update validated screener and forward-test reports"
           for attempt in 1 2 3; do
             git pull --rebase origin main
             if git push origin HEAD:main; then
@@ -223,21 +285,3 @@ jobs:
           done
           echo "Push failed after retries"
           exit 1
-
-      - name: Upload report artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: daily-screener-report
-          retention-days: 14
-          path: |
-            reports/latest.json
-            reports/latest.md
-            reports/sector_strength_history.json
-            reports/candidate_tracking.json
-            reports/shared
-            universes/us_sp500.csv
-            universes/jp_topix500.csv
-            universes/us_all_listed.csv
-            universes/jp_tse_all.csv
-            data/external_signals.csv
