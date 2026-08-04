@@ -1,11 +1,11 @@
 # Daily Technical SEPA/VCP Report
 
-Generated: 2026-08-04T11:34:46.790561+00:00
+Generated: 2026-08-04T16:19:19.676413+00:00
 
 ## Coverage
 
-- Requested: 7244
-- Downloaded: 7215
+- Requested: 6586
+- Downloaded: 6559
 - Coverage: 99.6%
 
 ## Methodology
@@ -16,36 +16,21 @@ Generated: 2026-08-04T11:34:46.790561+00:00
 
 ## Top actionable candidates
 
-- A 91 | US APGE Apogee Therapeutics Inc. Common Stock | 上昇トレンドの押し目 | RS 91.1 | VCP 23 | Zone 133.31-136.66 | Invalidation 124.6
-- A 91 | US ROKU Roku Inc. Class A Common Stock | VCPピボット接近 | RS 79.8 | VCP 25 | Zone 148.14-153.35 | Invalidation 138.46
-- A 88 | US CRNX Crinetics Pharmaceuticals Inc. Common Stock | 上昇トレンドの押し目 | RS 96.7 | VCP 20 | Zone 81.24-83.28 | Invalidation 75.93
-- A 87 | US MAC Macerich Company (The) Common Stock | VCPピボット接近 | RS 78.8 | VCP 22 | Zone 26.55-27.48 | Invalidation 24.81
-- A 86 | US DVA DaVita | VCPピボット接近 | RS 87.3 | VCP 24 | Zone 243.27-251.82 | Invalidation 227.38
-- A 86 | US MSGS Madison Square Garden Sports Corp. Class A Common Stock (New) | VCPピボット接近 | RS 78.2 | VCP 25 | Zone 409.67-424.08 | Invalidation 382.91
-- A 86 | US RY Royal Bank Of Canada Common Stock | VCPピボット接近 | RS 76.8 | VCP 24 | Zone 216.17-223.78 | Invalidation 202.05
-- A 85 | US STT State Street Corporation | VCPピボット接近 | RS 84.5 | VCP 22 | Zone 191.55-198.29 | Invalidation 179.03
-- A 85 | US BAP Credicorp Ltd. Common Stock | VCPピボット接近 | RS 79.7 | VCP 21 | Zone 401.28-415.4 | Invalidation 375.07
-- A 85 | US BPOP Popular Inc. Common Stock | VCPピボット接近 | RS 76.5 | VCP 25 | Zone 175.63-181.81 | Invalidation 164.15
-- A 84 | JP 2371.T カカクコム | 上昇トレンドの押し目 | RS 90.1 | VCP 25 | Zone 3625.93-3717.03 | Invalidation 3457.25
-- A 84 | US BNY BNY Mellon | VCPピボット接近 | RS 78.8 | VCP 22 | Zone 162.3-168.01 | Invalidation 151.7
-- A 84 | US ARMK Aramark Common Stock | VCPピボット接近 | RS 78.8 | VCP 24 | Zone 58.39-60.44 | Invalidation 54.89
-- A 84 | US DOC Healthpeak Properties | VCPピボット接近 | RS 78.2 | VCP 22 | Zone 22.84-23.64 | Invalidation 21.34
-- A 84 | US RPRX Royalty Pharma plc Class A Ordinary Shares | VCPピボット接近 | RS 76.2 | VCP 24 | Zone 60.14-62.25 | Invalidation 56.21
-- A 83 | US VLO Valero Energy | VCPピボット接近 | RS 89.8 | VCP 19 | Zone 317.41-328.58 | Invalidation 296.68
-- A 83 | US RLJ RLJ Lodging Trust Common Shares of Beneficial Interest $0.01 par value | VCPピボット接近 | RS 87.7 | VCP 22 | Zone 12.51-12.95 | Invalidation 11.69
-- A 83 | US PK Park Hotels & Resorts Inc. Common Stock | VCPピボット接近 | RS 83.1 | VCP 22 | Zone 15.4-15.94 | Invalidation 14.4
-- A 83 | US HSBC HSBC Holdings plc. Common Stock | VCPピボット接近 | RS 81.9 | VCP 19 | Zone 107.05-110.82 | Invalidation 100.06
-- A 83 | US TGT Target Corporation | VCPピボット接近 | RS 76.2 | VCP 21 | Zone 147.03-152.2 | Invalidation 137.43
-- A 83 | US RAMP LiveRamp Holdings Inc. Common Stock | VCPピボット接近 | RS 76.0 | VCP 25 | Zone 38.04-39.38 | Invalidation 37.27
-- A 82 | US RVMD Revolution Medicines Inc. Common Stock | VCPピボット接近 | RS 86.8 | VCP 19 | Zone 193.59-200.4 | Invalidation 180.94
-- A 82 | US CVS CVS Health | 上昇トレンドの押し目 | RS 81.5 | VCP 20 | Zone 105.18-107.82 | Invalidation 100.08
-- A 82 | US VOYA Voya Financial Inc. Common Stock | VCPピボット接近 | RS 79.1 | VCP 22 | Zone 103.33-106.97 | Invalidation 96.58
-- A 82 | US ING ING Group N.V. Common Stock | VCPピボット接近 | RS 78.8 | VCP 21 | Zone 34.8-36.02 | Invalidation 32.52
-- A 82 | US SHO Sunstone Hotel Investors Inc. Sunstone Hotel Investors Inc. Common Shares | VCPピボット接近 | RS 76.1 | VCP 25 | Zone 11.92-12.34 | Invalidation 11.34
-- A 81 | US HWM Howmet Aerospace | 上昇トレンドの押し目 | RS 75.4 | VCP 17 | Zone 276.35-283.29 | Invalidation 260.24
-- A 80 | US TIGO Millicom International Cellular S.A. Common Stock | 上昇トレンドの押し目 | RS 81.4 | VCP 15 | Zone 95.26-97.65 | Invalidation 89.46
-- A 80 | JP 8795.T Ｔ＆Ｄホールディングス | VCPピボット接近 | RS 80.9 | VCP 22 | Zone 5150.12-5331.28 | Invalidation 4813.68
-- A 80 | US CON Concentra Group Holdings Parent Inc. Common Stock | VCPピボット接近 | RS 80.9 | VCP 21 | Zone 32.7-33.85 | Invalidation 30.56
-- A 80 | US UHAL U-Haul Holding Company Common Stock | VCPピボット接近 | RS 80.1 | VCP 24 | Zone 73.64-76.23 | Invalidation 68.83
-- A 80 | US MET MetLife | VCPピボット接近 | RS 76.8 | VCP 18 | Zone 97.31-100.73 | Invalidation 90.95
-- A 80 | US MSGE Madison Square Garden Entertainment Corp. Class A Common Stock | 上昇トレンドの押し目 | RS 76.0 | VCP 22 | Zone 75.47-77.37 | Invalidation 71.36
+- A 87 | US APGE Apogee Therapeutics Inc. Common Stock | 上昇トレンドの押し目 | RS 88.0 | VCP 23 | Zone 133.37-136.72 | Invalidation 124.66
+- A 87 | US PK Park Hotels & Resorts Inc. Common Stock | VCPピボット接近 | RS 81.5 | VCP 25 | Zone 15.4-15.94 | Invalidation 14.4
+- A 87 | US STT State Street Corporation | VCPピボット接近 | RS 79.3 | VCP 24 | Zone 191.55-198.29 | Invalidation 179.03
+- A 87 | US ROKU Roku Inc. Class A Common Stock | VCPピボット接近 | RS 77.5 | VCP 25 | Zone 148.14-153.35 | Invalidation 138.46
+- A 85 | JP 2371.T カカクコム | VCPピボット接近 | RS 88.7 | VCP 25 | Zone 3679.51-3808.94 | Invalidation 3451.44
+- A 85 | US CRNX Crinetics Pharmaceuticals Inc. Common Stock | 上昇トレンドの押し目 | RS 87.7 | VCP 20 | Zone 83.33-85.42 | Invalidation 77.89
+- A 84 | US RLJ RLJ Lodging Trust Common Shares of Beneficial Interest $0.01 par value | VCPピボット接近 | RS 86.8 | VCP 24 | Zone 12.51-12.95 | Invalidation 11.69
+- A 84 | US RVMD Revolution Medicines Inc. Common Stock | VCPピボット接近 | RS 85.8 | VCP 21 | Zone 193.59-200.4 | Invalidation 180.94
+- A 84 | US TGT Target Corporation | VCPピボット接近 | RS 79.3 | VCP 21 | Zone 149.32-154.57 | Invalidation 139.57
+- A 84 | US VOYA Voya Financial Inc. Common Stock | VCPピボット接近 | RS 77.5 | VCP 24 | Zone 103.33-106.97 | Invalidation 96.58
+- A 83 | US ZD Ziff Davis Inc. Common Stock | VCPピボット接近 | RS 81.5 | VCP 23 | Zone 54.71-56.63 | Invalidation 51.13
+- A 83 | US MSM MSC Industrial Direct Company Inc. Common Stock | VCPピボット接近 | RS 77.8 | VCP 23 | Zone 128.15-132.65 | Invalidation 119.77
+- A 82 | US AVT Avnet Inc. Common Stock | VCPピボット接近 | RS 79.8 | VCP 21 | Zone 94.43-97.75 | Invalidation 88.26
+- A 82 | US MSGE Madison Square Garden Entertainment Corp. Class A Common Stock | 上昇トレンドの押し目 | RS 75.6 | VCP 24 | Zone 75.68-77.58 | Invalidation 71.76
+- A 81 | US ETSY Etsy Inc. Common Stock | VCPピボット接近 | RS 83.6 | VCP 19 | Zone 86.82-89.88 | Invalidation 81.15
+- A 81 | JP 8795.T Ｔ＆Ｄホールディングス | VCPピボット接近 | RS 83.2 | VCP 22 | Zone 5150.12-5331.28 | Invalidation 4813.68
+- A 80 | US PEB Pebblebrook Hotel Trust Common Shares of Beneficial Interest | VCPピボット接近 | RS 84.3 | VCP 21 | Zone 19.83-20.53 | Invalidation 18.53
+- A 80 | US HSBC HSBC Holdings plc. Common Stock | VCPピボット接近 | RS 77.6 | VCP 22 | Zone 107.38-111.16 | Invalidation 100.37
