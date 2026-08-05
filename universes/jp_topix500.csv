@@ -236,7 +236,7 @@ symbol,name,market,sector,industry,theme,note
 9602.T,東宝,JP,情報・通信業,情報通信・サービスその他,情報・通信業,TOPIX component weight universe
 7752.T,リコー,JP,電気機器,電機・精密,電気機器,TOPIX component weight universe
 9024.T,西武ホールディングス,JP,陸運業,運輸・物流,陸運業,TOPIX component weight universe
-3626.T,ＴＩＳ,JP,情報・通信業,情報通信・サービスその他,情報・通信業,TOPIX component weight universe
+3626.T,ＴＩＳＩ,JP,情報・通信業,情報通信・サービスその他,情報・通信業,TOPIX component weight universe
 4768.T,大塚商会,JP,情報・通信業,情報通信・サービスその他,情報・通信業,TOPIX component weight universe
 8341.T,七十七銀行,JP,銀行業,銀行,銀行業,TOPIX component weight universe
 2587.T,サントリービバレッジ＆フード,JP,食料品,食品,食料品,TOPIX component weight universe
@@ -252,7 +252,7 @@ symbol,name,market,sector,industry,theme,note
 5991.T,日本発條,JP,金属製品,建設・資材,金属製品,TOPIX component weight universe
 9001.T,東武鉄道,JP,陸運業,運輸・物流,陸運業,TOPIX component weight universe
 9401.T,ＴＢＳホールディングス,JP,情報・通信業,情報通信・サービスその他,情報・通信業,TOPIX component weight universe
-2501.T,サッポロホールディングス,JP,食料品,食品,食料品,TOPIX component weight universe
+2501.T,サッポロビール,JP,食料品,食品,食料品,TOPIX component weight universe
 5711.T,三菱マテリアル,JP,非鉄金属,鉄鋼・非鉄,非鉄金属,TOPIX component weight universe
 7459.T,メディパルホールディングス,JP,卸売業,商社・卸売,卸売業,TOPIX component weight universe
 6268.T,ナブテスコ,JP,機械,機械,機械,TOPIX component weight universe
