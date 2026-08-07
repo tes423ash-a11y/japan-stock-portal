@@ -39,7 +39,7 @@ APA,APA Corporation,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 
 APO,Apollo Global Management,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
 AAPL,Apple Inc.,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
 AMAT,Applied Materials,US,Information Technology,Semiconductor Materials & Equipment,Information Technology,S&P 500 constituent
-APP,AppLovin,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
+APP,AppLovin,US,Communication Services,Advertising,Communication Services,S&P 500 constituent
 APTV,Aptiv,US,Consumer Discretionary,Automotive Parts & Equipment,Consumer Discretionary,S&P 500 constituent
 ACGL,Arch Capital Group,US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
 ADM,Archer Daniels Midland,US,Consumer Staples,Agricultural Products & Services,Consumer Staples,S&P 500 constituent
@@ -159,7 +159,7 @@ DOW,Dow Inc.,US,Materials,Commodity Chemicals,Materials,S&P 500 constituent
 DHI,D. R. Horton,US,Consumer Discretionary,Homebuilding,Consumer Discretionary,S&P 500 constituent
 DTE,DTE Energy,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
 DUK,Duke Energy,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
-DD,DuPont,US,Materials,Specialty Chemicals,Materials,S&P 500 constituent
+DD,DuPont,US,Industrials,Industrial Conglomerates,Industrials,S&P 500 constituent
 ETN,Eaton Corporation,US,Industrials,Electrical Components & Equipment,Industrials,S&P 500 constituent
 EBAY,eBay Inc.,US,Consumer Discretionary,Broadline Retail,Consumer Discretionary,S&P 500 constituent
 ECHO,EchoStar,US,Communication Services,Wireless Telecommunication Services,Communication Services,S&P 500 constituent
