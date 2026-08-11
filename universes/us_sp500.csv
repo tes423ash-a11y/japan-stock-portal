@@ -326,7 +326,7 @@ MCO,Moody's Corporation,US,Financials,Financial Exchanges & Data,Financials,S&P 
 MS,Morgan Stanley,US,Financials,Investment Banking & Brokerage,Financials,S&P 500 constituent
 MOS,Mosaic Company (The),US,Materials,Fertilizers & Agricultural Chemicals,Materials,S&P 500 constituent
 MSI,Motorola Solutions,US,Information Technology,Communications Equipment,Information Technology,S&P 500 constituent
-MSCI,MSCI Inc.,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
+MSCI,MSCI,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
 NDAQ,"Nasdaq, Inc.",US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
 NTAP,NetApp,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
 NFLX,Netflix,US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
@@ -346,7 +346,7 @@ NUE,Nucor,US,Materials,Steel,Materials,S&P 500 constituent
 NVDA,Nvidia,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
 NVR,"NVR, Inc.",US,Consumer Discretionary,Homebuilding,Consumer Discretionary,S&P 500 constituent
 NXPI,NXP Semiconductors,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
-ORLY,O’Reilly Automotive,US,Consumer Discretionary,Automotive Retail,Consumer Discretionary,S&P 500 constituent
+ORLY,O'Reilly Automotive,US,Consumer Discretionary,Automotive Retail,Consumer Discretionary,S&P 500 constituent
 OXY,Occidental Petroleum,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
 ODFL,Old Dominion,US,Industrials,Cargo Ground Transportation,Industrials,S&P 500 constituent
 OMC,Omnicom Group,US,Communication Services,Advertising,Communication Services,S&P 500 constituent
@@ -393,7 +393,7 @@ REG,Regency Centers,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
 REGN,Regeneron Pharmaceuticals,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
 RF,Regions Financial Corporation,US,Financials,Regional Banks,Financials,S&P 500 constituent
 RSG,Republic Services,US,Industrials,Environmental & Facilities Services,Industrials,S&P 500 constituent
-RMD,ResMed,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
+RMD,ResMed|,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
 RVTY,Revvity,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
 HOOD,Robinhood Markets,US,Financials,Investment Banking & Brokerage,Financials,S&P 500 constituent
 ROK,Rockwell Automation,US,Industrials,Electrical Components & Equipment,Industrials,S&P 500 constituent
