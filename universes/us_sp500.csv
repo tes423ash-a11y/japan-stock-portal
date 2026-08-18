@@ -52,7 +52,6 @@ ATO,Atmos Energy,US,Utilities,Gas Utilities,Utilities,S&P 500 constituent
 ADSK,Autodesk,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
 ADP,Automatic Data Processing,US,Industrials,Human Resource & Employment Services,Industrials,S&P 500 constituent
 AZO,AutoZone,US,Consumer Discretionary,Automotive Retail,Consumer Discretionary,S&P 500 constituent
-AVB,AvalonBay Communities,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
 AVY,Avery Dennison,US,Materials,Paper & Plastic Packaging Products & Materials,Materials,S&P 500 constituent
 AXON,Axon Enterprise,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
 BKR,Baker Hughes,US,Energy,Oil & Gas Equipment & Services,Energy,S&P 500 constituent
@@ -174,7 +173,6 @@ EOG,EOG Resources,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 co
 EQT,EQT Corporation,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
 EFX,Equifax,US,Industrials,Research & Consulting Services,Industrials,S&P 500 constituent
 EQIX,Equinix,US,Real Estate,Data Center REITs,Real Estate,S&P 500 constituent
-EQR,Equity Residential,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
 ERIE,Erie Indemnity,US,Financials,Insurance Brokers,Financials,S&P 500 constituent
 ESS,Essex Property Trust,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
 EL,Estée Lauder Companies (The),US,Consumer Staples,Personal Care Products,Consumer Staples,S&P 500 constituent
@@ -387,6 +385,7 @@ DGX,Quest Diagnostics,US,Health Care,Health Care Services,Health Care,S&P 500 co
 Q,Qnity Electronics,US,Information Technology,Semiconductor Materials & Equipment,Information Technology,S&P 500 constituent
 RL,Ralph Lauren Corporation,US,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",Consumer Discretionary,S&P 500 constituent
 RJF,Raymond James Financial,US,Financials,Investment Banking & Brokerage,Financials,S&P 500 constituent
+RDDT,Reddit,US,Communication Services,,Communication Services,S&P 500 constituent
 RTX,RTX Corporation,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
 O,Realty Income,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
 REG,Regency Centers,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
@@ -476,6 +475,7 @@ VTRS,Viatris,US,Health Care,Pharmaceuticals,Health Care,S&P 500 constituent
 VICI,Vici Properties,US,Real Estate,Hotel & Resort REITs,Real Estate,S&P 500 constituent
 V,Visa Inc.,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
 VST,Vistra Corp.,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+VMRK,Vivmark Residential,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
 VMC,Vulcan Materials Company,US,Materials,Construction Materials,Materials,S&P 500 constituent
 WRB,W. R. Berkley Corporation,US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
 GWW,W. W. Grainger,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
