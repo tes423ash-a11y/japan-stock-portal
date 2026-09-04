@@ -219,7 +219,6 @@ APC,ARKO Petroleum Corp. Class A Common Stock,US,Energy,Oil Refining/Marketing,E
 APD,Air Products and Chemicals Inc. Common Stock,US,Basic Materials,Major Chemicals,Basic Materials,Nasdaq Stock Screener eligible common stock
 APEI,American Public Education Inc. Common Stock,US,Real Estate,Other Consumer Services,Real Estate,Nasdaq Stock Screener eligible common stock
 APG,APi Group Corporation Common Stock,US,Consumer Discretionary,Diversified Commercial Services,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
-APGE,Apogee Therapeutics Inc. Common Stock,US,Health Care,Biotechnology: Biological Products (No Diagnostic Substances),Health Care,Nasdaq Stock Screener eligible common stock
 APH,Amphenol Corporation Common Stock,US,Technology,Electrical Products,Technology,Nasdaq Stock Screener eligible common stock
 APLD,Applied Digital Corporation Common Stock,US,Technology,EDP Services,Technology,Nasdaq Stock Screener eligible common stock
 APLE,Apple Hospitality REIT Inc. Common Shares,US,Real Estate,Real Estate Investment Trusts,Real Estate,Nasdaq Stock Screener eligible common stock
@@ -278,7 +277,7 @@ ASO,Academy Sports and Outdoors Inc. Common Stock,US,Consumer Discretionary,Othe
 ASPI,ASP Isotopes Inc. Common Stock,US,Industrials,Major Chemicals,Industrials,Nasdaq Stock Screener eligible common stock
 ASPN,Aspen Aerogels Inc. Common Stock,US,Consumer Discretionary,RETAIL: Building Materials,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 ASR,Grupo Aeroportuario del Sureste S.A. de C.V. Common Stock,US,Consumer Discretionary,Aerospace,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
-ASST,Strive Inc. Class A Common Stock,US,Technology,Computer Software: Prepackaged Software,Technology,Nasdaq Stock Screener eligible common stock
+ASST,Strive Inc. Class A Common Stock,US,Finance,Finance: Consumer Services,Finance,Nasdaq Stock Screener eligible common stock
 ASTE,Astec Industries Inc. Common Stock,US,Industrials,Construction/Ag Equipment/Trucks,Industrials,Nasdaq Stock Screener eligible common stock
 ASTH,Astrana Health Inc. Common Stock,US,Consumer Discretionary,Professional Services,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 ASTL,Algoma Steel Group Inc. Common Shares,US,Industrials,Steel/Iron Ore,Industrials,Nasdaq Stock Screener eligible common stock
@@ -765,6 +764,7 @@ COLM,Columbia Sportswear Company Common Stock,US,Consumer Discretionary,Apparel,
 COMP,Compass Inc. Class A Common Stock,US,Finance,Real Estate,Finance,Nasdaq Stock Screener eligible common stock
 CON,Concentra Group Holdings Parent Inc. Common Stock,US,Health Care,Medical Specialities,Health Care,Nasdaq Stock Screener eligible common stock
 COO,The Cooper Companies Inc. Common Stock,US,Health Care,Ophthalmic Goods,Health Care,Nasdaq Stock Screener eligible common stock
+COOK,Traeger Inc. Common Stock,US,Consumer Discretionary,Consumer Electronics/Appliances,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 COP,ConocoPhillips Common Stock,US,Energy,Integrated oil Companies,Energy,Nasdaq Stock Screener eligible common stock
 COR,Cencora Inc. Common Stock,US,Health Care,Other Pharmaceuticals,Health Care,Nasdaq Stock Screener eligible common stock
 CORT,Corcept Therapeutics Incorporated Common Stock,US,Health Care,Biotechnology: Pharmaceutical Preparations,Health Care,Nasdaq Stock Screener eligible common stock
@@ -1693,7 +1693,6 @@ JCI,Johnson Controls International plc Ordinary Share,US,Industrials,Industrial 
 JD,JD.com Inc. American Depositary Shares,US,Consumer Discretionary,Other Specialty Stores,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 JEF,Jefferies Financial Group Inc. Common Stock,US,Finance,Investment Bankers/Brokers/Service,Finance,Nasdaq Stock Screener eligible common stock
 JELD,JELD-WEN Holding Inc. Common Stock,US,Basic Materials,Forest Products,Basic Materials,Nasdaq Stock Screener eligible common stock
-JFB,JFB Construction Holdings Class A Common Stock,US,Consumer Discretionary,General Bldg Contractors - Nonresidential Bldgs,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 JHX,James Hardie Industries plc. Ordinary Shares,US,Industrials,Building Materials,Industrials,Nasdaq Stock Screener eligible common stock
 JILL,J. Jill Inc. Common Stock,US,Consumer Discretionary,Apparel,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 JJSF,J & J Snack Foods Corp. Common Stock,US,Consumer Staples,Specialty Foods,Consumer Staples,Nasdaq Stock Screener eligible common stock
@@ -2252,6 +2251,7 @@ NX,Quanex Building Products Corporation Common Stock,US,Industrials,Metal Fabric
 NXDR,Nextdoor Holdings Inc. Class A Common Stock,US,Technology,Computer Software: Programming Data Processing,Technology,Nasdaq Stock Screener eligible common stock
 NXE,Nexgen Energy Ltd. Common Shares,US,Basic Materials,Other Metals and Minerals,Basic Materials,Nasdaq Stock Screener eligible common stock
 NXG,NXG NextGen Infrastructure Income Fund Common Shares of Beneficial Interest,US,未分類,,未分類,Nasdaq Stock Screener eligible common stock
+NXH,Neighborhood Intelligence Inc. Common Stock,US,Consumer Discretionary,Catalog/Specialty Distribution,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 NXP,Nuveen Select Tax Free Income Portfolio Common Stock,US,Finance,Trusts Except Educational Religious and Charitable,Finance,Nasdaq Stock Screener eligible common stock
 NXPI,NXP Semiconductors N.V. Common Stock,US,Technology,Semiconductors,Technology,Nasdaq Stock Screener eligible common stock
 NXRT,NexPoint Residential Trust Inc. Common Stock,US,Real Estate,Real Estate Investment Trusts,Real Estate,Nasdaq Stock Screener eligible common stock
@@ -3063,7 +3063,6 @@ TILE,Interface Inc. Common Stock,US,Consumer Discretionary,Home Furnishings,Cons
 TIMB,TIM S.A. American Depositary Shares (Each representing 5 Common Shares),US,Telecommunications,Telecommunications Equipment,Telecommunications,Nasdaq Stock Screener eligible common stock
 TIPT,Tiptree Inc. Common Stock,US,Finance,Property-Casualty Insurers,Finance,Nasdaq Stock Screener eligible common stock
 TITN,Titan Machinery Inc. Common Stock,US,Consumer Discretionary,Other Specialty Stores,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
-TJGC,TJGC Group Limited Class A Ordinary Shares,US,Consumer Discretionary,Advertising,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 TJX,TJX Companies Inc. (The) Common Stock,US,Consumer Discretionary,Clothing/Shoe/Accessory Stores,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 TK,Teekay Corporation Ltd. Common Stock,US,Consumer Discretionary,Marine Transportation,Consumer Discretionary,Nasdaq Stock Screener eligible common stock
 TKC,Turkcell Iletisim Hizmetleri AS Common Stock,US,Telecommunications,Telecommunications Equipment,Telecommunications,Nasdaq Stock Screener eligible common stock
