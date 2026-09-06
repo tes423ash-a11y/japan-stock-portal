@@ -6,6 +6,7 @@ from typing import Any
 import numpy as np
 
 from screener_data import finite, rounded
+from market_sessions import freshness_summary
 
 
 def top_by_metric(candidates: list[dict[str, Any]], top_n: int, metric: str) -> list[dict[str, Any]]:
@@ -69,6 +70,7 @@ def market_summary(universe: list[dict[str, str]], built: list[dict[str, Any]], 
         "universeRows": len(universe), "builtRows": len(built), "selectedRows": len(selected),
         "downloadedRows": len(downloaded), "missingRows": len(missing_symbols), "missingSymbols": missing_symbols,
         "asOf": as_of_dates[-1] if as_of_dates else None,
+        **freshness_summary(built, str((universe or built or [{"market": "US"}])[0].get("market") or "US")),
         "sRank": ranks["S"], "aRank": ranks["A"], "bRank": ranks["B"],
         "averageScore": rounded(np.mean([finite(item.get("score")) or 0 for item in selected]), 1) if selected else 0,
         "fullHistoryRows": sum(1 for item in selected if (item.get("dataQuality") or {}).get("status") == "full"),
