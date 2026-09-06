@@ -9,6 +9,7 @@ from typing import Any, Iterable
 
 import pandas as pd
 import yfinance as yf
+from market_sessions import expected_session, completed_history, merge_fresh_history
 
 ROOT = Path(__file__).resolve().parents[1]
 WATCHLISTS = [ROOT / "watchlists" / "jp_candidates.csv", ROOT / "watchlists" / "us_candidates.csv"]
@@ -231,11 +232,47 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
         except Exception:
             continue
 
+    # Bulk calls can succeed while most US candles are one session behind.
+    # Retry every stale symbol, independent of ranking/display limits.
+    expected = {"JP": expected_session("JP"), "US": expected_session("US")}
+    def session_for(symbol):
+        return expected["JP" if symbol.endswith(".T") else "US"]
+    for symbol, frame in list(histories.items()):
+        histories[symbol] = completed_history(frame, session_for(symbol))
+        if histories[symbol].empty:
+            del histories[symbol]
+    stale = [symbol for symbol in symbols if session_for(symbol) and (symbol not in histories or histories[symbol].index[-1].date().isoformat() < session_for(symbol))]
+    stale_recovered = 0
+    adjustment_reloads = 0
+    for chunk in chunked(stale, chunk_size):
+        try:
+            recent = yf.download(tickers=chunk, period="5d", interval="1d", group_by="ticker", auto_adjust=True, progress=False, threads=True, timeout=timeout)
+            for symbol in chunk:
+                sub = normalize_download_frame(recent, symbol, len(chunk))
+                sub = completed_history(sub, session_for(symbol))
+                if sub.empty or sub.index[-1].date().isoformat() < session_for(symbol):
+                    continue
+                previous = histories.get(symbol, pd.DataFrame())
+                # A new symbol needs a full history, not just five bars.
+                merged = merge_fresh_history(previous, sub, session_for(symbol)) if not previous.empty else None
+                if merged is None:
+                    adjustment_reloads += 1
+                    full = yf.download(tickers=symbol, period=period, interval="1d", auto_adjust=True, progress=False, threads=False, timeout=timeout)
+                    merged = completed_history(normalize_download_frame(full, symbol, 1), session_for(symbol))
+                if not merged.empty and merged.index[-1].date().isoformat() >= session_for(symbol) and len(merged) >= len(previous):
+                    histories[symbol] = merged
+                    stale_recovered += 1
+        except Exception as error:
+            failed_chunks.append({"size": len(chunk), "symbols": chunk[:5], "error": "freshness_retry_" + error.__class__.__name__})
+        if pause > 0:
+            time.sleep(pause)
+
     missing = [symbol for symbol in symbols if symbol not in histories]
     diagnostics = {
         "provider": "yfinance_bulk", "requested": len(symbols), "downloaded": len(histories),
         "missing": len(symbols) - len(histories), "batchCount": batch_count, "chunkSize": chunk_size,
         "fallbackUsed": fallback_used, "failedChunks": failed_chunks[:10], "period": period,
         "missingSymbols": missing[:30], "timeoutSeconds": timeout,
+        "expectedSessions": expected, "staleRetryRequested": len(stale), "staleRecovered": stale_recovered, "staleUnresolved": len(stale)-stale_recovered, "adjustmentReloads": adjustment_reloads,
     }
     return histories, diagnostics
