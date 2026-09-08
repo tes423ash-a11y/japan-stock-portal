@@ -1,6 +1,6 @@
 # Daily Technical SEPA/VCP Report
 
-Generated: 2026-09-07T15:01:30.347081+00:00
+Generated: 2026-09-08T00:49:40.296826+00:00
 
 ## Coverage
 
@@ -48,7 +48,7 @@ Generated: 2026-09-07T15:01:30.347081+00:00
 - A 81 | JP 7550.T ゼンショーホールディングス第１回社債型種類株式 | VCPピボット接近 | RS 84.3 | VCP 22 | Zone 12009.65-12432.1 | Invalidation 11225.1
 - A 81 | US TGT Target Corporation | 上昇トレンドの押し目 | RS 84.1 | VCP 18 | Zone 158.96-162.96 | Invalidation 148.58
 - A 81 | JP 7282.T 豊田合成 | VCPピボット接近 | RS 83.0 | VCP 22 | Zone 5691.4-5891.6 | Invalidation 5319.6
-- A 81 | JP 9147.T ＮＩＰＰＯＮ ＥＸＰＲＥＳＳホールディングス | VCPピボット接近 | RS 82.0 | VCP 22 | Zone 5836.67-6041.98 | Invalidation 5455.38
+- A 81 | JP 9147.T ＮＩＰＰＯＮ ＥＸＰＲＥＳＳホールディングス | VCPピボット接近 | RS 81.9 | VCP 22 | Zone 5836.67-6041.98 | Invalidation 5455.38
 - A 81 | US SAFT Safety Insurance Group Inc. Common Stock | VCPピボット接近 | RS 80.6 | VCP 25 | Zone 102.89-106.51 | Invalidation 96.17
 - A 81 | JP 8725.T MS&ADインシュアランスグループHD | VCPピボット接近 | RS 77.9 | VCP 22 | Zone 5288.43-5474.45 | Invalidation 4942.95
 - A 81 | US KMX CarMax Inc | VCPピボット接近 | RS 75.8 | VCP 21 | Zone 64.95-67.24 | Invalidation 60.71
