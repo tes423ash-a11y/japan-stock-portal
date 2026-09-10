@@ -37,8 +37,10 @@ on:
         required: false
         default: "150"
   schedule:
-    - cron: "0 9 * * 1-5"
-    - cron: "30 22 * * 1-5"
+    # Avoid the congested start of the hour. Japan: 16:17 / 19:17 JST.
+    - cron: "17 7,10 * * 1-5"
+    # US post-close: 07:17 JST on Tuesday through Saturday.
+    - cron: "17 22 * * 1-5"
 
 concurrency:
   group: daily-screener-report-${{ github.ref }}
