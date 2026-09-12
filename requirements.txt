@@ -1,5 +1,5 @@
 pandas>=2.2.0
-numpy>=1.26.0
+numpy>=2.5.1
 requests>=2.32.0
 yfinance==0.2.66
 curl_cffi==0.13.0
