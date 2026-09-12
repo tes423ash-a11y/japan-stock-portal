@@ -42,6 +42,16 @@ class SessionTests(unittest.TestCase):
         self.assertEqual(result['freshCoveragePct'], 1)
 
 class BulkRetryTests(unittest.TestCase):
+    def test_impossible_adjusted_price_scale_break_is_rejected(self):
+        from screener_data import normalize_download_frame
+        bad = frame(["2026-09-09", "2026-09-10", "2026-09-11"], [3650, 3700, 16_278_046_720])
+        self.assertTrue(normalize_download_frame(bad, "1909.T", 1).empty)
+
+    def test_large_but_plausible_move_is_preserved(self):
+        from screener_data import normalize_download_frame
+        volatile = frame(["2026-09-10", "2026-09-11"], [10, 50])
+        self.assertEqual(len(normalize_download_frame(volatile, "TEST", 1)), 2)
+
     def test_retry_includes_every_stale_symbol_not_only_a_display_subset(self):
         from screener_data import download_history
         symbols = [f"TEST{i}" for i in range(60)]

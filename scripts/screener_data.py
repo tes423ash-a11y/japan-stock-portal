@@ -161,6 +161,17 @@ def chunked(items: list[str], size: int) -> Iterable[list[str]]:
         yield items[start:start + size]
 
 
+def has_price_scale_break(frame: pd.DataFrame, maximum_ratio: float = 20.0) -> bool:
+    """Reject provider candles with impossible adjusted-price scale discontinuities."""
+    if frame is None or frame.empty or "Close" not in frame.columns:
+        return False
+    close = pd.to_numeric(frame["Close"], errors="coerce").dropna()
+    if len(close) < 2 or (close <= 0).any():
+        return bool((close <= 0).any())
+    ratios = close / close.shift(1)
+    return bool(((ratios > maximum_ratio) | (ratios < 1 / maximum_ratio)).fillna(False).any())
+
+
 def normalize_download_frame(frame: pd.DataFrame, symbol: str, requested_count: int) -> pd.DataFrame:
     if frame is None or frame.empty:
         return pd.DataFrame()
@@ -184,7 +195,8 @@ def normalize_download_frame(frame: pd.DataFrame, symbol: str, requested_count: 
     if sub.empty:
         return sub
     sub.index = pd.to_datetime(sub.index)
-    return sub.sort_index()
+    sub = sub.sort_index()
+    return pd.DataFrame() if has_price_scale_break(sub) else sub
 
 
 def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[str, Any]]:
