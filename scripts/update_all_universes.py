@@ -18,7 +18,7 @@ JP_OUT = UNIVERSE_DIR / "jp_tse_all.csv"
 US_OUT = UNIVERSE_DIR / "us_all_listed.csv"
 HEADER = ["symbol", "name", "market", "sector", "industry", "theme", "note"]
 
-DEFAULT_JP_SOURCE = "https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls"
+DEFAULT_JP_SOURCE = "https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xlsx"
 DEFAULT_US_SOURCE = "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=10000&offset=0&download=true"
 
 JP_DOMESTIC_MARKETS = ("プライム（内国株式）", "スタンダード（内国株式）", "グロース（内国株式）")

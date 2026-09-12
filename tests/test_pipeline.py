@@ -19,8 +19,8 @@ from build_report import market_limits  # noqa: E402
 from screener_report import market_summary, usable_coverage  # noqa: E402
 from screener_scoring import rank_candidate, score_vcp, setup_type  # noqa: E402
 from shared_feed import compact_candidate, write_shared_feeds  # noqa: E402
-from update_all_universes import parse_jp_frame, rows_from_nasdaq  # noqa: E402
-from update_topix500_universe import apply_listed_issue_metadata  # noqa: E402
+from update_all_universes import DEFAULT_JP_SOURCE, parse_jp_frame, rows_from_nasdaq  # noqa: E402
+from update_topix500_universe import DEFAULT_LISTED_ISSUES_URL, apply_listed_issue_metadata  # noqa: E402
 from trade_simulation import SimulationConfig, simulate_long_trade  # noqa: E402
 from update_tracking import normalized_detection_date, update_extremes  # noqa: E402
 
@@ -55,6 +55,10 @@ class MetadataMergeTests(unittest.TestCase):
 
 
 class FullUniverseTests(unittest.TestCase):
+    def test_jpx_defaults_use_the_current_xlsx_workbook(self) -> None:
+        self.assertTrue(DEFAULT_JP_SOURCE.endswith("/data_j.xlsx"))
+        self.assertEqual(DEFAULT_LISTED_ISSUES_URL, DEFAULT_JP_SOURCE)
+
     def test_jp_parser_keeps_domestic_alphanumeric_stock_codes(self) -> None:
         frame = pd.DataFrame([
             {

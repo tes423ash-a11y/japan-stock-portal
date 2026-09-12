@@ -72,7 +72,7 @@ jobs:
       VALIDATION_TARGET_R: "2"
       SP500_SOURCE_URL: https://en.wikipedia.org/wiki/List_of_S%26P_500_companies
       TOPIX_INDEX_PAGE_URL: https://www.jpx.co.jp/english/markets/indices/topix/index.html
-      TSE_LISTED_ISSUES_URL: https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls
+      TSE_LISTED_ISSUES_URL: https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xlsx
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4

@@ -17,7 +17,7 @@ HEADER = ["symbol", "name", "market", "sector", "industry", "theme", "note"]
 MIN_VALID_ROWS = 450
 MIN_NAMED_ROWS = 450
 DEFAULT_INDEX_PAGE = "https://www.jpx.co.jp/english/markets/indices/topix/index.html"
-DEFAULT_LISTED_ISSUES_URL = "https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls"
+DEFAULT_LISTED_ISSUES_URL = "https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xlsx"
 
 
 def clean(value: object) -> str:
