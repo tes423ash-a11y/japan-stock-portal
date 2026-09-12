@@ -1,12 +1,12 @@
 # Daily Technical SEPA/VCP Report
 
-Generated: 2026-09-12T00:30:53.472473+00:00
+Generated: 2026-09-12T01:25:51.746949+00:00
 
 ## Coverage
 
-- Requested: 7194
-- Downloaded: 7174
-- Coverage: 99.7%
+- Requested: 7188
+- Downloaded: 7172
+- Coverage: 99.8%
 
 ## Methodology
 
@@ -28,7 +28,7 @@ Generated: 2026-09-12T00:30:53.472473+00:00
 - A 86 | US BNY BNY Mellon | VCPピボット接近 | RS 78.2 | VCP 24 | Zone 165.01-170.82 | Invalidation 157.5
 - A 86 | US EXPD Expeditors International | VCPピボット接近 | RS 78.0 | VCP 24 | Zone 191.32-198.05 | Invalidation 178.96
 - A 85 | JP 8604.T 野村ホールディングス | VCPピボット接近 | RS 86.8 | VCP 22 | Zone 1673.59-1732.46 | Invalidation 1564.9
-- A 85 | JP 7167.T めぶきフィナンシャルグループ | VCPピボット接近 | RS 86.8 | VCP 22 | Zone 1717.87-1778.3 | Invalidation 1605.64
+- A 85 | JP 7167.T めぶきフィナンシャルグループ | VCPピボット接近 | RS 86.7 | VCP 22 | Zone 1717.87-1778.3 | Invalidation 1605.64
 - A 85 | US BBVA Banco Bilbao Vizcaya Argentaria S.A. Common Stock | VCPピボット接近 | RS 82.2 | VCP 25 | Zone 29.49-30.53 | Invalidation 27.57
 - A 85 | JP 9432.T NTT | VCPピボット接近 | RS 79.5 | VCP 25 | Zone 175.12-181.28 | Invalidation 163.68
 - A 85 | US TIGO Millicom International Cellular S.A. Common Stock | 上昇トレンドの押し目 | RS 76.2 | VCP 24 | Zone 94.27-96.63 | Invalidation 89.32
