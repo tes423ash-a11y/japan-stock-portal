@@ -108,6 +108,9 @@ jobs:
       - name: Build technical SEPA VCP report
         run: python scripts/build_report.py
 
+      - name: Fail closed on stale per-market data
+        run: python scripts/validate_market_freshness.py
+
       - name: Enrich external context
         run: python scripts/enrich_external_signals.py
 
