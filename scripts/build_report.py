@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import os
 from collections import defaultdict
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -45,6 +47,10 @@ def main() -> None:
     }
     requested_symbols = [row["symbol"] for market in ["JP", "US"] for row in rows_by_market.get(market, [])]
     histories, provider_diagnostics = download_history(requested_symbols)
+    diagnostic_dir = Path(os.environ.get("SCREENING_DIAGNOSTICS_DIR", "diagnostics"))
+    diagnostic_dir.mkdir(parents=True, exist_ok=True)
+    (diagnostic_dir / "provider.json").write_text(json.dumps(provider_diagnostics, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(json.dumps({"providerStatus": provider_diagnostics}, ensure_ascii=False), flush=True)
 
     built_by_market: dict[str, list[dict[str, Any]]] = {"JP": [], "US": []}
     selected_by_market: dict[str, list[dict[str, Any]]] = {"JP": [], "US": []}
@@ -135,7 +141,9 @@ def main() -> None:
         "tracking": [],
     }
 
-    print(json.dumps({"coverage": report["coverage"], "summary": report["summary"], "marketSummary": report["marketSummary"]}, ensure_ascii=False))
+    diagnostic = {key: report[key] for key in ("generatedAt", "coverage", "summary", "marketSummary", "providerStatus")}
+    (diagnostic_dir / "report-freshness.json").write_text(json.dumps(diagnostic, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(json.dumps(diagnostic, ensure_ascii=False), flush=True)
     (REPORT_DIR / "latest.json").write_text(json.dumps(report, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     (REPORT_DIR / "latest.md").write_text(write_markdown(report), encoding="utf-8")
 

@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import csv
+import json
 import math
 import os
 import time
+from collections import Counter
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -204,6 +207,7 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
     retries = int(clamp(env_int("YF_RETRIES", 2), 1, 4))
     pause = env_float("YF_CHUNK_PAUSE_SECONDS", 0.7)
     timeout = clamp(env_float("YF_TIMEOUT_SECONDS", 20), 5, 60)
+    threads = int(clamp(env_int("YF_THREADS", 4), 1, 8))
     period = safe_text(os.getenv("YF_PERIOD", "18mo")) or "18mo"
     histories: dict[str, pd.DataFrame] = {}
     failed_chunks: list[dict[str, Any]] = []
@@ -215,7 +219,7 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
         last_error = ""
         for attempt in range(1, retries + 1):
             try:
-                downloaded = yf.download(tickers=chunk, period=period, interval="1d", group_by="ticker", auto_adjust=True, progress=False, threads=True, timeout=timeout)
+                downloaded = yf.download(tickers=chunk, period=period, interval="1d", group_by="ticker", auto_adjust=True, progress=False, threads=threads, timeout=timeout)
                 if downloaded is not None and not downloaded.empty:
                     break
             except Exception as error:
@@ -254,30 +258,10 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
         if histories[symbol].empty:
             del histories[symbol]
     stale = [symbol for symbol in symbols if session_for(symbol) and (symbol not in histories or histories[symbol].index[-1].date().isoformat() < session_for(symbol))]
-    stale_recovered = 0
-    adjustment_reloads = 0
-    for chunk in chunked(stale, chunk_size):
-        try:
-            recent = yf.download(tickers=chunk, period="5d", interval="1d", group_by="ticker", auto_adjust=True, progress=False, threads=True, timeout=timeout)
-            for symbol in chunk:
-                sub = normalize_download_frame(recent, symbol, len(chunk))
-                sub = completed_history(sub, session_for(symbol))
-                if sub.empty or sub.index[-1].date().isoformat() < session_for(symbol):
-                    continue
-                previous = histories.get(symbol, pd.DataFrame())
-                # A new symbol needs a full history, not just five bars.
-                merged = merge_fresh_history(previous, sub, session_for(symbol)) if not previous.empty else None
-                if merged is None:
-                    adjustment_reloads += 1
-                    full = yf.download(tickers=symbol, period=period, interval="1d", auto_adjust=True, progress=False, threads=False, timeout=timeout)
-                    merged = completed_history(normalize_download_frame(full, symbol, 1), session_for(symbol))
-                if not merged.empty and merged.index[-1].date().isoformat() >= session_for(symbol) and len(merged) >= len(previous):
-                    histories[symbol] = merged
-                    stale_recovered += 1
-        except Exception as error:
-            failed_chunks.append({"size": len(chunk), "symbols": chunk[:5], "error": "freshness_retry_" + error.__class__.__name__})
-        if pause > 0:
-            time.sleep(pause)
+    recovery = recover_stale_history(
+        stale, histories, expected, chunk_size=chunk_size, period=period,
+        timeout=timeout, threads=threads, pause=pause,
+    )
 
     missing = [symbol for symbol in symbols if symbol not in histories]
     diagnostics = {
@@ -285,6 +269,92 @@ def download_history(symbols: list[str]) -> tuple[dict[str, pd.DataFrame], dict[
         "missing": len(symbols) - len(histories), "batchCount": batch_count, "chunkSize": chunk_size,
         "fallbackUsed": fallback_used, "failedChunks": failed_chunks[:10], "period": period,
         "missingSymbols": missing[:30], "timeoutSeconds": timeout,
-        "expectedSessions": expected, "staleRetryRequested": len(stale), "staleRecovered": stale_recovered, "staleUnresolved": len(stale)-stale_recovered, "adjustmentReloads": adjustment_reloads,
+        "expectedSessions": expected, "threads": threads, **recovery,
     }
     return histories, diagnostics
+
+
+def recover_stale_history(symbols, histories, expected, *, chunk_size, period, timeout, threads, pause):
+    """Retry unresolved sessions, preserving history and adjusted-price continuity."""
+    attempts = int(clamp(env_int("YF_FRESHNESS_RETRIES", 3), 1, 4))
+    backoff = clamp(env_float("YF_FRESHNESS_BACKOFF_SECONDS", 15), 0, 60)
+    pending = list(symbols)
+    rounds = []
+    adjustment_reloads = 0
+
+    def market_for(symbol):
+        return "JP" if symbol.endswith(".T") else "US"
+
+    def distributions():
+        result = {"JP": Counter(), "US": Counter()}
+        for symbol in symbols:
+            history = histories.get(symbol)
+            latest = history.index[-1].date().isoformat() if history is not None and not history.empty else "missing"
+            result[market_for(symbol)][latest] += 1
+        return {market: dict(sorted(counts.items())) for market, counts in result.items()}
+
+    for attempt in range(1, attempts + 1):
+        if not pending:
+            break
+        if attempt > 1 and backoff:
+            time.sleep(backoff * 2 ** (attempt - 2))
+        before = len(pending)
+        detail = {"attempt": attempt, "requested": before, "beforeDates": distributions(), "errors": [], "requests": {}}
+        recovered = set()
+        # Explicit end is exclusive. Range queries include the completed session
+        # instead of relying exclusively on the provider's rolling 5d response.
+        for market in ("JP", "US"):
+            market_symbols = [symbol for symbol in pending if market_for(symbol) == market]
+            if not market_symbols:
+                continue
+            day = date.fromisoformat(expected[market])
+            window = {"period": "5d"} if attempt == 2 else {
+                "start": (day - timedelta(days=10 * attempt)).isoformat(),
+                "end": (day + timedelta(days=1)).isoformat(),
+            }
+            detail["requests"][market] = window
+            for chunk in chunked(market_symbols, chunk_size):
+                try:
+                    recent = yf.download(tickers=chunk, interval="1d", group_by="ticker", auto_adjust=True,
+                                         progress=False, threads=threads, timeout=timeout, **window)
+                except Exception as error:
+                    detail["errors"].append({"symbols": chunk[:5], "error": error.__class__.__name__})
+                    if pause > 0:
+                        time.sleep(pause)
+                    continue
+                for symbol in chunk:
+                    try:
+                        sub = completed_history(normalize_download_frame(recent, symbol, len(chunk)), expected[market])
+                        if sub.empty or sub.index[-1].date().isoformat() != expected[market]:
+                            continue
+                        previous = histories.get(symbol, pd.DataFrame())
+                        merged = merge_fresh_history(previous, sub, expected[market]) if not previous.empty else None
+                        if merged is None:
+                            adjustment_reloads += 1
+                            full = yf.download(tickers=symbol, period=period, interval="1d", auto_adjust=True,
+                                               progress=False, threads=False, timeout=timeout)
+                            full = completed_history(normalize_download_frame(full, symbol, 1), expected[market])
+                            # A short retry is never a replacement for missing full history.
+                            merged = merge_fresh_history(full, sub, expected[market]) if len(full) >= 30 else None
+                        if (merged is not None and not merged.empty
+                                and merged.index[-1].date().isoformat() == expected[market]
+                                and len(merged) >= len(previous) and not has_price_scale_break(merged)):
+                            histories[symbol] = merged
+                            recovered.add(symbol)
+                    except Exception as error:
+                        # One malformed ticker must not prevent recovery of its peers.
+                        detail["errors"].append({"symbols": [symbol], "error": error.__class__.__name__})
+                if pause > 0:
+                    time.sleep(pause)
+        pending = [symbol for symbol in pending if symbol not in recovered]
+        detail.update({"recovered": before - len(pending), "unresolved": len(pending), "afterDates": distributions()})
+        detail["errorCount"] = len(detail["errors"])
+        detail["errors"] = detail["errors"][:20]
+        rounds.append(detail)
+        print(json.dumps({"freshnessRetry": detail}, ensure_ascii=False), flush=True)
+
+    return {
+        "staleRetryRequested": len(symbols), "staleRecovered": len(symbols) - len(pending),
+        "staleUnresolved": len(pending), "staleUnresolvedSymbols": pending[:30],
+        "adjustmentReloads": adjustment_reloads, "freshnessRetries": rounds,
+    }

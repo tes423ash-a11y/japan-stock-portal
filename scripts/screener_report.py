@@ -66,11 +66,13 @@ def market_summary(universe: list[dict[str, str]], built: list[dict[str, Any]], 
         if (item.get("dataQuality") or {}).get("asOf")
     })
     missing_symbols = [str(item.get("symbol")) for item in built if (item.get("dataQuality") or {}).get("status") == "missing"]
+    freshness = freshness_summary(built, str((universe or built or [{"market": "US"}])[0].get("market") or "US"))
     return {
         "universeRows": len(universe), "builtRows": len(built), "selectedRows": len(selected),
         "downloadedRows": len(downloaded), "missingRows": len(missing_symbols), "missingSymbols": missing_symbols,
-        "asOf": as_of_dates[-1] if as_of_dates else None,
-        **freshness_summary(built, str((universe or built or [{"market": "US"}])[0].get("market") or "US")),
+        "asOf": freshness["dominantDate"],
+        "latestAvailableDate": as_of_dates[-1] if as_of_dates else None,
+        **freshness,
         "sRank": ranks["S"], "aRank": ranks["A"], "bRank": ranks["B"],
         "averageScore": rounded(np.mean([finite(item.get("score")) or 0 for item in selected]), 1) if selected else 0,
         "fullHistoryRows": sum(1 for item in selected if (item.get("dataQuality") or {}).get("status") == "full"),

@@ -63,7 +63,9 @@ export function renderMarketSummary() {
       <article class="market-card ${active ? 'active-market' : 'muted-market'}">
         <div><span>${marketLabel(market)} 上位公開</span><strong>${row.selectedRows ?? 0}</strong></div>
         <dl>
-          <div><dt>基準日</dt><dd>${formatDate(row.asOf)}</dd></div>
+          <div><dt>主なデータ日</dt><dd>${formatDate(row.dominantDate || row.asOf)}</dd></div>
+          <div><dt>取得対象日</dt><dd>${formatDate(row.expectedSession)}</dd></div>
+          <div><dt>最新日・履歴十分</dt><dd>${format(row.freshCoveragePct, '%')}</dd></div>
           <div><dt>母集団走査</dt><dd>${row.downloadedRows ?? row.builtRows ?? 0} / ${row.universeRows ?? 0}</dd></div>
           <div><dt>採点可能率</dt><dd>${format(row.coveragePct, '%')}</dd></div>
           <div><dt>S/A/B</dt><dd>${row.sRank ?? 0}/${row.aRank ?? 0}/${row.bRank ?? 0}</dd></div>

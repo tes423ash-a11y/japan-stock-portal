@@ -56,7 +56,7 @@ class BulkRetryTests(unittest.TestCase):
         from screener_data import download_history
         symbols = [f"TEST{i}" for i in range(60)]
         calls = []
-        def download(tickers, period, **kwargs):
+        def download(tickers, period=None, **kwargs):
             calls.append((list(tickers), period))
             dates, prices = (["2026-09-02", "2026-09-03"], [99,100]) if period == "18mo" else (["2026-09-03", "2026-09-04"], [100,101])
             return pd.concat({ticker: frame(dates,prices) for ticker in tickers}, axis=1)

@@ -66,6 +66,9 @@ jobs:
       YF_FALLBACK_LIMIT: "100"
       YF_PERIOD: "18mo"
       YF_TIMEOUT_SECONDS: "20"
+      YF_THREADS: "4"
+      YF_FRESHNESS_RETRIES: "3"
+      YF_FRESHNESS_BACKOFF_SECONDS: "15"
       VALIDATION_FEE_BPS_PER_SIDE: "5"
       VALIDATION_SLIPPAGE_BPS_PER_SIDE: "10"
       VALIDATION_MAX_HOLD_SESSIONS: "20"
@@ -106,7 +109,10 @@ jobs:
         run: python scripts/validate_universes.py
 
       - name: Build technical SEPA VCP report
-        run: python scripts/build_report.py
+        run: |
+          set -o pipefail
+          mkdir -p diagnostics
+          python -u scripts/build_report.py 2>&1 | tee diagnostics/build.log
 
       - name: Fail closed on stale per-market data
         run: python scripts/validate_market_freshness.py
@@ -239,6 +245,15 @@ jobs:
             universes/us_all_listed.csv
             universes/jp_tse_all.csv
             data/external_signals.csv
+
+      - name: Upload screening diagnostics even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: screener-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: ignore
+          path: diagnostics/
 
   publish-report:
     needs: build-report
