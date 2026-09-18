@@ -1,11 +1,11 @@
 # Daily Technical SEPA/VCP Report
 
-Generated: 2026-09-18T06:59:21.830729+00:00
+Generated: 2026-09-18T12:29:07.819838+00:00
 
 ## Coverage
 
-- Requested: 7213
-- Downloaded: 7199
+- Requested: 7216
+- Downloaded: 7201
 - Coverage: 99.8%
 
 ## Methodology
@@ -30,6 +30,7 @@ Generated: 2026-09-18T06:59:21.830729+00:00
 - A 85 | US TIGO Millicom International Cellular S.A. Common Stock | 上昇トレンドの押し目 | RS 79.6 | VCP 24 | Zone 94.58-96.96 | Invalidation 90.35
 - A 85 | US MRK Merck | 上昇トレンドの押し目 | RS 77.4 | VCP 22 | Zone 147.36-151.06 | Invalidation 137.73
 - A 85 | US SAN Banco Santander S.A. Sponsored ADR (Spain) | VCPピボット接近 | RS 76.4 | VCP 25 | Zone 14.97-15.5 | Invalidation 14.23
+- A 85 | US MSFT Microsoft | VCPピボット接近 | RS 75.0 | VCP 25 | Zone 515.19-533.31 | Invalidation 481.54
 - A 84 | US TWLO Twilio Inc. Class A Common Stock | VCPピボット接近 | RS 92.4 | VCP 19 | Zone 257.06-266.1 | Invalidation 240.27
 - A 84 | JP 9110.T ＮＳユナイテッド海運 | VCPピボット接近 | RS 88.5 | VCP 25 | Zone 10467.4-10835.6 | Invalidation 9783.6
 - A 84 | JP 9101.T 日本郵船 | VCPピボット接近 | RS 87.6 | VCP 21 | Zone 7561.01-7826.97 | Invalidation 7067.07
@@ -43,7 +44,7 @@ Generated: 2026-09-18T06:59:21.830729+00:00
 - A 83 | JP 8366.T 滋賀銀行 | VCPピボット接近 | RS 91.4 | VCP 21 | Zone 2981.02-3085.88 | Invalidation 2786.28
 - A 83 | JP 4812.T 電通総研 | VCPピボット接近 | RS 88.3 | VCP 25 | Zone 2915.35-3017.9 | Invalidation 2737.68
 - A 83 | JP 8304.T あおぞら銀行 | VCPピボット接近 | RS 88.0 | VCP 21 | Zone 3543.2-3667.83 | Invalidation 3311.73
-- A 83 | US SAFT Safety Insurance Group Inc. Common Stock | VCPピボット接近 | RS 84.5 | VCP 25 | Zone 103.15-106.78 | Invalidation 96.41
+- A 83 | US SAFT Safety Insurance Group Inc. Common Stock | VCPピボット接近 | RS 84.6 | VCP 25 | Zone 103.15-106.78 | Invalidation 96.41
 - A 83 | JP 6178.T 日本郵政 | VCPピボット接近 | RS 83.1 | VCP 19 | Zone 2589.99-2681.09 | Invalidation 2420.79
 - A 83 | JP 8306.T 三菱UFJフィナンシャル・グループ | 上昇トレンドの押し目 | RS 79.6 | VCP 20 | Zone 3634.93-3726.26 | Invalidation 3474.92
 - A 83 | US AAPL Apple | VCPピボット接近 | RS 78.0 | VCP 21 | Zone 342.55-354.6 | Invalidation 320.17
@@ -53,6 +54,5 @@ Generated: 2026-09-18T06:59:21.830729+00:00
 - A 82 | JP 9107.T 川崎汽船 | 上昇トレンドの押し目 | RS 86.9 | VCP 17 | Zone 3377.43-3462.29 | Invalidation 3156.79
 - A 82 | US SHG Shinhan Financial Group Co Ltd American Depositary Shares | VCPピボット接近 | RS 84.9 | VCP 24 | Zone 85.14-88.14 | Invalidation 79.58
 - A 82 | JP 9503.T 関西電力 | VCPピボット接近 | RS 81.5 | VCP 20 | Zone 3037.74-3144.59 | Invalidation 2839.29
-- A 82 | US SMFG Sumitomo Mitsui Financial Group Inc Unsponsored American Depositary Shares (Japan) | VCPピボット接近 | RS 79.4 | VCP 24 | Zone 27.48-28.45 | Invalidation 25.77
-- A 82 | US GSL Global Ship Lease Inc New Class A Common Shares | VCPピボット接近 | RS 79.2 | VCP 25 | Zone 46.27-47.9 | Invalidation 43.25
-- A 82 | JP 5401.T 日本製鉄 | VCPピボット接近 | RS 78.9 | VCP 24 | Zone 714.91-740.06 | Invalidation 668.21
+- A 82 | US SMFG Sumitomo Mitsui Financial Group Inc Unsponsored American Depositary Shares (Japan) | VCPピボット接近 | RS 79.5 | VCP 24 | Zone 27.48-28.45 | Invalidation 25.77
+- A 82 | US GSL Global Ship Lease Inc New Class A Common Shares | VCPピボット接近 | RS 79.3 | VCP 25 | Zone 46.27-47.9 | Invalidation 43.25
