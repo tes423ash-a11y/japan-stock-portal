@@ -66,6 +66,7 @@ BIIB,Biogen,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
 BLK,BlackRock,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
 BX,Blackstone Inc.,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
 XYZ,"Block, Inc.",US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
+BE,Bloom Energy,US,Industrials,Electrical Components & Equipment,Industrials,S&P 500 constituent
 BNY,BNY Mellon,US,Financials,Asset Management & Custody Banks,Financials,S&P 500 constituent
 BA,Boeing,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
 BKNG,Booking Holdings,US,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Consumer Discretionary,S&P 500 constituent
@@ -75,7 +76,6 @@ AVGO,Broadcom,US,Information Technology,Semiconductors,Information Technology,S&
 BR,Broadridge Financial Solutions,US,Industrials,Data Processing & Outsourced Services,Industrials,S&P 500 constituent
 BRO,Brown & Brown,US,Financials,Insurance Brokers,Financials,S&P 500 constituent
 BF-B,Brown–Forman,US,Consumer Staples,Distillers & Vintners,Consumer Staples,S&P 500 constituent
-BLDR,Builders FirstSource,US,Industrials,Building Products,Industrials,S&P 500 constituent
 BG,Bunge Global,US,Consumer Staples,Agricultural Products & Services,Consumer Staples,S&P 500 constituent
 BXP,"BXP, Inc.",US,Real Estate,Office REITs,Real Estate,S&P 500 constituent
 CHRW,C.H. Robinson,US,Industrials,Air Freight & Logistics,Industrials,S&P 500 constituent
@@ -178,6 +178,7 @@ ESS,Essex Property Trust,US,Real Estate,Multi-Family Residential REITs,Real Esta
 EL,Estée Lauder Companies (The),US,Consumer Staples,Personal Care Products,Consumer Staples,S&P 500 constituent
 EG,Everest Group,US,Financials,Reinsurance,Financials,S&P 500 constituent
 EVRG,Evergy,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
+P,Everpure,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
 ES,Eversource Energy,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
 EXC,Exelon,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
 EXE,Expand Energy,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
@@ -246,6 +247,7 @@ IBM,IBM,US,Information Technology,IT Consulting & Other Services,Information Tec
 IEX,IDEX Corporation,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
 IDXX,Idexx Laboratories,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
 ITW,Illinois Tool Works,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
+ILMN,"Illumina, Inc.",US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
 INCY,Incyte,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
 IR,Ingersoll Rand,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
 PODD,Insulet Corporation,US,Health Care,Health Care Equipment,Health Care,S&P 500 constituent
@@ -316,7 +318,6 @@ MU,Micron Technology,US,Information Technology,Semiconductors,Information Techno
 MSFT,Microsoft,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
 MAA,Mid-America Apartment Communities,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
 MRNA,Moderna,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
-TAP,Molson Coors Beverage Company,US,Consumer Staples,Brewers,Consumer Staples,S&P 500 constituent
 MDLZ,Mondelez International,US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
 MPWR,Monolithic Power Systems,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
 MNST,Monster Beverage,US,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,Consumer Staples,S&P 500 constituent
@@ -443,7 +444,6 @@ TXT,Textron,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
 TMO,Thermo Fisher Scientific,US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
 TJX,TJX Companies,US,Consumer Discretionary,Apparel Retail,Consumer Discretionary,S&P 500 constituent
 TKO,TKO Group Holdings,US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
-TTD,Trade Desk (The),US,Communication Services,Advertising,Communication Services,S&P 500 constituent
 TSCO,Tractor Supply,US,Consumer Discretionary,Other Specialty Retail,Consumer Discretionary,S&P 500 constituent
 TT,Trane Technologies,US,Industrials,Building Products,Industrials,S&P 500 constituent
 TDG,TransDigm Group,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
