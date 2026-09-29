@@ -1,11 +1,11 @@
 # Daily Technical SEPA/VCP Report
 
-Generated: 2026-09-26T12:28:01.191872+00:00
+Generated: 2026-09-29T02:03:20.157853+00:00
 
 ## Coverage
 
-- Requested: 7260
-- Downloaded: 7245
+- Requested: 7215
+- Downloaded: 7202
 - Coverage: 99.8%
 
 ## Methodology
@@ -16,43 +16,43 @@ Generated: 2026-09-26T12:28:01.191872+00:00
 
 ## Top actionable candidates
 
-- A 90 | US MSFT Microsoft | VCPピボット接近 | RS 78.6 | VCP 25 | Zone 515.19-533.31 | Invalidation 481.54
-- A 90 | US MET MetLife | VCPピボット接近 | RS 78.3 | VCP 25 | Zone 100.43-103.96 | Invalidation 94.53
-- A 88 | US ATKR Atkore Inc. Common Stock | VCPピボット接近 | RS 87.0 | VCP 25 | Zone 94.18-97.49 | Invalidation 88.9
-- A 88 | US AAPL Apple | VCPピボット接近 | RS 81.4 | VCP 24 | Zone 343.61-355.7 | Invalidation 321.17
-- A 88 | US ROKU Roku Inc. Class A Common Stock | VCPピボット接近 | RS 79.4 | VCP 25 | Zone 159.09-164.69 | Invalidation 151.44
-- A 87 | US ITGR Integer Holdings Corporation Common Stock | VCPピボット接近 | RS 82.8 | VCP 25 | Zone 126.17-130.6 | Invalidation 119.41
-- A 87 | US BNS Bank Nova Scotia Halifax Pfd 3 Ordinary Shares | VCPピボット接近 | RS 78.2 | VCP 25 | Zone 95.26-98.61 | Invalidation 90.08
-- A 86 | JP 8306.T 三菱UFJフィナンシャル・グループ | VCPピボット接近 | RS 82.0 | VCP 22 | Zone 3793.93-3927.39 | Invalidation 3546.09
-- A 86 | US TGT Target Corporation | 上昇トレンドの押し目 | RS 80.2 | VCP 22 | Zone 158.39-162.37 | Invalidation 151.55
-- A 85 | US HAE Haemonetics Corporation Common Stock | VCPピボット接近 | RS 90.7 | VCP 21 | Zone 109.9-113.76 | Invalidation 102.72
-- A 85 | US ANET Arista Networks | VCPピボット接近 | RS 86.3 | VCP 21 | Zone 213.82-221.34 | Invalidation 199.85
-- A 85 | JP 8308.T りそなホールディングス | VCPピボット接近 | RS 86.2 | VCP 22 | Zone 2587.99-2679.03 | Invalidation 2418.93
-- A 85 | US TX Ternium S.A. Ternium S.A. American Depositary Shares (each representing ten shares USD1.00 par value) | 上昇トレンドの押し目 | RS 85.9 | VCP 24 | Zone 56.5-57.92 | Invalidation 53.31
-- A 85 | JP 8309.T 三井住友トラストグループ | VCPピボット接近 | RS 85.6 | VCP 24 | Zone 1813.39-1877.17 | Invalidation 1707.42
-- A 85 | US CLBK Columbia Financial Inc. Common Stock | 上昇トレンドの押し目 | RS 81.0 | VCP 24 | Zone 11.45-11.74 | Invalidation 11.06
-- A 85 | US PK Park Hotels & Resorts Inc. Common Stock | VCPピボット接近 | RS 78.7 | VCP 24 | Zone 16.12-16.69 | Invalidation 15.07
-- A 85 | US MFC Manulife Financial Corporation Common Stock | VCPピボット接近 | RS 76.9 | VCP 25 | Zone 44.73-46.3 | Invalidation 42.94
-- A 85 | US BDX Becton Dickinson | VCPピボット接近 | RS 75.1 | VCP 24 | Zone 190.98-197.7 | Invalidation 178.5
-- A 84 | JP 4812.T 電通総研 | VCPピボット接近 | RS 87.9 | VCP 25 | Zone 2915.35-3017.9 | Invalidation 2744.03
-- A 84 | US ING ING Group N.V. Common Stock | VCPピボット接近 | RS 84.0 | VCP 22 | Zone 37.33-38.65 | Invalidation 35.01
-- A 84 | US BZH Beazer Homes USA Inc. Common Stock | VCPピボット接近 | RS 83.7 | VCP 25 | Zone 34.37-35.58 | Invalidation 32.98
-- A 84 | US NDSN Nordson Corporation | VCPピボット接近 | RS 75.8 | VCP 25 | Zone 336.41-348.24 | Invalidation 314.43
-- A 83 | US HZO MarineMax Inc. (FL) Common Stock | 上昇トレンドの押し目 | RS 91.4 | VCP 21 | Zone 52.02-53.33 | Invalidation 48.62
-- A 83 | US SAFT Safety Insurance Group Inc. Common Stock | VCPピボット接近 | RS 86.2 | VCP 25 | Zone 103.36-107.0 | Invalidation 99.35
-- A 83 | US CBZ CBIZ Inc. Common Stock | VCPピボット接近 | RS 82.8 | VCP 24 | Zone 55.28-57.23 | Invalidation 52.47
-- A 83 | US NHC National HealthCare Corporation Common Stock | VCPピボット接近 | RS 80.9 | VCP 24 | Zone 238.09-246.47 | Invalidation 222.54
-- A 83 | JP 8015.T 豊田通商 | VCPピボット接近 | RS 79.2 | VCP 22 | Zone 7759.01-8031.94 | Invalidation 7252.14
-- A 83 | JP 8411.T みずほフィナンシャルグループ | VCPピボット接近 | RS 79.0 | VCP 20 | Zone 8849.53-9160.82 | Invalidation 8271.42
-- A 83 | US DV DoubleVerify Holdings Inc. Common Stock | VCPピボット接近 | RS 76.3 | VCP 25 | Zone 13.58-14.06 | Invalidation 12.69
-- A 82 | US NTAP NetApp | VCPピボット接近 | RS 90.8 | VCP 19 | Zone 208.01-215.33 | Invalidation 194.43
-- A 82 | JP 8304.T あおぞら銀行 | VCPピボット接近 | RS 87.9 | VCP 21 | Zone 3543.2-3667.83 | Invalidation 3311.73
-- A 82 | US LXP LXP Industrial Trust Common Stock (Maryland REIT) | VCPピボット接近 | RS 78.2 | VCP 22 | Zone 61.3-63.46 | Invalidation 60.07
-- A 82 | US SOLV Solventum | VCPピボット接近 | RS 77.3 | VCP 25 | Zone 93.69-96.98 | Invalidation 87.57
-- A 81 | US IQV IQVIA | VCPピボット接近 | RS 87.8 | VCP 22 | Zone 276.01-285.72 | Invalidation 257.98
-- A 81 | JP 8354.T ふくおかフィナンシャルグループ | VCPピボット接近 | RS 82.7 | VCP 23 | Zone 7981.89-8262.66 | Invalidation 7542.1
+- S 90 | US ATKR Atkore Inc. Common Stock | VCPピボット接近 | RS 87.4 | VCP 25 | Zone 94.18-97.49 | Invalidation 89.33
+- A 89 | US ITGR Integer Holdings Corporation Common Stock | VCPピボット接近 | RS 83.0 | VCP 25 | Zone 126.17-130.6 | Invalidation 120.03
+- A 88 | US AAPL Apple | VCPピボット接近 | RS 78.7 | VCP 24 | Zone 343.61-355.7 | Invalidation 321.17
+- A 86 | US HAE Haemonetics Corporation Common Stock | VCPピボット接近 | RS 91.6 | VCP 22 | Zone 109.9-113.76 | Invalidation 102.72
+- A 86 | US IQV IQVIA | VCPピボット接近 | RS 87.8 | VCP 24 | Zone 276.01-285.72 | Invalidation 257.98
+- A 86 | US BNS Bank Nova Scotia Halifax Pfd 3 Ordinary Shares | VCPピボット接近 | RS 78.8 | VCP 25 | Zone 95.26-98.61 | Invalidation 90.14
+- A 86 | US ROKU Roku Inc. Class A Common Stock | VCPピボット接近 | RS 78.7 | VCP 24 | Zone 159.09-164.69 | Invalidation 150.89
+- A 85 | US ARW Arrow Electronics Inc. Common Stock | VCPピボット接近 | RS 88.6 | VCP 21 | Zone 232.77-240.96 | Invalidation 217.56
+- A 85 | US NVDA NVIDIA | VCPピボット接近 | RS 79.8 | VCP 19 | Zone 233.33-241.53 | Invalidation 218.09
+- A 84 | US NTAP NetApp | VCPピボット接近 | RS 92.0 | VCP 19 | Zone 208.01-215.33 | Invalidation 194.43
+- A 84 | JP 4812.T 電通総研 | VCPピボット接近 | RS 88.0 | VCP 25 | Zone 2915.35-3017.9 | Invalidation 2747.71
+- A 84 | US ANET Arista Networks | VCPピボット接近 | RS 86.6 | VCP 21 | Zone 213.82-221.34 | Invalidation 199.85
+- A 84 | JP 8309.T 三井住友トラストグループ | VCPピボット接近 | RS 86.2 | VCP 23 | Zone 1789.59-1852.54 | Invalidation 1685.01
+- A 84 | US BZH Beazer Homes USA Inc. Common Stock | VCPピボット接近 | RS 84.0 | VCP 24 | Zone 34.37-35.58 | Invalidation 32.99
+- A 84 | US CBZ CBIZ Inc. Common Stock | VCPピボット接近 | RS 83.2 | VCP 24 | Zone 55.28-57.23 | Invalidation 52.72
+- A 84 | US TGT Target Corporation | 上昇トレンドの押し目 | RS 82.9 | VCP 20 | Zone 158.16-162.13 | Invalidation 151.29
+- A 84 | US PK Park Hotels & Resorts Inc. Common Stock | VCPピボット接近 | RS 80.9 | VCP 21 | Zone 16.12-16.69 | Invalidation 15.07
+- A 84 | US MSFT Microsoft | VCPピボット接近 | RS 76.4 | VCP 24 | Zone 516.8-534.98 | Invalidation 483.04
+- A 83 | JP 8304.T あおぞら銀行 | VCPピボット接近 | RS 88.8 | VCP 21 | Zone 3543.2-3667.83 | Invalidation 3311.73
+- A 83 | JP 9110.T ＮＳユナイテッド海運 | VCPピボット接近 | RS 88.7 | VCP 22 | Zone 10487.3-10856.2 | Invalidation 9802.2
+- A 83 | US SAFT Safety Insurance Group Inc. Common Stock | VCPピボット接近 | RS 86.0 | VCP 25 | Zone 103.36-107.0 | Invalidation 99.96
+- A 83 | JP 8411.T みずほフィナンシャルグループ | VCPピボット接近 | RS 84.6 | VCP 21 | Zone 8774.1-9082.74 | Invalidation 8200.92
+- A 83 | US SOLV Solventum | VCPピボット接近 | RS 78.4 | VCP 25 | Zone 93.69-96.98 | Invalidation 87.57
+- A 83 | US DV DoubleVerify Holdings Inc. Common Stock | VCPピボット接近 | RS 76.2 | VCP 25 | Zone 13.58-14.06 | Invalidation 12.72
+- A 82 | US CHEF The Chefs' Warehouse Inc. Common Stock | 上昇トレンドの押し目 | RS 85.4 | VCP 19 | Zone 110.38-113.15 | Invalidation 103.39
+- A 82 | JP 8306.T 三菱UFJフィナンシャル・グループ | VCPピボット接近 | RS 83.4 | VCP 21 | Zone 3744.99-3876.72 | Invalidation 3500.34
+- A 82 | US NDSN Nordson Corporation | VCPピボット接近 | RS 80.1 | VCP 21 | Zone 336.41-348.24 | Invalidation 314.43
+- A 82 | JP 8601.T 大和証券グループ本社 | VCPピボット接近 | RS 79.5 | VCP 21 | Zone 1888.51-1954.94 | Invalidation 1780.55
+- A 82 | US TSM Taiwan Semiconductor | VCPピボット接近 | RS 79.4 | VCP 19 | Zone 452.75-468.68 | Invalidation 423.18
+- A 82 | US LXP LXP Industrial Trust Common Stock (Maryland REIT) | VCPピボット接近 | RS 77.5 | VCP 22 | Zone 61.3-63.46 | Invalidation 60.07
+- A 82 | US MFC Manulife Financial Corporation Common Stock | VCPピボット接近 | RS 76.3 | VCP 25 | Zone 44.73-46.3 | Invalidation 43.05
+- A 82 | US GILD Gilead Sciences | VCPピボット接近 | RS 75.5 | VCP 21 | Zone 153.43-158.83 | Invalidation 143.41
+- A 81 | US HZO MarineMax Inc. (FL) Common Stock | 上昇トレンドの押し目 | RS 91.6 | VCP 19 | Zone 52.03-53.34 | Invalidation 48.63
+- A 81 | JP 8354.T ふくおかフィナンシャルグループ | VCPピボット接近 | RS 83.0 | VCP 23 | Zone 7877.13-8154.21 | Invalidation 7449.98
+- A 81 | US ING ING Group N.V. Common Stock | VCPピボット接近 | RS 83.0 | VCP 21 | Zone 37.33-38.65 | Invalidation 35.1
 - A 81 | US BIO Bio-Rad Laboratories Inc. Class A Common Stock | VCPピボット接近 | RS 81.0 | VCP 22 | Zone 394.25-408.12 | Invalidation 368.49
-- A 81 | US TSM Taiwan Semiconductor | VCPピボット接近 | RS 76.7 | VCP 19 | Zone 450.62-466.47 | Invalidation 421.18
-- A 81 | JP 5401.T 日本製鉄 | VCPピボット接近 | RS 75.3 | VCP 24 | Zone 714.91-740.06 | Invalidation 668.21
-- A 80 | US TBBB BBB Foods Inc. Class A Common Shares | 出来高伴うブレイク | RS 90.2 | VCP 18 | Zone 53.06-54.93 | Invalidation 49.6
-- A 80 | US PSNL Personalis Inc. Common Stock | 上昇トレンドの押し目 | RS 88.6 | VCP 18 | Zone 16.44-16.85 | Invalidation 15.36
+- A 81 | US EXEL Exelixis Inc. Common Stock | VCPピボット接近 | RS 78.2 | VCP 21 | Zone 59.42-61.51 | Invalidation 55.54
+- A 81 | US RS Reliance Inc. Common Stock | 上昇トレンドの押し目 | RS 75.7 | VCP 24 | Zone 397.39-407.38 | Invalidation 379.34
+- A 81 | US EMR Emerson Electric | VCPピボット接近 | RS 75.4 | VCP 19 | Zone 164.96-170.76 | Invalidation 154.18
+- A 80 | JP 8308.T りそなホールディングス | VCPピボット接近 | RS 87.5 | VCP 19 | Zone 2569.29-2659.67 | Invalidation 2401.45
