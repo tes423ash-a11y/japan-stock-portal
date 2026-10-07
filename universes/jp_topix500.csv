@@ -195,7 +195,7 @@ symbol,name,market,sector,industry,theme,note
 6856.T,堀場製作所,JP,電気機器,電機・精密,電気機器,TOPIX component weight universe
 2875.T,東洋水産,JP,食料品,食品,食料品,TOPIX component weight universe
 3088.T,マツキヨココカラ＆カンパニー,JP,小売業,小売,小売業,TOPIX component weight universe
-9508.T,九州電力,JP,電気・ガス業,電力・ガス,電気・ガス業,TOPIX component weight universe
+9508.T,9508,JP,Electric Power & Gas,,Electric Power & Gas,TOPIX component weight universe
 4005.T,住友化学,JP,化学,素材・化学,化学,TOPIX component weight universe
 7747.T,朝日インテック,JP,精密機器,電機・精密,精密機器,TOPIX component weight universe
 4324.T,電通グループ,JP,サービス業,情報通信・サービスその他,サービス業,TOPIX component weight universe
@@ -498,4 +498,4 @@ symbol,name,market,sector,industry,theme,note
 2127.T,日本Ｍ＆Ａセンターホールディングス,JP,サービス業,情報通信・サービスその他,サービス業,TOPIX component weight universe
 8346.T,東邦銀行,JP,銀行業,銀行,銀行業,TOPIX component weight universe
 3116.T,トヨタ紡織,JP,輸送用機器,自動車・輸送機,輸送用機器,TOPIX component weight universe
-7240.T,ＮＯＫ,JP,輸送用機器,自動車・輸送機,輸送用機器,TOPIX component weight universe
+7240.T,7240,JP,Transportation Equipment,,Transportation Equipment,TOPIX component weight universe
