@@ -4,13 +4,14 @@ import csv
 import json
 import os
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from statistics import median
 from typing import Any
 
 from screener_data import download_history, finite, read_csv_files
 from trade_simulation import SimulationConfig, simulate_long_trade
+from universe_eligibility import effective_delistings, eligibility_date, filter_current_rows
 
 ROOT = Path(__file__).resolve().parents[1]
 TRACKING = ROOT / "reports" / "candidate_tracking.json"
@@ -45,9 +46,9 @@ def load_records() -> list[dict[str, Any]]:
     return records if isinstance(records, list) else []
 
 
-def current_universe_symbols() -> set[str]:
+def current_universe_symbols(as_of: date | str | None = None) -> set[str]:
     paths = list((ROOT / "universes").glob("*.csv"))
-    return {str(row.get("symbol") or "").upper() for row in read_csv_files(paths)}
+    return {str(row.get("symbol") or "").upper() for row in filter_current_rows(read_csv_files(paths), as_of)}
 
 
 def historical_universe_events() -> dict[str, dict[str, str]]:
@@ -91,6 +92,9 @@ def grouped_summary(trades: list[dict[str, Any]], field: str) -> list[dict[str, 
 
 
 def main() -> None:
+    as_of = eligibility_date()
+    confirmed_events = effective_delistings(as_of)
+    current_symbols = current_universe_symbols(as_of)
     records = [record for record in load_records() if record.get("detectedSetupType") in READY_SETUPS]
     symbols = sorted({str(record.get("symbol") or "") for record in records if record.get("symbol")})
     offline = env_bool("VALIDATION_OFFLINE")
@@ -104,7 +108,6 @@ def main() -> None:
             "missing": len(symbols),
             "missingSymbols": symbols[:30],
         }
-    current_symbols = current_universe_symbols()
     historical_events = historical_universe_events()
     config = SimulationConfig(
         fee_bps_per_side=max(0, env_float("VALIDATION_FEE_BPS_PER_SIDE", 5)),
@@ -120,7 +123,10 @@ def main() -> None:
         if not symbol or stop is None:
             continue
         event = historical_events.get(symbol) or {}
-        terminal_event = "delisted" if event.get("delisted_on") else None
+        terminal_event = "delisted" if event.get("delisted_on") and eligibility_date(event["delisted_on"]) <= as_of else None
+        confirmed_event = confirmed_events.get(symbol)
+        # The exclusion registry proves a delisting, not a cash settlement or
+        # executable exit price. Annotate it without synthesizing a trade close.
         result = simulate_long_trade(
             histories.get(symbol),
             str(record.get("detectedAt") or ""),
@@ -138,8 +144,9 @@ def main() -> None:
             "detectedAt": record.get("detectedAt"),
             "detectedRank": record.get("detectedRank"),
             "detectedScore": record.get("detectedScore"),
-            "universeExited": bool(current_symbols and symbol not in current_symbols),
-            "terminalEvent": terminal_event,
+            "universeExited": bool(confirmed_event or (current_symbols and symbol not in current_symbols)),
+            "terminalEvent": "delisted" if confirmed_event else terminal_event,
+            "confirmedDelistedOn": confirmed_event["delisted_on"] if confirmed_event else None,
         })
         trades.append(result)
 
@@ -185,6 +192,7 @@ def main() -> None:
             "marketData": diagnostics,
             "offlineGeneration": offline,
             "historicalUniverseCoverage": historical_coverage,
+            "confirmedDelistingEvents": len(confirmed_events),
             "survivorshipStatus": "historical_universe_loaded" if historical_coverage else "prospective_only",
             "universeExitedSignals": sum(bool(trade.get("universeExited")) for trade in trades),
             "terminalEvents": sum(bool(trade.get("terminalEvent")) for trade in trades),
