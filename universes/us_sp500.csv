@@ -127,7 +127,6 @@ COO,Cooper Companies (The),US,Health Care,Health Care Supplies,Health Care,S&P 5
 CPRT,Copart,US,Industrials,Diversified Support Services,Industrials,S&P 500 constituent
 GLW,Corning Inc.,US,Information Technology,Electronic Components,Information Technology,S&P 500 constituent
 CPAY,Corpay,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
-CTVA,Corteva,US,Materials,Fertilizers & Agricultural Chemicals,Materials,S&P 500 constituent
 CSGP,CoStar Group,US,Real Estate,Real Estate Services,Real Estate,S&P 500 constituent
 COST,Costco,US,Consumer Staples,Consumer Staples Merchandise Retail,Consumer Staples,S&P 500 constituent
 CRH,CRH plc,US,Materials,Construction Materials,Materials,S&P 500 constituent
@@ -357,7 +356,6 @@ PCAR,Paccar,US,Industrials,Construction Machinery & Heavy Transportation Equipme
 PKG,Packaging Corporation of America,US,Materials,Paper & Plastic Packaging Products & Materials,Materials,S&P 500 constituent
 PLTR,Palantir Technologies,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
 PANW,Palo Alto Networks,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
-PSKY,Paramount Skydance Corporation,US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
 PH,Parker Hannifin,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
 PAYX,Paychex,US,Industrials,Human Resource & Employment Services,Industrials,S&P 500 constituent
 PYPL,PayPal,US,Financials,Transaction & Payment Processing Services,Financials,S&P 500 constituent
@@ -411,6 +409,7 @@ SRE,Sempra,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
 NOW,ServiceNow,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
 SHW,Sherwin-Williams,US,Materials,Specialty Chemicals,Materials,S&P 500 constituent
 SPG,Simon Property Group,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
+SKYD,Skydance Corporation,US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
 SWKS,Skyworks Solutions,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
 SJM,J.M. Smucker Company (The),US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
 SW,Smurfit Westrock,US,Materials,Paper & Plastic Packaging Products & Materials,Materials,S&P 500 constituent
@@ -450,6 +449,7 @@ TDG,TransDigm Group,US,Industrials,Aerospace & Defense,Industrials,S&P 500 const
 TRV,Travelers Companies (The),US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
 TRMB,Trimble Inc.,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
 TFC,Truist Financial,US,Financials,Diversified Banks,Financials,S&P 500 constituent
+TWLO,Twilio,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
 TYL,Tyler Technologies,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
 TSN,Tyson Foods,US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
 USB,U.S. Bancorp,US,Financials,Diversified Banks,Financials,S&P 500 constituent
@@ -477,12 +477,12 @@ V,Visa Inc.,US,Financials,Transaction & Payment Processing Services,Financials,S
 VST,Vistra Corp.,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
 VMRK,Vivmark Residential,US,Real Estate,Multi-Family Residential REITs,Real Estate,S&P 500 constituent
 VMC,Vulcan Materials Company,US,Materials,Construction Materials,Materials,S&P 500 constituent
+VYLR,Vylor,US,Consumer Staples,Agricultural Products & Services,Consumer Staples,S&P 500 constituent
 WRB,W. R. Berkley Corporation,US,Financials,Property & Casualty Insurance,Financials,S&P 500 constituent
 GWW,W. W. Grainger,US,Industrials,Industrial Machinery & Supplies & Components,Industrials,S&P 500 constituent
 WAB,Wabtec,US,Industrials,Construction Machinery & Heavy Transportation Equipment,Industrials,S&P 500 constituent
 WMT,Walmart,US,Consumer Staples,Consumer Staples Merchandise Retail,Consumer Staples,S&P 500 constituent
 DIS,Walt Disney Company (The),US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
-WBD,Warner Bros. Discovery,US,Communication Services,Broadcasting,Communication Services,S&P 500 constituent
 WM,Waste Management,US,Industrials,Environmental & Facilities Services,Industrials,S&P 500 constituent
 WAT,Waters Corporation,US,Health Care,Life Sciences Tools & Services,Health Care,S&P 500 constituent
 WEC,WEC Energy Group,US,Utilities,Electric Utilities,Utilities,S&P 500 constituent
