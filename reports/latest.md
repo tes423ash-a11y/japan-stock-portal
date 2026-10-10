@@ -1,11 +1,11 @@
 # Daily Technical SEPA/VCP Report
 
-Generated: 2026-10-10T01:56:24.758119+00:00
+Generated: 2026-10-10T13:56:26.345750+00:00
 
 ## Coverage
 
 - Requested: 7201
-- Downloaded: 7177
+- Downloaded: 7176
 - Coverage: 99.7%
 
 ## Methodology
@@ -39,7 +39,7 @@ Generated: 2026-10-10T01:56:24.758119+00:00
 - A 83 | US RDVT Red Violet Inc. Common Stock | VCPピボット接近 | RS 88.4 | VCP 24 | Zone 81.38-84.24 | Invalidation 76.06
 - A 83 | US ZBRA Zebra Technologies | VCPピボット接近 | RS 88.3 | VCP 19 | Zone 388.85-402.52 | Invalidation 363.44
 - A 83 | US NSIT Insight Enterprises Inc. Common Stock | VCPピボット接近 | RS 87.5 | VCP 21 | Zone 167.66-173.56 | Invalidation 156.71
-- A 83 | JP 7267.T 本田技研工業 | VCPピボット接近 | RS 82.2 | VCP 24 | Zone 1721.86-1782.43 | Invalidation 1637.27
+- A 83 | JP 7267.T 本田技研工業 | VCPピボット接近 | RS 82.3 | VCP 24 | Zone 1721.86-1782.43 | Invalidation 1637.27
 - A 83 | JP 9147.T ＮＩＰＰＯＮ ＥＸＰＲＥＳＳホールディングス | VCPピボット接近 | RS 79.8 | VCP 24 | Zone 5836.67-6041.98 | Invalidation 5497.38
 - A 83 | US BWIN The Baldwin Insurance Group Inc. Class A Common Stock | VCPピボット接近 | RS 77.7 | VCP 24 | Zone 32.55-33.69 | Invalidation 30.71
 - A 83 | US DV DoubleVerify Holdings Inc. Common Stock | VCPピボット接近 | RS 76.7 | VCP 25 | Zone 13.58-14.06 | Invalidation 13.14
