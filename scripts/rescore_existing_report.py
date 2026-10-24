@@ -11,6 +11,7 @@ from screener_data import REPORT_DIR, finite, read_input_rows, rounded
 from screener_metrics import preference_match
 from screener_report import build_themes, market_summary
 from screener_scoring import enrich_market_candidates
+from universe_eligibility import filter_current_rows
 
 LATEST = REPORT_DIR / "latest.json"
 DYNAMIC_WARNINGS = {"RS不足", "出来高確認待ち", "ベース深さ過大"}
@@ -60,7 +61,7 @@ def main() -> None:
     rows, _ = read_input_rows()
     metadata = {row["symbol"]: row for row in rows}
     grouped: dict[str, list[dict[str, Any]]] = {"JP": [], "US": []}
-    for candidate in report.get("candidates", []):
+    for candidate in filter_current_rows(report.get("candidates", [])):
         refreshed = refresh_metadata(candidate, metadata.get(str(candidate.get("symbol"))) or {})
         grouped.setdefault(str(refreshed.get("market") or "US"), []).append(refreshed)
 
