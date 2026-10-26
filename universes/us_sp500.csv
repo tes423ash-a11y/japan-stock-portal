@@ -378,14 +378,13 @@ PEG,Public Service Enterprise Group,US,Utilities,Electric Utilities,Utilities,S&
 PTC,PTC Inc.,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
 PSA,Public Storage,US,Real Estate,Self-Storage REITs,Real Estate,S&P 500 constituent
 PHM,PulteGroup,US,Consumer Discretionary,Homebuilding,Consumer Discretionary,S&P 500 constituent
-PWR,Quanta Services,US,Industrials,Construction & Engineering,Industrials,S&P 500 constituent
-QCOM,Qualcomm,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
-DGX,Quest Diagnostics,US,Health Care,Health Care Services,Health Care,S&P 500 constituent
 Q,Qnity Electronics,US,Information Technology,Semiconductor Materials & Equipment,Information Technology,S&P 500 constituent
+QCOM,Qualcomm,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
+PWR,Quanta Services,US,Industrials,Construction & Engineering,Industrials,S&P 500 constituent
+DGX,Quest Diagnostics,US,Health Care,Health Care Services,Health Care,S&P 500 constituent
 RL,Ralph Lauren Corporation,US,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",Consumer Discretionary,S&P 500 constituent
 RJF,Raymond James Financial,US,Financials,Investment Banking & Brokerage,Financials,S&P 500 constituent
 RDDT,Reddit,US,Communication Services,Interactive Media & Services,Communication Services,S&P 500 constituent
-RTX,RTX Corporation,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
 O,Realty Income,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
 REG,Regency Centers,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
 REGN,Regeneron Pharmaceuticals,US,Health Care,Biotechnology,Health Care,S&P 500 constituent
@@ -399,6 +398,7 @@ ROL,"Rollins, Inc.",US,Industrials,Environmental & Facilities Services,Industria
 ROP,Roper Technologies,US,Information Technology,Electronic Equipment & Instruments,Information Technology,S&P 500 constituent
 ROST,Ross Stores,US,Consumer Discretionary,Apparel Retail,Consumer Discretionary,S&P 500 constituent
 RCL,Royal Caribbean Group,US,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Consumer Discretionary,S&P 500 constituent
+RTX,RTX Corporation,US,Industrials,Aerospace & Defense,Industrials,S&P 500 constituent
 SPGI,S&P Global,US,Financials,Financial Exchanges & Data,Financials,S&P 500 constituent
 CRM,Salesforce,US,Information Technology,Application Software,Information Technology,S&P 500 constituent
 SNDK,Sandisk,US,Information Technology,"Technology Hardware, Storage & Peripherals",Information Technology,S&P 500 constituent
@@ -409,7 +409,7 @@ SRE,Sempra,US,Utilities,Multi-Utilities,Utilities,S&P 500 constituent
 NOW,ServiceNow,US,Information Technology,Systems Software,Information Technology,S&P 500 constituent
 SHW,Sherwin-Williams,US,Materials,Specialty Chemicals,Materials,S&P 500 constituent
 SPG,Simon Property Group,US,Real Estate,Retail REITs,Real Estate,S&P 500 constituent
-SKYD,Skydance Corporation,US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
+SKYD,Skydance,US,Communication Services,Movies & Entertainment,Communication Services,S&P 500 constituent
 SWKS,Skyworks Solutions,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
 SJM,J.M. Smucker Company (The),US,Consumer Staples,Packaged Foods & Meats,Consumer Staples,S&P 500 constituent
 SW,Smurfit Westrock,US,Materials,Paper & Plastic Packaging Products & Materials,Materials,S&P 500 constituent
