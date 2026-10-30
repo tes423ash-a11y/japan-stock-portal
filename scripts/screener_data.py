@@ -13,6 +13,7 @@ from typing import Any, Iterable
 import pandas as pd
 import yfinance as yf
 from market_sessions import expected_session, completed_history, merge_fresh_history
+from universe_eligibility import filter_current_rows
 
 ROOT = Path(__file__).resolve().parents[1]
 WATCHLISTS = [ROOT / "watchlists" / "jp_candidates.csv", ROOT / "watchlists" / "us_candidates.csv"]
@@ -143,13 +144,13 @@ def read_csv_files(paths: Iterable[Path]) -> list[dict[str, str]]:
     return rows
 
 
-def read_input_rows() -> tuple[list[dict[str, str]], str]:
+def read_input_rows(as_of: date | str | None = None) -> tuple[list[dict[str, str]], str]:
     mode = safe_text(os.getenv("SCREENING_MODE", "all_universe")) or "all_universe"
     if mode in {"top_turnover", "top_turnover_today", "all_universe"}:
         rows = read_csv_files(UNIVERSE_FILES)
         if rows:
-            return rows, mode
-    return read_csv_files(WATCHLISTS), "watchlists"
+            return filter_current_rows(rows, as_of), mode
+    return filter_current_rows(read_csv_files(WATCHLISTS), as_of), "watchlists"
 
 
 def split_rows_by_market(rows: list[dict[str, str]]) -> dict[str, list[dict[str, str]]]:
