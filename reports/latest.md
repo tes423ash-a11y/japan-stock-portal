@@ -1,6 +1,6 @@
 # Daily Technical SEPA/VCP Report
 
-Generated: 2026-10-31T01:46:03.302167+00:00
+Generated: 2026-10-31T13:50:33.972289+00:00
 
 ## Coverage
 
@@ -18,7 +18,6 @@ Generated: 2026-10-31T01:46:03.302167+00:00
 
 - S 92 | US SU Suncor Energy Inc. Common Stock | VCPピボット接近 | RS 88.3 | VCP 24 | Zone 79.85-82.66 | Invalidation 74.63
 - S 91 | JP 9101.T 日本郵船 | VCPピボット接近 | RS 91.3 | VCP 24 | Zone 7547.07-7812.55 | Invalidation 7054.05
-- S 91 | US SHEL Shell PLC American Depositary Shares (each representing two (2) Ordinary Shares) | VCPピボット接近 | RS 86.0 | VCP 24 | Zone 107.89-111.68 | Invalidation 100.84
 - S 90 | US PCRX Pacira BioSciences Inc. Common Stock | VCPピボット接近 | RS 94.1 | VCP 25 | Zone 36.49-37.77 | Invalidation 34.1
 - S 90 | US CVX Chevron | 出来高伴うブレイク | RS 87.2 | VCP 22 | Zone 232.91-241.1 | Invalidation 217.69
 - A 89 | US HAE Haemonetics Corporation Common Stock | VCPピボット接近 | RS 95.3 | VCP 24 | Zone 123.15-127.48 | Invalidation 115.11
@@ -56,3 +55,4 @@ Generated: 2026-10-31T01:46:03.302167+00:00
 - A 80 | US PSNL Personalis Inc. Common Stock | 上昇トレンドの押し目 | RS 84.3 | VCP 22 | Zone 16.26-16.67 | Invalidation 15.54
 - A 80 | US MTDR Matador Resources Company Common Stock | VCPピボット接近 | RS 81.1 | VCP 19 | Zone 63.5-65.73 | Invalidation 59.35
 - A 80 | JP 4612.T 日本ペイントホールディングス | VCPピボット接近 | RS 80.9 | VCP 24 | Zone 1286.54-1331.79 | Invalidation 1202.49
+- A 80 | US MAR Marriott International | VCPピボット接近 | RS 78.5 | VCP 20 | Zone 405.3-419.56 | Invalidation 378.83
