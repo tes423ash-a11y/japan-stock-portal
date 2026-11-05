@@ -268,7 +268,6 @@ J,Jacobs Solutions,US,Industrials,Construction & Engineering,Industrials,S&P 500
 JNJ,Johnson & Johnson,US,Health Care,Pharmaceuticals,Health Care,S&P 500 constituent
 JCI,Johnson Controls,US,Industrials,Building Products,Industrials,S&P 500 constituent
 JPM,JPMorgan Chase,US,Financials,Diversified Banks,Financials,S&P 500 constituent
-KVUE,Kenvue,US,Consumer Staples,Personal Care Products,Consumer Staples,S&P 500 constituent
 KDP,Keurig Dr Pepper,US,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,Consumer Staples,S&P 500 constituent
 KEY,KeyCorp,US,Financials,Regional Banks,Financials,S&P 500 constituent
 KEYS,Keysight Technologies,US,Information Technology,Electronic Equipment & Instruments,Information Technology,S&P 500 constituent
@@ -346,6 +345,7 @@ NVR,"NVR, Inc.",US,Consumer Discretionary,Homebuilding,Consumer Discretionary,S&
 NXPI,NXP Semiconductors,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
 ORLY,O'Reilly Automotive,US,Consumer Discretionary,Automotive Retail,Consumer Discretionary,S&P 500 constituent
 OXY,Occidental Petroleum,US,Energy,Oil & Gas Exploration & Production,Energy,S&P 500 constituent
+OKTA,"Okta, Inc.",US,Information Technology,Application Software,Information Technology,S&P 500 constituent
 ODFL,Old Dominion,US,Industrials,Cargo Ground Transportation,Industrials,S&P 500 constituent
 OMC,Omnicom Group,US,Communication Services,Advertising,Communication Services,S&P 500 constituent
 ON,ON Semiconductor,US,Information Technology,Semiconductors,Information Technology,S&P 500 constituent
